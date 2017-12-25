@@ -102,6 +102,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
         mRecyclerViewAdapter.clear();
+        loadData();
     }
 
     private void layoutInit(View view) {
@@ -118,11 +119,16 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
         mCalendarView.setOnDateChangedListener(this);
         mCalendarView.setOnMonthChangedListener(this);
+
+        mPresenter = new SchedulePresenterImpl(this);
     }
 
     private void loadData() {
-        mPresenter = new SchedulePresenterImpl(this);
-        mPresenter.loadAllScheduleData();
+
+        CalendarDay calendarDay = mCalendarView.getCurrentDate();
+        String yearAndMonth = calendarDay.getYear() + "-" + (calendarDay.getMonth() + 1 );
+
+        mPresenter.loadAllScheduleData(yearAndMonth);
     }
 
 }

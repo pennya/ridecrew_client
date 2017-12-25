@@ -23,8 +23,8 @@ public class SchedulePresenterImpl implements SchedulePresenter, ScheduleModelCa
     }
 
     @Override
-    public void loadAllScheduleData() {
-        mModel.requestScheduleList();
+    public void loadAllScheduleData(String date) {
+        mModel.requestScheduleList(date);
     }
 
     @Override

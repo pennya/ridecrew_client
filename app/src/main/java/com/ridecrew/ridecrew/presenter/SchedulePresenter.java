@@ -11,7 +11,7 @@ import Entity.Schedule;
 
 public interface SchedulePresenter {
 
-    void loadAllScheduleData();
+    void loadAllScheduleData(String date);
 
     interface View {
 

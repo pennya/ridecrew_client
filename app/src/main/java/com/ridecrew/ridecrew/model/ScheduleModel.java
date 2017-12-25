@@ -10,6 +10,7 @@ import Entity.ApiResult;
 import Entity.Schedule;
 import network.DummyService;
 import network.NetworkManager;
+import network.ScheduleService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,9 +27,9 @@ public class ScheduleModel {
         mCallback = callback;
     }
 
-    public void requestScheduleList() {
-        DummyService service = NetworkManager.getIntance().getRetrofit(DummyService.class);
-        Call<ApiResult<List<Schedule>>> scheduleListCall = service.getAllSchedules();
+    public void requestScheduleList(String date) {
+        ScheduleService service = NetworkManager.getIntance().getRetrofit(ScheduleService.class);
+        Call<ApiResult<List<Schedule>>> scheduleListCall = service.getAllSchedules(date);
         scheduleListCall.enqueue(new Callback<ApiResult<List<Schedule>>>() {
             @Override
             public void onResponse(Call<ApiResult<List<Schedule>>> call, Response<ApiResult<List<Schedule>>> response) {
