@@ -1,6 +1,8 @@
-package Dummy;
+package com.ridecrew.ridecrew.model;
 
 import android.util.Log;
+
+import com.ridecrew.ridecrew.callback.ScheduleModelCallback;
 
 import java.util.List;
 
@@ -13,10 +15,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by kim on 2017. 12. 8..
+ * Created by kim on 2017. 12. 25..
  */
 
-public class DummyModel {
+public class ScheduleModel {
+
+    private ScheduleModelCallback mCallback;
+
+    public ScheduleModel(ScheduleModelCallback callback) {
+        mCallback = callback;
+    }
 
     public void requestScheduleList() {
         DummyService service = NetworkManager.getIntance().getRetrofit(DummyService.class);
@@ -26,12 +34,7 @@ public class DummyModel {
             public void onResponse(Call<ApiResult<List<Schedule>>> call, Response<ApiResult<List<Schedule>>> response) {
                 if( response.isSuccessful() && response.code() == 200) {
                     ApiResult<List<Schedule>> result = response.body();
-
-                    List<Schedule> schedules = result.getData();
-                    for(Schedule schedule : schedules) {
-                        Log.d(Define.Define.TAG, schedule.getId() + " " + schedule.getTitle() + " " + schedule.getTitle());
-                    }
-
+                    mCallback.getAllScheduleData(result);
                 }
             }
 
@@ -42,5 +45,4 @@ public class DummyModel {
             }
         });
     }
-
 }

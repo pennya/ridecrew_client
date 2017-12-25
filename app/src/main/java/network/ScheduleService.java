@@ -8,11 +8,10 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 /**
- * Created by kim on 2017. 12. 8..
+ * Created by kim on 2017. 12. 25..
  */
 
-public interface DummyService {
-
+public interface ScheduleService {
     @GET("/rest/v1/schedules")
     Call<ApiResult<List<Schedule>>> getAllSchedules();
 }

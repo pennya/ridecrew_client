@@ -32,4 +32,6 @@ dependencies {
     // rest api
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.android.support:recyclerview-v7:26.+'
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
 }

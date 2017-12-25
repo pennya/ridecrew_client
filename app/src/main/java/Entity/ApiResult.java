@@ -7,6 +7,7 @@ package Entity;
 public class ApiResult<T> {
     private boolean success;
     private String version;
+    private ApiError error;
     private T data;
 
     public boolean isSuccess() {
@@ -31,5 +32,13 @@ public class ApiResult<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public ApiError getError() {
+        return error;
+    }
+
+    public void setError(ApiError error) {
+        this.error = error;
     }
 }

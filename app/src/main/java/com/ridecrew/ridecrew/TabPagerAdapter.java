@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.ridecrew.ridecrew.ui.*;
+import com.ridecrew.ridecrew.ui.ScheduleFragment;
 
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter{
@@ -19,7 +21,9 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter{
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                ScheduleFragment tabFragment1 = new ScheduleFragment();
+                //ScheduleFragment tabFragment1 = new ScheduleFragment();
+                com.ridecrew.ridecrew.ui.ScheduleFragment tabFragment1 =
+                        new ScheduleFragment();
                 return tabFragment1;
             case 1:
                 NoticeFragment tabFragment2 = new NoticeFragment();
