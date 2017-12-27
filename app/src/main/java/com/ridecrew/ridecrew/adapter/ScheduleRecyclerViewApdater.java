@@ -17,12 +17,12 @@ import Entity.Schedule;
  * Created by kim on 2017. 12. 25..
  */
 
-public class RecyclerViewApdater extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ScheduleRecyclerViewApdater extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Schedule> mItemLists;
     private ScheduleRecyclerViewCallback mCallback;
 
-    public RecyclerViewApdater(ScheduleRecyclerViewCallback callback) {
+    public ScheduleRecyclerViewApdater(ScheduleRecyclerViewCallback callback) {
         mCallback = callback;
         mItemLists = new ArrayList<>();
     }

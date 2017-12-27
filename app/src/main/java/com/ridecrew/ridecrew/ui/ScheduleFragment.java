@@ -17,7 +17,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.ridecrew.ridecrew.R;
-import com.ridecrew.ridecrew.adapter.RecyclerViewApdater;
+import com.ridecrew.ridecrew.adapter.ScheduleRecyclerViewApdater;
 import com.ridecrew.ridecrew.callback.ScheduleRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.SchedulePresenter;
 import com.ridecrew.ridecrew.presenter.SchedulePresenterImpl;
@@ -40,7 +40,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
     private MaterialCalendarView mCalendarView;
     private RecyclerView mRecyclerView;
-    private RecyclerViewApdater mRecyclerViewAdapter;
+    private ScheduleRecyclerViewApdater mRecyclerViewAdapter;
     private SchedulePresenter mPresenter;
     private List<Schedule> mScheduleLists;
     private final SimpleDateFormat DATE_FORMATTER;
@@ -112,7 +112,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
     private void setDefaultSetting(View view) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerViewAdapter = new RecyclerViewApdater(this);
+        mRecyclerViewAdapter = new ScheduleRecyclerViewApdater(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setHasFixedSize(true);
