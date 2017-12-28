@@ -11,16 +11,44 @@
         android:layout_width="match_parent"
         >
 
+        <android.support.constraint.Guideline
+            android:id="@+id/left_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".15" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/right_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".85" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/top_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/bottom_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".85" />
+
+
         <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             android:id="@+id/cv_fragment_schedule_calender"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:mcv_showOtherDates="all"
+            app:layout_constraintLeft_toLeftOf="@+id/left_guideline"
+            app:layout_constraintRight_toRightOf="@+id/right_guideline"
+            app:layout_constraintTop_toTopOf="@+id/top_guideline"
             app:mcv_selectionColor="#F0CC"
-            />
+            app:mcv_showOtherDates="defaults" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_fragment_schedule_recycler_view"
@@ -29,7 +57,6 @@
             app:layout_constraintTop_toBottomOf="@+id/cv_fragment_schedule_calender"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:nestedScrollingEnabled="false"
             />
 
     </android.support.constraint.ConstraintLayout>

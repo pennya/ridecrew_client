@@ -34,4 +34,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.android.support:recyclerview-v7:26.+'
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
+    compile 'com.android.support:percent:26.1.0'
 }

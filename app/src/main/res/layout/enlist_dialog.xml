@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:hint="아이디"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="30dp"
+            android:hint="비밀번호"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/pw_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pw"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="30dp"
+            android:singleLine="true"
+            android:hint="비밀번호 확인" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pw_check"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="30dp"
+            android:singleLine="true"
+            android:hint="이름" />
+
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="30dp"
+            android:singleLine="true"
+            android:hint="이메일" />
+
+        <Button
+            android:id="@+id/enlist"
+            android:text="가입"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/email"/>
+        <Button
+            android:id="@+id/cancel"
+            android:text="취소"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/email"
+            android:layout_toRightOf="@+id/enlist"/>
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

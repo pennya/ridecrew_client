@@ -18,6 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.LoginDialogActivity" android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"></activity>
+        <activity android:name=".ui.EnlistDialogActivity" android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"></activity>
+
     </application>
 
 </manifest>
