@@ -13,6 +13,8 @@ import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.SignUpPresenter;
 import com.ridecrew.ridecrew.presenter.SignUpPresenterImpl;
 
+import java.util.Random;
+
 import Define.Define;
 import Entity.Member;
 import util.DeviceUuidFactory;
@@ -69,7 +71,7 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
                         .setEmail(mEmail.getText().toString())
                         .setPwd(mPassword.getText().toString())
                         .setSex(sexType)
-                        .setDeviceId(duf.getDeviceUuid().toString())
+                        .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
                         .setMemberType(1) /* member is 1, non member is 0*/ ;
 
                 mPresenter.actionJoinMember(member);
