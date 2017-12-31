@@ -18,59 +18,65 @@ public class Member implements Serializable {
     private String deviceId;
     private int memberType;
 
-    public Long getId() {
-        return id;
+    public static Member builder() {
+        return new Member();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getId() {
+        return id;
     }
 
     public String getPwd() {
         return pwd;
     }
 
-    public void setPwd(String pwd) {
+    public Member setPwd(String pwd) {
         this.pwd = pwd;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public Member setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public int getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public Member setSex(int sex) {
         this.sex = sex;
+        return this;
     }
 
     public String getNickName() {
         return nickName;
     }
 
-    public void setNickName(String nickName) {
+    public Member setNickName(String nickName) {
         this.nickName = nickName;
+        return this;
     }
 
     public String getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(String deviceId) {
+    public Member setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+        return this;
     }
 
     public int getMemberType() {
         return memberType;
     }
 
-    public void setMemberType(int memberType) {
+    public Member setMemberType(int memberType) {
         this.memberType = memberType;
+        return this;
     }
 }

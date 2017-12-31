@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <TextView
+        android:id="@+id/tv_activity_sign_up_nickname"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/tv_activity_sign_up_email"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/edt_activity_sign_up_nickname"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="닉네임"/>
+
+    <TextView
+        android:id="@+id/tv_activity_sign_up_email"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_activity_sign_up_nickname"
+        app:layout_constraintBottom_toTopOf="@+id/tv_activity_sign_up_password"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/edt_activity_sign_up_email"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="이메일"/>
+
+    <TextView
+        android:id="@+id/tv_activity_sign_up_password"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_activity_sign_up_email"
+        app:layout_constraintBottom_toTopOf="@+id/tv_activity_sign_up_sex"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/edt_activity_sign_up_password"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="비밀번호"/>
+
+    <TextView
+        android:id="@+id/tv_activity_sign_up_sex"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_activity_sign_up_password"
+        app:layout_constraintBottom_toTopOf="@+id/btn_activity_sign_up_submit"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/spinner_activity_sign_up_sex"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="성별"/>
+
+    <Button
+        android:id="@+id/btn_activity_sign_up_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_activity_sign_up_sex"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="등 록"/>
+
+    <EditText
+        android:id="@+id/edt_activity_sign_up_nickname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/edt_activity_sign_up_email"
+        app:layout_constraintLeft_toRightOf="@+id/tv_activity_sign_up_nickname"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_activity_sign_up_nickname"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        >
+        <requestFocus/>
+    </EditText>
+
+    <EditText
+        android:id="@+id/edt_activity_sign_up_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/edt_activity_sign_up_nickname"
+        app:layout_constraintBottom_toTopOf="@+id/edt_activity_sign_up_password"
+        app:layout_constraintLeft_toRightOf="@+id/tv_activity_sign_up_email"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_activity_sign_up_email"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        />
+
+    <EditText
+        android:id="@+id/edt_activity_sign_up_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/edt_activity_sign_up_email"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_activity_sign_up_sex"
+        app:layout_constraintLeft_toRightOf="@+id/tv_activity_sign_up_password"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_activity_sign_up_password"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        />
+
+    <Spinner
+        android:id="@+id/spinner_activity_sign_up_sex"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/btn_activity_sign_up_submit"
+        app:layout_constraintLeft_toRightOf="@+id/tv_activity_sign_up_sex"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_activity_sign_up_password"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_activity_sign_up_sex"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:entries="@array/sex"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

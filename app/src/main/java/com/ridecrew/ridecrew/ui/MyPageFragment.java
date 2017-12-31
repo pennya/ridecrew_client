@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.adapter.MyPageRecyclerViewAdapter;
@@ -20,11 +23,13 @@ import java.util.List;
 import Entity.ApiResult;
 import Entity.Schedule;
 
-public class MyPageFragment extends Fragment implements MyPagePresenter.View, MyPageRecyclerViewCallback {
+public class MyPageFragment extends Fragment implements View.OnClickListener {
 
-    private RecyclerView mRecyclerView;
-    private MyPageRecyclerViewAdapter mAdapter;
-    private MyPagePresenter mPresenter;
+    private TextView mNickName;
+    private TextView mEnroll;
+    private TextView mMemberPreference;
+    private TextView mAppPreference;
+    private Button mLogon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,45 +38,44 @@ public class MyPageFragment extends Fragment implements MyPagePresenter.View, My
         View view = inflater.inflate(R.layout.fragment_mypage, container, false);
 
         layoutInit(view);
-        setDefaultSetting(view);
-        loadData();
+        setDefaultSetting();
 
         return view;
     }
 
     @Override
-    public void getAllScheduleData(ApiResult<List<Schedule>> apiResult) {
-        ArrayList<Schedule> lists = new ArrayList<>();
-        lists.addAll(apiResult.getData());
-        mAdapter.setArrayList(lists);
-        mAdapter.notifyDataSetChanged();
-    }
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_fragment_mypage_enroll_join_list:
+                getActivity().startActivity(new Intent(getActivity(), EnrollAndJoinListActivity.class));
+                break;
 
-    @Override
-    public void delete(Long position) {
+            case R.id.tv_fragment_mypage_member_preference:
+                break;
 
-    }
+            case R.id.tv_fragment_mypage_app_preference:
+                break;
 
-    @Override
-    public void modify(Long position) {
-
+            case R.id.btn_fragment_mypage_login_logout:
+                getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
+                break;
+        }
     }
 
     private void layoutInit(View view) {
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_fragment_mypage_recycler_view);
+        mNickName = (TextView) view.findViewById(R.id.tv_fragment_mypage_nickname);
+        mEnroll = (TextView) view.findViewById(R.id.tv_fragment_mypage_enroll_join_list);
+        mMemberPreference = (TextView) view.findViewById(R.id.tv_fragment_mypage_member_preference);
+        mAppPreference = (TextView) view.findViewById(R.id.tv_fragment_mypage_app_preference);
+        mLogon = (Button) view.findViewById(R.id.btn_fragment_mypage_login_logout);
+
+        mEnroll.setOnClickListener(this);
+        mMemberPreference.setOnClickListener(this);
+        mAppPreference.setOnClickListener(this);
+        mLogon.setOnClickListener(this);
     }
 
-    private void setDefaultSetting(View view) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new MyPageRecyclerViewAdapter(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setHasFixedSize(true);
-
-        mPresenter = new MyPagePresenterImpl(this);
-    }
-
-    private void loadData() {
-        mPresenter.loadAllScheduleData(1L);
+    private void setDefaultSetting() {
+        mLogon.setText("로그인");
     }
 }
