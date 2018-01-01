@@ -1,6 +1,5 @@
 package com.ridecrew.ridecrew.ui;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +20,10 @@ import com.ridecrew.ridecrew.adapter.ScheduleRecyclerViewApdater;
 import com.ridecrew.ridecrew.callback.ScheduleRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.SchedulePresenter;
 import com.ridecrew.ridecrew.presenter.SchedulePresenterImpl;
-import com.ridecrew.ridecrew.ui.custom.EventDecorator;
+import com.ridecrew.ridecrew.ui.custom.ItemClickDecorator;
+import com.ridecrew.ridecrew.ui.custom.ItemDecorator;
+import com.ridecrew.ridecrew.ui.custom.SaturdayDecorator;
+import com.ridecrew.ridecrew.ui.custom.SundayDecorator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +39,8 @@ import Entity.Schedule;
  */
 
 public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCallback, SchedulePresenter.View, OnMonthChangedListener, OnDateSelectedListener {
+
+    private ItemClickDecorator itemClickDecorator;
 
     private MaterialCalendarView mCalendarView;
     private RecyclerView mRecyclerView;
@@ -78,7 +82,12 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
             }
         }
 
-        mCalendarView.addDecorator(new EventDecorator(Color.RED, dates));
+        mCalendarView.addDecorators(
+                new ItemDecorator(getActivity(), dates),
+                //itemClickDecorator,
+                new SaturdayDecorator(),
+                new SundayDecorator()
+                );
     }
 
     @Override
@@ -88,6 +97,9 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        itemClickDecorator.setDate(date.getDate());
+        widget.invalidateDecorators();
+
         ArrayList<Schedule> scheduleLists = new ArrayList<>();
         for(Schedule schedule : mScheduleLists) {
             if(schedule.getDate().equals(date.getYear() + "-" + (date.getMonth() + 1)  + "-" + date.getDay())) {
@@ -119,6 +131,8 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
         mCalendarView.setOnDateChangedListener(this);
         mCalendarView.setOnMonthChangedListener(this);
+
+        itemClickDecorator = new ItemClickDecorator(getActivity());
 
         mPresenter = new SchedulePresenterImpl(this);
     }
