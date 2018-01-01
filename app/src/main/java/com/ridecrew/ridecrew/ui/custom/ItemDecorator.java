@@ -23,7 +23,7 @@ public class ItemDecorator implements DayViewDecorator {
     private final HashSet<CalendarDay> dates;
 
     public ItemDecorator(Activity context, Collection<CalendarDay> dates) {
-        drawable = context.getResources().getDrawable(R.drawable.shape_rectangle);
+        drawable = context.getResources().getDrawable(R.drawable.shape_circle_border);
         this.dates = new HashSet<>(dates);
     }
 
@@ -35,6 +35,5 @@ public class ItemDecorator implements DayViewDecorator {
     @Override
     public void decorate(DayViewFacade view) {
         view.setSelectionDrawable(drawable);
-        view.addSpan(new ForegroundColorSpan(Color.DKGRAY));
     }
 }

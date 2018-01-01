@@ -1,7 +1,9 @@
 package com.ridecrew.ridecrew.ui.custom;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.style.ForegroundColorSpan;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -20,8 +22,7 @@ public class ItemClickDecorator implements DayViewDecorator {
     private CalendarDay date;
 
     public ItemClickDecorator(Activity context) {
-        drawable = context.getResources().getDrawable(R.drawable.shaple_circle);
-        date = CalendarDay.today();
+        drawable = context.getResources().getDrawable(R.drawable.shape_circle);
     }
 
     @Override
@@ -32,6 +33,7 @@ public class ItemClickDecorator implements DayViewDecorator {
     @Override
     public void decorate(DayViewFacade view) {
         view.setSelectionDrawable(drawable);
+        view.addSpan(new ForegroundColorSpan(Color.WHITE));
     }
 
     public void setDate(Date date) {

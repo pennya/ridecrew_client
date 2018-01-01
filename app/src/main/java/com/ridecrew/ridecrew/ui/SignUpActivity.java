@@ -15,7 +15,6 @@ import com.ridecrew.ridecrew.presenter.SignUpPresenterImpl;
 
 import java.util.Random;
 
-import Define.Define;
 import Entity.Member;
 import util.DeviceUuidFactory;
 

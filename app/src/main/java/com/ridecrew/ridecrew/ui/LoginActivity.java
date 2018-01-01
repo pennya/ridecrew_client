@@ -1,7 +1,6 @@
 package com.ridecrew.ridecrew.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,12 +8,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ridecrew.ridecrew.MainActivity;
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.LoginPresenter;
 import com.ridecrew.ridecrew.presenter.LoginPresenterImpl;
 
-import Define.Define;
+import Define.DefineValue;
 
 public class LoginActivity extends BaseToolbarActivity implements LoginPresenter.View, View.OnClickListener{
 
@@ -44,8 +42,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
 
     @Override
     public void moveActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        setResult(DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE, null);
         finish();
     }
 

@@ -2,9 +2,6 @@ package com.ridecrew.ridecrew.model;
 
 import com.ridecrew.ridecrew.callback.SignUpCallback;
 
-import java.io.IOException;
-
-import Define.Define;
 import Entity.ApiErrorCode;
 import Entity.ApiResult;
 import Entity.Member;

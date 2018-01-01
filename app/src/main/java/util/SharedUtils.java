@@ -17,6 +17,7 @@ public class SharedUtils {
         return sharedPreferences;
     }
 
+    // getter
     public static boolean getBooleanValue(Context context, String key) {
         return getSharedPref(context).getBoolean(key, false);
     }
@@ -29,6 +30,11 @@ public class SharedUtils {
         return getSharedPref(context).getString(key, null);
     }
 
+    public static Long getLongValue(Context context, String key) {
+        return getSharedPref(context).getLong(key, 0);
+    }
+
+    // setter
     public static void setBooleanValue(Context context, String key, boolean state) {
         SharedPreferences.Editor editor = getSharedPref(context).edit();
         editor.putBoolean(key, state);
@@ -44,6 +50,12 @@ public class SharedUtils {
     public static void setStringValue(Context context, String key, String value) {
         SharedPreferences.Editor editor = getSharedPref(context).edit();
         editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static void setLongValue(Context context, String key, Long value) {
+        SharedPreferences.Editor editor = getSharedPref(context).edit();
+        editor.putLong(key, value);
         editor.commit();
     }
 

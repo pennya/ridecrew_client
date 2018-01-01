@@ -5,7 +5,7 @@ import android.app.Activity;
 import com.ridecrew.ridecrew.callback.LoginCallback;
 import com.ridecrew.ridecrew.model.LoginModel;
 
-import Define.Define;
+import Define.DefineValue;
 import Entity.ApiErrorCode;
 import Entity.ApiResult;
 import Entity.Member;
@@ -17,13 +17,13 @@ import util.SharedUtils;
 
 public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
     private LoginPresenter.View view;
-    private Activity activity;
+    private Activity context;
     private LoginModel loginModel;
 
-    public LoginPresenterImpl(Activity activity, LoginPresenter.View view){
-        this.activity = activity;
+    public LoginPresenterImpl(Activity context, LoginPresenter.View view){
+        this.context = context;
         this.view = view;
-        this.loginModel = new LoginModel(activity, this);
+        this.loginModel = new LoginModel(context, this);
     }
 
     @Override
@@ -35,6 +35,14 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
     public void getNetworkResponse(ApiResult<Member> member, int status) {
 
         if(status == 200){
+            Member memberInfo = member.getData();
+
+            SharedUtils.setLongValue(context, DefineValue.LOGIN_ID_PK, memberInfo.getId());
+            SharedUtils.setStringValue(context, DefineValue.CURRENT_LOGIN_ID, memberInfo.getEmail());
+            SharedUtils.setStringValue(context, DefineValue.NICKNAME, memberInfo.getNickName());
+            SharedUtils.setStringValue(context, DefineValue.DEVICE_ID, memberInfo.getDeviceId());
+            SharedUtils.setBooleanValue(context, DefineValue.IS_LOGIN, true);
+
             view.moveActivity();
         }
     }
@@ -46,15 +54,5 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
                 view.showToast(msg);
                 break;
         }
-    }
-
-    private void savePref(int pk, String id, String pw) {
-
-        SharedUtils.setIntValue(activity, Define.ID_PK, pk);
-        SharedUtils.setStringValue(activity, Define.LOGIN_ID, id);
-        SharedUtils.setStringValue(activity, Define.LOGIN_PASSWORD, pw);
-
-        SharedUtils.setBooleanValue(activity, Define.IS_LOGIN, true);
-        SharedUtils.setStringValue(activity, Define.CURRENT_LOGIN_ID, id);
     }
 }

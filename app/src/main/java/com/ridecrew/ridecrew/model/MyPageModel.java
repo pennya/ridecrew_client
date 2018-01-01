@@ -6,11 +6,11 @@ import com.ridecrew.ridecrew.callback.MyPageModelCallback;
 
 import java.util.List;
 
+import Define.DefineValue;
 import Entity.ApiResult;
 import Entity.Schedule;
 import network.MyPageService;
 import network.NetworkManager;
-import network.ScheduleService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,8 +41,8 @@ public class MyPageModel {
 
             @Override
             public void onFailure(Call<ApiResult<List<Schedule>>> call, Throwable t) {
-                Log.d(Define.Define.TAG, "requestScheduleList fail");
-                Log.d(Define.Define.TAG, t.getMessage());
+                Log.d(DefineValue.TAG, "requestScheduleList fail");
+                Log.d(DefineValue.TAG, t.getMessage());
             }
         });
     }

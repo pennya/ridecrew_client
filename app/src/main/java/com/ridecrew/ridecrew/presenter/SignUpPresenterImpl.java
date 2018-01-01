@@ -5,7 +5,6 @@ import android.content.Context;
 import com.ridecrew.ridecrew.callback.SignUpCallback;
 import com.ridecrew.ridecrew.model.SignUpModel;
 
-import Define.Define;
 import Entity.ApiErrorCode;
 import Entity.Member;
 
