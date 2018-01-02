@@ -128,7 +128,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if( requestCode == DefineValue.SCHEDULE_FRAGMENT_REQEUST_CODE ) {
+        if( resultCode == DefineValue.SCHEDULE_FRAGMENT_REQEUST_CODE ) {
             loadData();
         }
     }

@@ -22,15 +22,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.EnrollAndJoinListActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.SignUpActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.ScheduleEnrollActivity"></activity>
+        <activity android:name=".ui.ScheduleEnrollActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

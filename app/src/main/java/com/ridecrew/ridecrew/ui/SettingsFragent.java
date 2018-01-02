@@ -60,8 +60,6 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         prefPaticipation.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(new Intent(getActivity(), EnrollAndJoinListActivity.class), DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE);
-                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
                 return false;
             }
         });
@@ -69,7 +67,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if( requestCode == DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE) {
+        if( resultCode == DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE) {
             String nickName = SharedUtils.getStringValue(getActivity(), DefineValue.NICKNAME);
             String currentLoginId = SharedUtils.getStringValue(getActivity(), DefineValue.CURRENT_LOGIN_ID);
             prefLogon.setTitle("로그아웃");
