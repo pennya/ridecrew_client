@@ -43,6 +43,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
     @Override
     public void moveActivity() {
         setResult(DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE, null);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
         finish();
     }
 

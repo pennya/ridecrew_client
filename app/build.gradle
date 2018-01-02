@@ -34,4 +34,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.android.support:recyclerview-v7:26.+'
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
+    //v7 Preference 지원 라이브러리 (환경설정 라이브러리)
+    compile 'com.android.support:preference-v7:25.3.1'
 }

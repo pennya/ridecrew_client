@@ -8,6 +8,12 @@
         <item name="colorPrimaryDark">#99D3BC</item>
         <item name="colorControlHighlight">#FF8800</item>
         <item name="colorControlNormal">#0099CC</item>
+
+        <!--
+        환경설정할때 테마 설정안하면 에러남
+        Unhandled Exception: Java.Lang.IllegalStateException: Must specify preferenceTheme in theme occurred
+        -->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
 </resources>
