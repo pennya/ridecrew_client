@@ -42,6 +42,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:nestedScrollingEnabled="false"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 />

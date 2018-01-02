@@ -51,6 +51,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
     private MaterialCalendarView mCalendarView;
     private RecyclerView mRecyclerView;
+
     private ScheduleRecyclerViewApdater mRecyclerViewAdapter;
     private SchedulePresenter mPresenter;
     private List<Schedule> mScheduleLists;
@@ -165,6 +166,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
     private void layoutInit(View view) {
         mCalendarView = (MaterialCalendarView) view.findViewById(R.id.cv_fragment_schedule_calender);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_fragment_schedule_recycler_view);
+
         mEnroll = (ImageButton) view.findViewById(R.id.btn_fragment_schedule_enroll);
         mEnroll.setOnClickListener(this);
     }

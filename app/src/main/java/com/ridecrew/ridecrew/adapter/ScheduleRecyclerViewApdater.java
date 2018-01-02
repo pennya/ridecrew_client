@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew.adapter;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,7 @@ public class ScheduleRecyclerViewApdater extends RecyclerView.Adapter<RecyclerVi
 
         if ( holder instanceof ViewHolder) {
             ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            viewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
@@ -69,12 +70,14 @@ public class ScheduleRecyclerViewApdater extends RecyclerView.Adapter<RecyclerVi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mTitle;
-        private TextView mDestination;
-        private TextView mAuthor;
+        protected CardView mCardView;
+        protected TextView mTitle;
+        protected TextView mDestination;
+        protected TextView mAuthor;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mCardView = (CardView)itemView.findViewById(R.id.card_view_fragment_schedule_recycler_view);
             mTitle = (TextView)itemView.findViewById(R.id.tv_fragment_schedule_recycler_view_title);
             mDestination = (TextView)itemView.findViewById(R.id.tv_fragment_schedule_recycler_view_destination);
             mAuthor = (TextView)itemView.findViewById(R.id.tv_fragment_schedule_recycler_view_author);

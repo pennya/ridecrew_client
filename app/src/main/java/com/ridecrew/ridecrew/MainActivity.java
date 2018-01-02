@@ -3,6 +3,7 @@ package com.ridecrew.ridecrew;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 
 import com.ridecrew.ridecrew.ui.BaseToolbarActivity;
 
@@ -70,6 +71,8 @@ public class MainActivity extends BaseToolbarActivity implements TabLayout.OnTab
     }
 
     private void setDefaultSettings() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
         if( SharedUtils.getBooleanValue(this, DefineValue.IS_LOGIN) && MemberSingleton.getInstance().getMember() == null) {
             MemberSingleton.getInstance().setMember(new Member().setId(SharedUtils.getLongValue(this, DefineValue.LOGIN_ID_PK)));
         }
