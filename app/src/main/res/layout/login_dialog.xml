@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,7 +15,7 @@
         android:layout_marginTop="10dp">
 
         <EditText
-            android:id="@+id/txtUsername"
+            android:id="@+id/txtUserId"
             android:hint="아이디"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,14 +34,13 @@
             android:layout_marginRight="80dp"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:layout_below="@+id/txtUsername"/>
+            android:layout_below="@+id/txtUserId"/>
 
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
-
             android:layout_weight="0.5"
             android:text="Login"
             android:layout_below="@+id/txtPassword"/>
@@ -53,5 +53,14 @@
             android:text="Cancel"
             android:layout_below="@+id/txtPassword"
             android:layout_toRightOf="@+id/btnLogin"/>
+
+        <TextView
+            android:id="@+id/txtEnlist"
+            android:text="회원가입"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnLogin"
+            android:layout_centerInParent="true"/>
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
