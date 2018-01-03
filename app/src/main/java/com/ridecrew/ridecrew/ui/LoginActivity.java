@@ -62,6 +62,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
             case R.id.tv_activity_login_enroll:
                 Intent intent = new Intent(this, SignUpActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
                 break;
 
         }

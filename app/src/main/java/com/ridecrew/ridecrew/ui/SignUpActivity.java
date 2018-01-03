@@ -51,6 +51,7 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
     public void moveActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
         finish();
     }
 

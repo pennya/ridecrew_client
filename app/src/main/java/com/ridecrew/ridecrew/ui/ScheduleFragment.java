@@ -55,6 +55,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
     private ScheduleRecyclerViewApdater mRecyclerViewAdapter;
     private SchedulePresenter mPresenter;
     private List<Schedule> mScheduleLists;
+    private List<Schedule> mSpecificDayScheduleLists;
     private final SimpleDateFormat DATE_FORMATTER;
     private ImageButton mEnroll;
     private CalendarDay mSelectedDate;
@@ -81,14 +82,16 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
         itemClickDecorator.setDate(mSelectedDate.getDate());
         widget.invalidateDecorators();
 
-        ArrayList<Schedule> scheduleLists = new ArrayList<>();
+        mSpecificDayScheduleLists = new ArrayList<>();
         for(Schedule schedule : mScheduleLists) {
             String strDate = calendarDayToString(date);
             if(schedule.getDate().equals(strDate)) {
-                scheduleLists.add(schedule);
+                mSpecificDayScheduleLists.add(schedule);
             }
         }
 
+        ArrayList<Schedule> scheduleLists = new ArrayList<>();
+        scheduleLists.addAll(mSpecificDayScheduleLists);
         mRecyclerViewAdapter.setArrayList(scheduleLists);
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
@@ -122,6 +125,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
                 Intent intent = new Intent(getActivity(), ScheduleEnrollActivity.class);
                 intent.putExtra("ScheduleDefaultEntitiy", sde);
                 startActivityForResult(intent, DefineValue.SCHEDULE_FRAGMENT_REQEUST_CODE);
+                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
                 break;
         }
     }
@@ -160,7 +164,9 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
     @Override
     public void showItem(int position) {
-        Toast.makeText(getActivity(), position + "", Toast.LENGTH_SHORT).show();
+        ScheduleDetailFragment scheduleDetailFragment = new ScheduleDetailFragment();
+        scheduleDetailFragment.setSchedule(mSpecificDayScheduleLists.get(position));
+        scheduleDetailFragment.show(getActivity().getSupportFragmentManager().beginTransaction(), "dialog_schedule_detail");
     }
 
     private void layoutInit(View view) {

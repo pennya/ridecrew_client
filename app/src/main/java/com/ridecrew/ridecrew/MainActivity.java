@@ -1,9 +1,11 @@
 package com.ridecrew.ridecrew;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ridecrew.ridecrew.ui.BaseToolbarActivity;
 
@@ -15,6 +17,7 @@ import util.SharedUtils;
 public class MainActivity extends BaseToolbarActivity implements TabLayout.OnTabSelectedListener {
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private Boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,5 +79,21 @@ public class MainActivity extends BaseToolbarActivity implements TabLayout.OnTab
         if( SharedUtils.getBooleanValue(this, DefineValue.IS_LOGIN) && MemberSingleton.getInstance().getMember() == null) {
             MemberSingleton.getInstance().setMember(new Member().setId(SharedUtils.getLongValue(this, DefineValue.LOGIN_ID_PK)));
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "탭을 다시 한번 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 }
