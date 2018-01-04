@@ -38,13 +38,13 @@
                 android:id="@+id/rv_fragment_schedule_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/cv_fragment_schedule_calender"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cv_fragment_schedule_calender"
                 />
 
         </android.support.constraint.ConstraintLayout>

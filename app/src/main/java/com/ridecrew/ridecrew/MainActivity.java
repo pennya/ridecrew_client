@@ -77,7 +77,12 @@ public class MainActivity extends BaseToolbarActivity implements TabLayout.OnTab
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         if( SharedUtils.getBooleanValue(this, DefineValue.IS_LOGIN) && MemberSingleton.getInstance().getMember() == null) {
-            MemberSingleton.getInstance().setMember(new Member().setId(SharedUtils.getLongValue(this, DefineValue.LOGIN_ID_PK)));
+            Member member = Member.builder()
+                    .setEmail(SharedUtils.getStringValue(this, DefineValue.CURRENT_LOGIN_ID))
+                    .setId(SharedUtils.getLongValue(this, DefineValue.LOGIN_ID_PK))
+                    .setDeviceId(SharedUtils.getStringValue(this, DefineValue.DEVICE_ID))
+                    .setNickName(SharedUtils.getStringValue(this, DefineValue.NICKNAME));
+            MemberSingleton.getInstance().setMember(member);
         }
     }
 
