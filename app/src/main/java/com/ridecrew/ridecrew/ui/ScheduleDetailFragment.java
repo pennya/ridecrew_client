@@ -28,7 +28,6 @@ public class ScheduleDetailFragment extends DialogFragment {
     private TextView mEndSpot;
     private TextView mDescription;
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater dialogInfalter = getActivity().getLayoutInflater();
@@ -57,6 +56,7 @@ public class ScheduleDetailFragment extends DialogFragment {
         mStartSpot = (TextView)view.findViewById(R.id.tv_fragment_schedule_detail_start_spot);
         mEndSpot = (TextView)view.findViewById(R.id.tv_fragment_schedule_detail_end_spot);
         mDescription = (TextView)view.findViewById(R.id.tv_fragment_schedule_detail_descriptions);
+
     }
 
     private void setDefaultSetting() {

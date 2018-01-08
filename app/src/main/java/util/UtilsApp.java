@@ -1,6 +1,9 @@
 package util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.view.View;
+import android.view.WindowManager;
 
 /**
  * Created by KIM on 2018-01-02.
@@ -28,5 +31,11 @@ public class UtilsApp {
         }
 
         return res;
+    }
+
+    public static void requestFocus(Activity context, View view) {
+        if (view.requestFocus()) {
+            context.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
     }
 }

@@ -155,14 +155,22 @@
                 android:textSize="@dimen/material_text_caption"
                 />
 
+            <RelativeLayout
+                android:id="@+id/map_view"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_fragment_schedule_detail_end_spot"
+                app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
+                app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"/>
+
             <TextView
                 android:id="@+id/tv_fragment_schedule_detail_descriptions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fragment_schedule_detail_start_spot"
+                app:layout_constraintTop_toBottomOf="@+id/map_view"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
                 app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/material_text_body1"
@@ -175,7 +183,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_fragment_schedule_detail_descriptions"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
                 app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="8dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:text="참가하기"/>
 
             <Button
@@ -186,6 +195,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
                 app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
                 android:layout_marginTop="150dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:text="수정하기"/>
 
             <Button
@@ -195,7 +205,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/btn_fragment_schedule_detail_modify"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
                 app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="8dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:text="취소하기"/>
 
 

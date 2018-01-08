@@ -70,10 +70,19 @@ public class SettingsFragent extends PreferenceFragmentCompat {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if( resultCode == DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE) {
+            Long loginIdPk = SharedUtils.getLongValue(getActivity(), DefineValue.LOGIN_ID_PK);
             String nickName = SharedUtils.getStringValue(getActivity(), DefineValue.NICKNAME);
             String currentLoginId = SharedUtils.getStringValue(getActivity(), DefineValue.CURRENT_LOGIN_ID);
+            String deviceId = SharedUtils.getStringValue(getActivity(), DefineValue.DEVICE_ID);
             prefLogon.setTitle("로그아웃");
             prefLogon.setSummary(currentLoginId + " / " + nickName);
+
+            MemberSingleton ms = MemberSingleton.getInstance();
+            Member member = Member.builder()
+                    .setEmail(currentLoginId)
+                    .setId(loginIdPk)
+                    .setDeviceId(deviceId);
+            ms.setMember(member);
         }
     }
 
