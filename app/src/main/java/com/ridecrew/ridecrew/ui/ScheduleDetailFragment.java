@@ -37,8 +37,7 @@ public class ScheduleDetailFragment extends DialogFragment {
         setDefaultSetting();
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        dialogBuilder.setView(scheduleDetailView)
-                .setNeutralButton("ok", null);
+        dialogBuilder.setView(scheduleDetailView);
 
         return dialogBuilder.create();
     }
