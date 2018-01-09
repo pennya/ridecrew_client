@@ -169,8 +169,8 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
                             .setEndTime(strEndTime)
                             .setDescriptions(mDescriptionsText.getText().toString())
                             .setStatus(1)
-                            .setStartSpot(null)
-                            .setEndSpot(null);
+                            .setStartSpot("장소1")
+                            .setEndSpot("장소2");
 
         mPresenter.scheduleEnroll(schedule);
     }

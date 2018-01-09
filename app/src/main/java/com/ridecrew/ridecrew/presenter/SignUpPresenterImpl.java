@@ -46,6 +46,10 @@ public class SignUpPresenterImpl implements SignUpPresenter , SignUpCallback {
             case DUPLICATE_DEVICE_ID:
                 view.showToast(text);
                 break;
+
+            default:
+                view.showToast(text);
+                break;
         }
     }
 }
