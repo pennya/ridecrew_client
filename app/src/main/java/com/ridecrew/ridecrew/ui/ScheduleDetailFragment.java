@@ -7,16 +7,20 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.ridecrew.ridecrew.R;
 
+import Define.DefineValue;
+import Entity.Member;
 import Entity.Schedule;
+import Entity.ScheduleDefaultEntitiy;
+import util.SharedUtils;
 
 /**
  * Created by KIM on 2018-01-03.
  */
 
-public class ScheduleDetailFragment extends DialogFragment {
+public class ScheduleDetailFragment extends DialogFragment implements View.OnClickListener {
 
     private Schedule mCurrentSchedule;
     private TextView mTitle;
@@ -32,6 +36,10 @@ public class ScheduleDetailFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater dialogInfalter = getActivity().getLayoutInflater();
         View scheduleDetailView = dialogInfalter.inflate(R.layout.fragment_schedule_detail, null);
+
+        scheduleDetailView.findViewById(R.id.btn_fragment_schedule_detail_join).setOnClickListener(this);
+        scheduleDetailView.findViewById(R.id.btn_fragment_schedule_detail_modify).setOnClickListener(this);
+        scheduleDetailView.findViewById(R.id.btn_fragment_schedule_detail_cancel).setOnClickListener(this);
 
         layoutInit(scheduleDetailView);
         setDefaultSetting();
@@ -67,5 +75,33 @@ public class ScheduleDetailFragment extends DialogFragment {
         mStartSpot.setText(mCurrentSchedule.getStartSpot());
         mEndSpot.setText(mCurrentSchedule.getEndSpot());
         mDescription.setText(mCurrentSchedule.getDescriptions());
+    }
+
+    //다이어로그창에서 참가하기, 수정하기, 취소 터치했을 때 이벤트
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.btn_fragment_schedule_detail_join:
+                //로그인 된 상태에서는 해당 계정의 정보를 보냄
+                if(SharedUtils.getBooleanValue(getContext(), DefineValue.IS_LOGIN)) {
+                    Toast.makeText(getContext(),"회원 submit",Toast.LENGTH_SHORT).show();
+                }
+                //로그인이 안되어있는 경우 직접 입력한 정보를 보냄
+                else {
+                    Toast.makeText(getContext(),"비회원 submit",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btn_fragment_schedule_detail_modify:
+                /*
+                if(SharedUtils.getStringValue(getContext(),DefineValue.LOGIN_ID) == Schedule.builder().getMember().getEmail()) {
+
+                }
+                else
+                */
+                    Toast.makeText(getContext(),"내 게시물 아님 수정 불가",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_fragment_schedule_detail_cancel:
+                getDialog().dismiss();
+                break;
+        }
     }
 }
