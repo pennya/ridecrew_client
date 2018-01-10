@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import com.ridecrew.ridecrew.MainActivity;
 import com.ridecrew.ridecrew.R;
 
 import Define.DefineValue;
@@ -48,9 +49,12 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                     startActivityForResult(new Intent(getActivity(), LoginActivity.class), DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE);
                     getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
                 } else {
+                    startActivityForResult(new Intent(getActivity(), LoginActivity.class), DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE);
+                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     prefLogon.setTitle("로그인");
                     prefLogon.setSummary("print your login id");
                     SharedUtils.prefClear(getActivity());
+
                 }
 
                 return false;
