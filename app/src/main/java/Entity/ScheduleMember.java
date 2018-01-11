@@ -14,19 +14,25 @@ public class ScheduleMember implements Serializable {
     private Member member;
     private Schedule schedule;
 
+    public static ScheduleMember builder() {
+        return new ScheduleMember();
+    }
+
     public Member getMember() {
         return member;
     }
 
-    public void setMember(Member member) {
+    public ScheduleMember setMember(Member member) {
         this.member = member;
+        return this;
     }
 
     public Schedule getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(Schedule schedule) {
+    public ScheduleMember setSchedule(Schedule schedule) {
         this.schedule = schedule;
+        return this;
     }
 }
