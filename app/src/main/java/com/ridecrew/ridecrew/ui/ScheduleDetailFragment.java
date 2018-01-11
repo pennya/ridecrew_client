@@ -2,21 +2,26 @@ package com.ridecrew.ridecrew.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.ridecrew.ridecrew.R;
 
+import Define.DefineValue;
+import Entity.Member;
 import Entity.Schedule;
+import Entity.ScheduleDefaultEntitiy;
+import util.SharedUtils;
 
 /**
  * Created by KIM on 2018-01-03.
  */
 
-public class ScheduleDetailFragment extends DialogFragment {
+public class ScheduleDetailFragment extends DialogFragment implements View.OnClickListener {
 
     private Schedule mCurrentSchedule;
     private TextView mTitle;
@@ -32,6 +37,10 @@ public class ScheduleDetailFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater dialogInfalter = getActivity().getLayoutInflater();
         View scheduleDetailView = dialogInfalter.inflate(R.layout.fragment_schedule_detail, null);
+
+        scheduleDetailView.findViewById(R.id.btn_fragment_schedule_detail_join).setOnClickListener(this);
+        scheduleDetailView.findViewById(R.id.btn_fragment_schedule_detail_modify).setOnClickListener(this);
+        scheduleDetailView.findViewById(R.id.btn_fragment_schedule_detail_cancel).setOnClickListener(this);
 
         layoutInit(scheduleDetailView);
         setDefaultSetting();
@@ -55,7 +64,6 @@ public class ScheduleDetailFragment extends DialogFragment {
         mStartSpot = (TextView)view.findViewById(R.id.tv_fragment_schedule_detail_start_spot);
         mEndSpot = (TextView)view.findViewById(R.id.tv_fragment_schedule_detail_end_spot);
         mDescription = (TextView)view.findViewById(R.id.tv_fragment_schedule_detail_descriptions);
-
     }
 
     private void setDefaultSetting() {
@@ -67,5 +75,25 @@ public class ScheduleDetailFragment extends DialogFragment {
         mStartSpot.setText(mCurrentSchedule.getStartSpot());
         mEndSpot.setText(mCurrentSchedule.getEndSpot());
         mDescription.setText(mCurrentSchedule.getDescriptions());
+    }
+
+    //다이어로그창에서 참가하기, 수정하기, 취소 터치했을 때 이벤트
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.btn_fragment_schedule_detail_join:
+                //로그인 된 상태에서는 해당 계정의 정보를 보냄
+                if(SharedUtils.getBooleanValue(getContext(), DefineValue.IS_LOGIN)) {
+                    Toast.makeText(getContext(),"submit",Toast.LENGTH_SHORT).show();
+                }
+                //로그인이 안되어있는 경우 로그인 창으로 이동
+                else {
+                    Intent intent = new Intent(getContext(),LoginActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.btn_fragment_schedule_detail_cancel:
+                getDialog().dismiss();
+                break;
+        }
     }
 }

@@ -1,13 +1,18 @@
 package com.ridecrew.ridecrew;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.ridecrew.ridecrew.ui.BaseToolbarActivity;
+import com.ridecrew.ridecrew.ui.LoginActivity;
+import com.ridecrew.ridecrew.ui.SignUpActivity;
 
 import Define.DefineValue;
 import Entity.Member;
@@ -25,6 +30,34 @@ public class MainActivity extends BaseToolbarActivity implements TabLayout.OnTab
 
         layoutInit();
         setDefaultSettings();
+    }
+    //옵션 메뉴 생성
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    //옵션 터치
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu:
+                //로그인 되어있는 상태일 때, 마이페이지Fragment로 넘김
+                if( SharedUtils.getBooleanValue(this, DefineValue.IS_LOGIN)) {
+                    viewPager.setCurrentItem(3);
+                    return true;
+                }
+                //로그인 안되어있는 상태이면 로그인 액티비티 띄움
+                else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
