@@ -23,12 +23,12 @@ public interface ScheduleService {
     @POST("/rest/v1/schedules")
     Call<ApiResult<Schedule>> addSchedule(@Body Schedule schedule);
 
-    @GET("rest/v1/schedule_members")
-    Call<ApiResult<List<ScheduleMember>>> getAllScheduleMember();
-
     @POST("rest/v1/schedule_members")
     Call<ApiResult<ScheduleMember>> addScheduleMember(@Body ScheduleMember scheduleMember);
 
     @DELETE("rest/v1/schedule_members")
     Call<ApiResult<Void>> deleteScheduleMember(@Query("scheduleId") Long scheduleId, @Query("memberId") Long memberId);
+
+    @GET("rest/v1/schedule_members_by_member_id")
+    Call<ApiResult<List<ScheduleMember>>> getAllScheduleMemberByMemberId(@Query("memberId") Long memberId);
 }

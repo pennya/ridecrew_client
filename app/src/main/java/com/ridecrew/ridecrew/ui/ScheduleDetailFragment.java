@@ -10,19 +10,27 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.ridecrew.ridecrew.R;
+import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenter;
+import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenterImpl;
+
+import java.util.List;
 
 import Define.DefineValue;
+import Entity.ApiResult;
 import Entity.Member;
+import Entity.MemberSingleton;
 import Entity.Schedule;
 import Entity.ScheduleDefaultEntitiy;
+import Entity.ScheduleMember;
 import util.SharedUtils;
 
 /**
  * Created by KIM on 2018-01-03.
  */
 
-public class ScheduleDetailFragment extends DialogFragment implements View.OnClickListener {
+public class ScheduleDetailFragment extends DialogFragment implements View.OnClickListener, ScheduleMemberPresenter.View {
 
+    private ScheduleMemberPresenter presenter;
     private Schedule mCurrentSchedule;
     private TextView mTitle;
     private TextView mAuthor;
@@ -51,6 +59,21 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
         return dialogBuilder.create();
     }
 
+    @Override
+    public void moveActivity() {
+        //nothing
+    }
+
+    @Override
+    public void showToast(String text) {
+        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getScheduleMemberList(ApiResult<List<ScheduleMember>> lists) {
+        //nothing
+    }
+
     public void setSchedule(Schedule schedule) {
         mCurrentSchedule = schedule;
     }
@@ -75,6 +98,8 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
         mStartSpot.setText(mCurrentSchedule.getStartSpot());
         mEndSpot.setText(mCurrentSchedule.getEndSpot());
         mDescription.setText(mCurrentSchedule.getDescriptions());
+
+        presenter = new ScheduleMemberPresenterImpl(this);
     }
 
     //다이어로그창에서 참가하기, 수정하기, 취소 터치했을 때 이벤트
@@ -83,7 +108,9 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
             case R.id.btn_fragment_schedule_detail_join:
                 //로그인 된 상태에서는 해당 계정의 정보를 보냄
                 if(SharedUtils.getBooleanValue(getContext(), DefineValue.IS_LOGIN)) {
-                    Toast.makeText(getContext(),"submit",Toast.LENGTH_SHORT).show();
+                    presenter.add(ScheduleMember.builder()
+                                                .setMember(MemberSingleton.getInstance().getMember())
+                                                .setSchedule(mCurrentSchedule));
                 }
                 //로그인이 안되어있는 경우 로그인 창으로 이동
                 else {
