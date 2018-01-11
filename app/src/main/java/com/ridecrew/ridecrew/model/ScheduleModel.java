@@ -6,6 +6,7 @@ import com.ridecrew.ridecrew.callback.ScheduleModelCallback;
 
 import java.util.List;
 
+import Define.DefineValue;
 import Entity.ApiResult;
 import Entity.Schedule;
 import network.NetworkManager;
@@ -40,8 +41,8 @@ public class ScheduleModel {
 
             @Override
             public void onFailure(Call<ApiResult<List<Schedule>>> call, Throwable t) {
-                Log.d(Define.Define.TAG, "requestScheduleList fail");
-                Log.d(Define.Define.TAG, t.getMessage());
+                Log.d(DefineValue.TAG, "requestScheduleList fail");
+                Log.d(DefineValue.TAG, t.getMessage());
             }
         });
     }

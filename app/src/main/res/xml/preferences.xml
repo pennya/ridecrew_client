@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Settings">
+        <PreferenceScreen
+            android:key="prefVersion"
+            android:title="ridecrew"
+            android:summary="made by ridecrew team"
+            />
+
+        <PreferenceScreen
+            android:key="prefPaticipation"
+            android:title="등록 및 참가 내역"
+            />
+
+        <CheckBoxPreference
+            android:key="prefNotification"
+            android:title="Set Notification"
+            android:defaultValue="false"
+            />
+
+        <PreferenceScreen
+            android:key="prefLogon"
+            android:title="Login"
+            android:summary="print your login id"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>
