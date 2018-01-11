@@ -2,6 +2,7 @@ package com.ridecrew.ridecrew.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -63,7 +64,6 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
         mStartSpot = (TextView)view.findViewById(R.id.tv_fragment_schedule_detail_start_spot);
         mEndSpot = (TextView)view.findViewById(R.id.tv_fragment_schedule_detail_end_spot);
         mDescription = (TextView)view.findViewById(R.id.tv_fragment_schedule_detail_descriptions);
-
     }
 
     private void setDefaultSetting() {
@@ -83,21 +83,13 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
             case R.id.btn_fragment_schedule_detail_join:
                 //로그인 된 상태에서는 해당 계정의 정보를 보냄
                 if(SharedUtils.getBooleanValue(getContext(), DefineValue.IS_LOGIN)) {
-                    Toast.makeText(getContext(),"회원 submit",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"submit",Toast.LENGTH_SHORT).show();
                 }
-                //로그인이 안되어있는 경우 직접 입력한 정보를 보냄
+                //로그인이 안되어있는 경우 로그인 창으로 이동
                 else {
-                    Toast.makeText(getContext(),"비회원 submit",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(),LoginActivity.class);
+                    startActivity(intent);
                 }
-                break;
-            case R.id.btn_fragment_schedule_detail_modify:
-                /*
-                if(SharedUtils.getStringValue(getContext(),DefineValue.LOGIN_ID) == Schedule.builder().getMember().getEmail()) {
-
-                }
-                else
-                */
-                    Toast.makeText(getContext(),"내 게시물 아님 수정 불가",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_fragment_schedule_detail_cancel:
                 getDialog().dismiss();

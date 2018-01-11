@@ -56,7 +56,6 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                     SharedUtils.prefClear(getActivity());
 
                 }
-
                 return false;
             }
         });
