@@ -41,4 +41,6 @@ dependencies {
     compile 'com.yalantis:phoenix:1.2.3'
     //VerticalFastScroller
     compile 'xyz.danoz:recyclerviewfastscroller:0.1.3'
+    //cardview
+    compile 'com.android.support:cardview-v7:+'
 }

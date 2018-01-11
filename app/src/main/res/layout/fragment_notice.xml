@@ -5,9 +5,10 @@
     tools:context="com.ridecrew.ridecrew.NoticeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="notice" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_fragment_notice_recycler_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
+    </android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>

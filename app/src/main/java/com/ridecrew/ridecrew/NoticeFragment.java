@@ -4,16 +4,73 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class NoticeFragment extends Fragment {
+import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
+import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
+import com.ridecrew.ridecrew.presenter.NoticePresenter;
+
+import java.util.List;
+
+import Entity.ApiResult;
+import Entity.Notice;
+
+public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallback,NoticePresenter.View,View.OnClickListener{
+
+    private RecyclerView mRecyclerView;
+
+    private NoticeRecyclerViewAdapter mRecyclerViewAdapter;
+    private NoticePresenter mPresenter;
+    private List<Notice> mNoticeList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notice, container, false);
+        View view = inflater.inflate(R.layout.fragment_notice, container, false);
+
+        layoutInit(view);
+        setDefaultSetting(view);
+        loadData();
+        return view;
     }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override
+    public void showItem(int position) {
+
+    }
+
+    @Override
+    public void getAllScheduleData(ApiResult<List<Notice>> apiResult) {
+
+    }
+
+
+    private void layoutInit(View view) {
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.rv_fragment_notice_recycler_view);
+    }
+
+    private void setDefaultSetting(View view) {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerViewAdapter = new NoticeRecyclerViewAdapter(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        mRecyclerView.setHasFixedSize(true);
+
+    }
+
+    private void loadData() {
+
+    }
+
+
 }
