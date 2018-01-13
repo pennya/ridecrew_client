@@ -20,7 +20,7 @@ import Entity.ScheduleMember;
 
 public class ScheduleMemberAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
-    private ArrayList<ScheduleMember> mItemLists;
+    public ArrayList<ScheduleMember> mItemLists;
     private ScheduleMemberRecyclerViewCallback mCallback;
 
     public ScheduleMemberAdapter(ScheduleMemberRecyclerViewCallback callback) {
@@ -58,14 +58,6 @@ public class ScheduleMemberAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemCount() {
         return mItemLists.size();
-    }
-
-    public void setArrayList(ArrayList<ScheduleMember> itemLists) {
-        this.mItemLists = itemLists;
-    }
-
-    public void clear() {
-        mItemLists.clear();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
