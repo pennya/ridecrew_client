@@ -4,8 +4,10 @@ import java.util.List;
 
 import Entity.ApiResult;
 import Entity.Schedule;
+import Entity.ScheduleMember;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -20,4 +22,13 @@ public interface ScheduleService {
 
     @POST("/rest/v1/schedules")
     Call<ApiResult<Schedule>> addSchedule(@Body Schedule schedule);
+
+    @POST("rest/v1/schedule_members")
+    Call<ApiResult<ScheduleMember>> addScheduleMember(@Body ScheduleMember scheduleMember);
+
+    @DELETE("rest/v1/schedule_members")
+    Call<ApiResult<Void>> deleteScheduleMember(@Query("scheduleId") Long scheduleId, @Query("memberId") Long memberId);
+
+    @GET("rest/v1/schedule_members_by_member_id")
+    Call<ApiResult<List<ScheduleMember>>> getAllScheduleMemberByMemberId(@Query("memberId") Long memberId);
 }

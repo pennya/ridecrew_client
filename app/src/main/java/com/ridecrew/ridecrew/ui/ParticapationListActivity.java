@@ -7,43 +7,36 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ridecrew.ridecrew.R;
+import com.ridecrew.ridecrew.adapter.ScheduleMemberAdapter;
 import com.ridecrew.ridecrew.adapter.ScheduleRecyclerViewApdater;
+import com.ridecrew.ridecrew.callback.ScheduleMemberRecyclerViewCallback;
 import com.ridecrew.ridecrew.callback.ScheduleRecyclerViewCallback;
+import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenter;
+import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenterImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import Entity.ApiResult;
 import Entity.Member;
+import Entity.MemberSingleton;
 import Entity.Schedule;
+import Entity.ScheduleMember;
 import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
-public class ParticapationListActivity extends BaseToolbarActivity implements ScheduleRecyclerViewCallback {
+public class ParticapationListActivity extends BaseToolbarActivity implements ScheduleMemberRecyclerViewCallback, ScheduleMemberPresenter.View {
 
+    private ScheduleMemberPresenter presenter;
     private RecyclerView recyclerView;
-    private ScheduleRecyclerViewApdater adapter;
+    private ScheduleMemberAdapter adapter;
     private static VerticalRecyclerViewFastScroller fastScroller;
-    private ArrayList<Schedule> lists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        lists = new ArrayList<>();
-        for(int i = 0; i < 100; i++) {
-            lists.add(Schedule.builder().setTitle(i + "").setDescriptions(i+"").setMember(Member.builder().setNickName(i+"")));
-        }
-        adapter = new ScheduleRecyclerViewApdater(this);
-        adapter.setArrayList(lists);
-
-        recyclerView = (RecyclerView) findViewById(R.id.appList);
-        fastScroller = (VerticalRecyclerViewFastScroller) findViewById(R.id.fast_scroller);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerView.setAdapter(adapter);
-        fastScroller.setRecyclerView(recyclerView);
-        recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
+        initLayout();
+        setDefaultSetting();
 
     }
 
@@ -60,5 +53,44 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     @Override
     public void showItem(int position) {
         Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void moveActivity() {
+        // nothing
+    }
+
+    @Override
+    public void showToast(String text) {
+
+    }
+
+    @Override
+    public void getScheduleMemberList(ApiResult<List<ScheduleMember>> result) {
+        ArrayList<ScheduleMember> scheduleMembers = new ArrayList<>();
+        scheduleMembers.addAll(result.getData());
+        adapter.setArrayList(scheduleMembers);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void initLayout() {
+        recyclerView = (RecyclerView) findViewById(R.id.appList);
+    }
+
+    private void setDefaultSetting() {
+        adapter = new ScheduleMemberAdapter(this);
+
+        fastScroller = (VerticalRecyclerViewFastScroller) findViewById(R.id.fast_scroller);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        recyclerView.setAdapter(adapter);
+        fastScroller.setRecyclerView(recyclerView);
+        recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
+
+        presenter = new ScheduleMemberPresenterImpl(this);
+        presenter.getScheduleMemberListByMemberId(MemberSingleton.getInstance().getMember().getId());
     }
 }
