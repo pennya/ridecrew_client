@@ -37,45 +37,50 @@ public class SwipeController extends ItemTouchHelper.Callback {
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         // RIGHT    오른쪽으로 밀기
         // LEGT     왼쪽으로 밀기
+        Log.d("KJH", "getMovementFlags");
         return makeMovementFlags(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
     }
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        Log.d("KJH", "onMove");
         return false;
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
+        Log.d("KJH", "onSwiped");
     }
 
     @Override
     public int convertToAbsoluteDirection(int flags, int layoutDirection) {
         if(swipeBack) {
+            Log.d("KJH", "convertToAbsoluteDirection swipeBack : " + swipeBack);
             swipeBack = buttonShowedState != ButtonState.GONE;
             return 0;
         }
+        Log.d("KJH", "convertToAbsoluteDirection swipeBack : " + swipeBack);
         return super.convertToAbsoluteDirection(flags, layoutDirection);
     }
 
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            // 아이템을 누르고 스와이프하는 중
             if(buttonShowedState != ButtonState.GONE) {
-                // 아이템을 누르고 이동시키고 터치를 중단한 상태
                 if(buttonShowedState == ButtonState.RIGHT_VISIBLE) dX = Math.min(dX, -buttonWidth);
+                Log.d("KJH", "SWIPE ButtonState.RIGHT_VISIBLE dX: " + dX);
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             } else {
-                // 아이템 누르고 이동중
+                Log.d("KJH", "SWIPE ButtonState.GONE dX: " + dX);
                 setOnTouchListner(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         }
 
         if(buttonShowedState == ButtonState.GONE) {
+            Log.d("KJH", "Not SWIPE ButtonState.GONE dX: " + dX);
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
+        Log.d("KJH", "currentItemViewHolder set");
         currentItemViewHolder = viewHolder;
     }
 
@@ -94,14 +99,12 @@ public class SwipeController extends ItemTouchHelper.Callback {
                             event.getAction() == MotionEvent.ACTION_UP;
 
                 if(swipeBack) {
-                    // 스와이핑 하다가 터치가 중단된 상태
                     if(dX < -buttonWidth) {
-                        // 버튼크기보다 왼쪽으로 스와이핑을 많이하면 오른쪽 버튼 VISIBLE 세팅
-                        Log.d("KJH", "dX: " + dX + " -buttonWidth: " + -buttonWidth);
                         buttonShowedState = ButtonState.RIGHT_VISIBLE;
                     }
 
                     if(buttonShowedState != ButtonState.GONE) {
+                        Log.d("KJH", "RIGHT_VISIBLE!");
                         setTouchDownListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
                 }
@@ -116,7 +119,7 @@ public class SwipeController extends ItemTouchHelper.Callback {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    // 영역이 누른 상태
+                    Log.d("KJH", "touchDown");
                     setTouchUpListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                 }
                 return false;
@@ -130,11 +133,12 @@ public class SwipeController extends ItemTouchHelper.Callback {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_UP) {
-                    // 영역을 누르고 뗀 상태
+                    Log.d("KJH", "touchUp");
                     SwipeController.super.onChildDraw(c, recyclerView, viewHolder, 0F, dY, actionState, isCurrentlyActive);
                     swipeBack = false;
 
                     if (buttonsActions != null && buttonInstance != null && buttonInstance.contains(event.getX(), event.getY())) {
+                        Log.d("KJH", "touchUp and right clicked");
                         buttonsActions.onRightClicked(viewHolder.getAdapterPosition());
                     }
                     buttonShowedState = ButtonState.GONE;
