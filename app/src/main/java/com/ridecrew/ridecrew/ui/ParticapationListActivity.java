@@ -76,12 +76,12 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
 
     private void initLayout() {
         recyclerView = (RecyclerView) findViewById(R.id.appList);
+        fastScroller = (VerticalRecyclerViewFastScroller) findViewById(R.id.fast_scroller);
     }
 
     private void setDefaultSetting() {
         adapter = new ScheduleMemberAdapter(this);
 
-        fastScroller = (VerticalRecyclerViewFastScroller) findViewById(R.id.fast_scroller);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
