@@ -56,8 +56,6 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
 
         if (!checkPermissions() && Build.VERSION.SDK_INT >= 23) {
             requestPermissions();
-        } else {
-            Toast.makeText(this, "PERMISSION DENIED!!!!", Toast.LENGTH_SHORT).show();
         }
 
         uploadBtn = (Button) findViewById(R.id.uploadBtn);
@@ -91,7 +89,7 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
                 Log.d("KJH", f.getAbsolutePath());
                 TransferObserver observer = transferUtility.upload(
                         "ridecrew",
-                        f.getName(),
+                        "/images/" + f.getName(),
                         f
                 );
                 observer.setTransferListener(new TransferListener() {
@@ -133,7 +131,7 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
                 mImageUri = data.getData();
 
                 // absolute path로 해야 가능
-                // E/UploadTask: Failed to upload: 8 due to Unable to execute HTTP request: Write error: ssl=0x78effcc240: I/O error during system call, Connection reset by peer 
+                // E/UploadTask: Failed to upload: 8 due to Unable to execute HTTP request: Write error: ssl=0x78effcc240: I/O error during system call, Connection reset by peer
                 imagePath = getPathFromUri(mImageUri);
                 f = new File(imagePath);
                 imageview.setImageURI(mImageUri);
