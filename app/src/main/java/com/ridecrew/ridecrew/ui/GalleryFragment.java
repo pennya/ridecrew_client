@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,6 +45,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_fragment_gallery_add:
+                startActivity(new Intent(getActivity(), FileUploadActivity.class));
                 break;
         }
     }
