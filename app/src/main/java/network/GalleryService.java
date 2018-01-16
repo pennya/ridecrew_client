@@ -19,7 +19,7 @@ import retrofit2.http.Path;
 
 public interface GalleryService {
     @GET("/rest/v1/gallery")
-    Call<ApiResult<ArrayList<Gallery>>> getAll();
+    Call<ApiResult<ArrayList<Gallery>>> getAllGalleries();
 
     @POST("/rest/v1/gallery")
     Call<ApiResult<Gallery>> addGallery(@Body Gallery gallery);
@@ -28,7 +28,7 @@ public interface GalleryService {
     Call<ApiResult<Void>> deleteGallery(@Path("id") Long id);
 
     @GET("/rest/v1/gallery_picture")
-    Call<ApiResult<ArrayList<GalleryPicture>>> findByGalleryId(@Field("galleryId") Long galleryId);
+    Call<ApiResult<ArrayList<GalleryPicture>>> findPictruesByGalleryId(@Field("galleryId") Long galleryId);
 
     @POST("/rest/v1/gallery_picture")
     Call<ApiResult<GalleryPicture>> addPicture(@Body GalleryPicture picture);

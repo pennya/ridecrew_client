@@ -9,6 +9,7 @@ public class Gallery {
     private Member member;
     private String title;
     private String content;
+    private String imageUrl;
     private String createdDateTime;
     private String lastModifiedDateTime;
 
@@ -41,5 +42,26 @@ public class Gallery {
     public Gallery setContent(String content) {
         this.content = content;
         return this;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public Gallery setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public String getLastModifiedDateTime() {
+        return lastModifiedDateTime;
     }
 }

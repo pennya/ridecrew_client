@@ -8,17 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.adapter.GalleryAdapter;
+import com.ridecrew.ridecrew.presenter.GalleryPresenter;
+import com.ridecrew.ridecrew.presenter.GalleryPresenterImpl;
 
 import java.util.ArrayList;
 
+import Entity.ApiResult;
 import Entity.Gallery;
 import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
-public class GalleryFragment extends Fragment implements View.OnClickListener {
+public class GalleryFragment extends Fragment implements View.OnClickListener, GalleryPresenter.View {
 
+    private GalleryPresenter presenter;
     private RecyclerView recyclerView;
     private GalleryAdapter adapter;
     private ImageButton btnAdd;
@@ -30,6 +35,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         initLayout(view);
         setDefaultSettings();
+        loadData();
 
         return view;
     }
@@ -40,6 +46,22 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_fragment_gallery_add:
                 break;
         }
+    }
+
+    @Override
+    public void getGalleries(ApiResult<ArrayList<Gallery>> result) {
+        adapter.items = result.getData();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getGallery(ApiResult<Gallery> result) {
+
+    }
+
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     private void initLayout(View view) {
@@ -54,5 +76,11 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
         recyclerView.setHasFixedSize(true);
 
         btnAdd.setOnClickListener(this);
+
+        presenter = new GalleryPresenterImpl(this);
+    }
+
+    private void loadData() {
+        presenter.loadGalleries();
     }
 }

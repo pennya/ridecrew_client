@@ -39,4 +39,8 @@ public class GalleryPicture {
     public void setSort(int sort) {
         this.sort = sort;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
