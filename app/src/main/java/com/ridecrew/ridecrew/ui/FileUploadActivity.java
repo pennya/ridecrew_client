@@ -48,6 +48,7 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
 
     String imagePath;
     private Uri mImageUri;
+    TransferObserver observer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,16 +87,20 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.uploadBtn:
-                Log.d("KJH", f.getAbsolutePath());
-                TransferObserver observer = transferUtility.upload(
+                //Log.d("KJH", f.getAbsolutePath());
+                observer = transferUtility.upload(
                         "ridecrew",
-                        "/images/" + f.getName(),
+                        "images/" + f.getName(),
                         f
                 );
                 observer.setTransferListener(new TransferListener() {
                     @Override
                     public void onStateChanged(int id, TransferState state) {
-                        Log.d("KJH", state.toString());
+                        if(state.name().startsWith("COMPLETE")) {
+                            Log.d("KJH", observer.getAbsoluteFilePath());
+                            Log.d("KJH", observer.getBucket());
+                            Log.d("KJH", observer.getKey());
+                        }
                     }
 
                     @Override
@@ -104,12 +109,12 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
                             return;
 
                         int percentage = (int) (bytesCurrent/bytesTotal * 100);
-                        Log.d("KJH", "percentage : " + percentage);
+                        //Log.d("KJH", "percentage : " + percentage);
                     }
 
                     @Override
                     public void onError(int id, Exception ex) {
-                        Log.d("KJH", ex.getMessage());
+                        //Log.d("KJH", ex.getMessage());
                     }
                 });
                 break;
