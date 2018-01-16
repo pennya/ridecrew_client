@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.ridecrew.ridecrew.ui.GalleryFragment;
 import com.ridecrew.ridecrew.ui.ScheduleFragment;
 import com.ridecrew.ridecrew.ui.SettingsFragent;
 
