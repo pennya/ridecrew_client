@@ -31,7 +31,7 @@ public interface NoticeService {
     Call<ApiResult<ArrayList<Notice>>> getAllNoticeData();
 
     @POST("/rest/v1/notice")
-    Call<ApiResult<Notice>> addNotice(@Body Notice notice);
+    Call<ApiResult<ArrayList<Notice>>> addNotice(@Body Notice notice);
 
     @DELETE("/rest/v1/notice/{pk}")
     Call<ApiResult<Void>> deleteNotice(@Path("pk") Long pk);

@@ -66,10 +66,10 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setHasFixedSize(true);
-
         mPresenter = new NoticePresenterImpl(this);
     }
 
     private void loadData() {
+        mPresenter.loadAllNoticeData();
     }
 }

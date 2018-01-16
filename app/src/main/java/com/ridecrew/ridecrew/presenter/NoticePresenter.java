@@ -10,7 +10,7 @@ import Entity.Notice;
  */
 
 public interface NoticePresenter {
-    void loadAllNoticeData(String data);
+    void loadAllNoticeData();
 
     interface View {
         void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult);

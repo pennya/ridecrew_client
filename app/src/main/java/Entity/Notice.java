@@ -18,6 +18,8 @@ public class Notice implements Serializable {
     private String createdDateTime;
     private String lastModifiedDateTime;
 
+    public static Notice builder() { return new Notice(); }
+
     public Long getId() {
         return id;
     }
@@ -38,8 +40,9 @@ public class Notice implements Serializable {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Notice setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getContent() {
