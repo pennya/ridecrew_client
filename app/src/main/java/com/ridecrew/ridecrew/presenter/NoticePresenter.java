@@ -10,11 +10,11 @@ import Entity.Notice;
  */
 
 public interface NoticePresenter {
-    void loadAllScheduleData(String date);
+    void loadAllNoticeData(String data);
 
     interface View {
 
-        void getAllScheduleData(ApiResult<List<Notice>> apiResult);
+        void getAllNoticeData(ApiResult<List<Notice>> apiResult);
 
     }
 }

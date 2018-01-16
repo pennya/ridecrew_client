@@ -22,12 +22,10 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
     }
 
     @Override
-    public void loadAllScheduleData(String date) {
-
-    }
+    public void loadAllNoticeData(String data) { mModel.requestNoticeList(data); }
 
     @Override
     public void getAllNoticeData(ApiResult<List<Notice>> apiResult) {
-
+        mView.getAllNoticeData(apiResult);
     }
 }

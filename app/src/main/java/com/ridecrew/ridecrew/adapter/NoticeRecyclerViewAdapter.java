@@ -73,6 +73,8 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         public ViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView)itemView.findViewById(R.id.card_view_fragment_notice_recycler_view);
+            mTitle = (TextView)itemView.findViewById(R.id.tv_fragment_notice_recycler_view_title);
+            mContents = (TextView)itemView.findViewById(R.id.tv_fragment_notice_recycler_view_contents);
         }
     }
 }

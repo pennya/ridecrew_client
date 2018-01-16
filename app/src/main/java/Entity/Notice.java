@@ -1,6 +1,7 @@
 package Entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Created by JooHyeong on 2018. 1. 11..
@@ -24,12 +25,10 @@ public class Notice implements Serializable {
         this.contents = contents;
     }
 
-    public String getTitle() {
-
-        return title;
-    }
+    public String getTitle() {  return title; }
 
     public String getContents() {
         return contents;
     }
+
 }

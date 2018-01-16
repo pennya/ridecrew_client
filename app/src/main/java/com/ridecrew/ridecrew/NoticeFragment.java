@@ -3,6 +3,7 @@ package com.ridecrew.ridecrew;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
+import com.ridecrew.ridecrew.callback.NoticeModelCallback;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
+import com.ridecrew.ridecrew.model.NoticeModel;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
+import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Entity.ApiResult;
@@ -41,7 +46,6 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     @Override
     public void onClick(View view) {
-
     }
 
     @Override
@@ -50,8 +54,8 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     }
 
     @Override
-    public void getAllScheduleData(ApiResult<List<Notice>> apiResult) {
-
+    public void getAllNoticeData(ApiResult<List<Notice>> apiResult) {
+         mNoticeList = apiResult.getData();
     }
 
 
@@ -66,11 +70,9 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setHasFixedSize(true);
 
+        mPresenter = new NoticePresenterImpl(this);
     }
 
     private void loadData() {
-
     }
-
-
 }
