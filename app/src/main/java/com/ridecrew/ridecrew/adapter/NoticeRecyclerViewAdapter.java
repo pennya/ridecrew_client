@@ -48,21 +48,13 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 }
             });
             viewHolder.mTitle.setText(mItemLists.get(itemPosition).getTitle());
-            viewHolder.mContents.setText(mItemLists.get(itemPosition).getContents());
+            viewHolder.mContents.setText(mItemLists.get(itemPosition).getContent());
         }
     }
 
     @Override
     public int getItemCount() {
         return mItemLists.size();
-    }
-
-    public void setArrayList(ArrayList<Notice> itemLists) {
-        this.mItemLists = itemLists;
-    }
-
-    public void clear() {
-        mItemLists.clear();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

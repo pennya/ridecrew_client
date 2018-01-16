@@ -3,7 +3,7 @@ package com.ridecrew.ridecrew.presenter;
 import com.ridecrew.ridecrew.callback.NoticeModelCallback;
 import com.ridecrew.ridecrew.model.NoticeModel;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import Entity.ApiResult;
 import Entity.Notice;
@@ -22,10 +22,10 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
     }
 
     @Override
-    public void loadAllNoticeData(String data) { mModel.requestNoticeList(data); }
+    public void loadAllNoticeData(String data) { mModel.requestNoticeList(); }
 
     @Override
-    public void getAllNoticeData(ApiResult<List<Notice>> apiResult) {
+    public void getAllNoticeDate(ApiResult<ArrayList<Notice>> apiResult) {
         mView.getAllNoticeData(apiResult);
     }
 }

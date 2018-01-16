@@ -1,9 +1,7 @@
 package com.ridecrew.ridecrew;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
-import com.ridecrew.ridecrew.callback.NoticeModelCallback;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
-import com.ridecrew.ridecrew.model.NoticeModel;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
 
@@ -32,6 +28,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     private NoticePresenter mPresenter;
     private List<Notice> mNoticeList;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,7 +51,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     }
 
     @Override
-    public void getAllNoticeData(ApiResult<List<Notice>> apiResult) {
+    public void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult) {
          mNoticeList = apiResult.getData();
     }
 

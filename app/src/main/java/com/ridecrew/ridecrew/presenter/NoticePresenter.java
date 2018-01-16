@@ -1,6 +1,6 @@
 package com.ridecrew.ridecrew.presenter;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import Entity.ApiResult;
 import Entity.Notice;
@@ -13,8 +13,6 @@ public interface NoticePresenter {
     void loadAllNoticeData(String data);
 
     interface View {
-
-        void getAllNoticeData(ApiResult<List<Notice>> apiResult);
-
+        void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult);
     }
 }

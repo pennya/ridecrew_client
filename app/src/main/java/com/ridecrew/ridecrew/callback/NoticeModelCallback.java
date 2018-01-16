@@ -1,6 +1,6 @@
 package com.ridecrew.ridecrew.callback;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import Entity.ApiResult;
 import Entity.Notice;
@@ -10,5 +10,5 @@ import Entity.Notice;
  */
 
 public interface NoticeModelCallback {
-    void getAllNoticeData(ApiResult<List<Notice>> apiResult);
+    void getAllNoticeDate(ApiResult<ArrayList<Notice>> apiResult);
 }
