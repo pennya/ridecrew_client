@@ -38,17 +38,18 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
     public static final int PICK_FROM_ALBUM = 1;
     public static final int REQUEST_PERMISSIONS_REQUEST_CODE = 99;
 
-    CognitoCachingCredentialsProvider credentialsProvider;
-    AmazonS3 s3;
-    TransferUtility transferUtility;
+    // AWS S3
+    private CognitoCachingCredentialsProvider credentialsProvider;
+    private AmazonS3 s3;
+    private TransferUtility transferUtility;
+    private TransferObserver observer;
 
-    Button uploadBtn, selectBtn;
-    ImageView imageview;
-    File f;
+    private Button btnUpload, btnSelect;
+    private ImageView imageview;
+    private File f;
 
-    String imagePath;
+    private String imagePath;
     private Uri mImageUri;
-    TransferObserver observer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,34 +60,15 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
             requestPermissions();
         }
 
-        uploadBtn = (Button) findViewById(R.id.uploadBtn);
-        selectBtn = (Button) findViewById(R.id.selectBtn);
-        imageview = (ImageView) findViewById(R.id.imageview1);
-
-        uploadBtn.setOnClickListener(this);
-        selectBtn.setOnClickListener(this);
-
-
-        // Amazon Cognito 인증 공급자를 초기화합니다
-        credentialsProvider = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),
-                "ap-northeast-2:7ea4f3e2-4c1e-4875-adaa-f9b128e73e37", // 자격 증명 풀 ID
-                Regions.AP_NORTHEAST_2 // 리전
-        );
-
-        s3 = new AmazonS3Client(credentialsProvider);
-        // S3 버킷의 Region 이 서울일 경우 아래와 같습니다.
-        s3.setRegion(Region.getRegion(Regions.AP_NORTHEAST_2));
-        s3.setEndpoint("s3.ap-northeast-2.amazonaws.com");
-
-        transferUtility = new TransferUtility(s3, getApplicationContext());
+        initLayout();
+        setDefaultSettings();
 
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.uploadBtn:
+            case R.id.btn_activity_file_upload_upload_to_server:
                 //Log.d("KJH", f.getAbsolutePath());
                 observer = transferUtility.upload(
                         "ridecrew",
@@ -97,9 +79,16 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
                     @Override
                     public void onStateChanged(int id, TransferState state) {
                         if(state.name().startsWith("COMPLETE")) {
-                            Log.d("KJH", observer.getAbsoluteFilePath());
-                            Log.d("KJH", observer.getBucket());
-                            Log.d("KJH", observer.getKey());
+                            String finalUrl = "https://s3.ap-northeast-2.amazonaws.com/"
+                                    + observer.getBucket()
+                                    + "/" + observer.getKey();
+
+
+                            Intent intent = new Intent();
+                            intent.putExtra("imageUrl", finalUrl);
+                            setResult(99, intent);
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+                            finish();
                         }
                     }
 
@@ -118,7 +107,7 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
                     }
                 });
                 break;
-            case R.id.selectBtn:
+            case R.id.btn_activity_file_upload_select:
                 selectImage();
                 break;
         }
@@ -142,58 +131,6 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
                 imageview.setImageURI(mImageUri);
                 break;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    public void selectImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, PICK_FROM_ALBUM);
-    }
-
-    public String getPathFromUri(Uri uri){
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null );
-        cursor.moveToNext();
-        String path = cursor.getString( cursor.getColumnIndex( "_data" ) );
-        cursor.close();
-
-        return path;
-    }
-
-    private boolean checkPermissions() {
-        int permissionState = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        return permissionState == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermissions() {
-        boolean shouldProviceRationale =
-                ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        if( shouldProviceRationale ) {
-            new AlertDialog.Builder(this)
-                    .setTitle("알림")
-                    .setMessage("저장소 권한이 필요합니다.")
-                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startPermissionRequest();
-                        }
-                    })
-                    .create()
-                    .show();
-        } else {
-            startPermissionRequest();
-        }
-    }
-
-    private void startPermissionRequest() {
-        ActivityCompat.requestPermissions(this,
-                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , REQUEST_PERMISSIONS_REQUEST_CODE);
     }
 
     @Override
@@ -221,6 +158,79 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
                             .create()
                             .show();
                 }
+        }
+    }
+
+    private void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, PICK_FROM_ALBUM);
+    }
+
+    private String getPathFromUri(Uri uri){
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null );
+        cursor.moveToNext();
+        String path = cursor.getString( cursor.getColumnIndex( "_data" ) );
+        cursor.close();
+
+        return path;
+    }
+
+
+    private void initLayout() {
+        btnUpload = (Button) findViewById(R.id.btn_activity_file_upload_upload_to_server);
+        btnSelect = (Button) findViewById(R.id.btn_activity_file_upload_select);
+        imageview = (ImageView) findViewById(R.id.iv_activity_file_upload_image);
+
+        btnUpload.setOnClickListener(this);
+        btnSelect.setOnClickListener(this);
+    }
+
+    private void setDefaultSettings() {
+        // Amazon Cognito 인증 공급자를 초기화합니다
+        credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "ap-northeast-2:7ea4f3e2-4c1e-4875-adaa-f9b128e73e37", // 자격 증명 풀 ID
+                Regions.AP_NORTHEAST_2 // 리전
+        );
+
+        s3 = new AmazonS3Client(credentialsProvider);
+        // S3 버킷의 Region 이 서울일 경우 아래와 같습니다.
+        s3.setRegion(Region.getRegion(Regions.AP_NORTHEAST_2));
+        s3.setEndpoint("s3.ap-northeast-2.amazonaws.com");
+
+        transferUtility = new TransferUtility(s3, getApplicationContext());
+    }
+
+    private void startPermissionRequest() {
+        ActivityCompat.requestPermissions(this,
+                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , REQUEST_PERMISSIONS_REQUEST_CODE);
+    }
+
+    private boolean checkPermissions() {
+        int permissionState = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermissions() {
+        boolean shouldProviceRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if( shouldProviceRationale ) {
+            new AlertDialog.Builder(this)
+                    .setTitle("알림")
+                    .setMessage("저장소 권한이 필요합니다.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startPermissionRequest();
+                        }
+                    })
+                    .create()
+                    .show();
+        } else {
+            startPermissionRequest();
         }
     }
 }

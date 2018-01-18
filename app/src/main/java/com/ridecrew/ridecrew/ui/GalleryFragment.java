@@ -20,7 +20,10 @@ import java.util.ArrayList;
 
 import Entity.ApiResult;
 import Entity.Gallery;
+import Entity.MemberSingleton;
 import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
+
+import static android.app.Activity.RESULT_OK;
 
 public class GalleryFragment extends Fragment implements View.OnClickListener, GalleryPresenter.View {
 
@@ -45,8 +48,20 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_fragment_gallery_add:
-                startActivity(new Intent(getActivity(), FileUploadActivity.class));
+                startActivityForResult(new Intent(getActivity(), FileUploadActivity.class), 99);
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 99 && requestCode != RESULT_OK) {
+            Gallery gallery = Gallery.builder()
+                                            .setMember(MemberSingleton.getInstance().getMember())
+                                            .setTitle("TEST TITLE")
+                                            .setContent("TEST CONTENT")
+                                            .setImageUrl(data.getStringExtra("imageUrl"));
+            presenter.addGallery(gallery);
         }
     }
 
@@ -58,7 +73,10 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
 
     @Override
     public void getGallery(ApiResult<Gallery> result) {
+        adapter.items.add(0, result.getData());
+        adapter.notifyDataSetChanged();
 
+        Toast.makeText(getActivity(), result.getData().getImageUrl() + " 등록완료", Toast.LENGTH_SHORT).show();
     }
 
     @Override

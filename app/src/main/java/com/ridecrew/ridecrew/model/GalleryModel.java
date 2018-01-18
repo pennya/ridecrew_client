@@ -47,7 +47,23 @@ public class GalleryModel {
     }
 
     public void addGallery(Gallery gallery) {
+        GalleryService service = NetworkManager.getIntance().getRetrofit(GalleryService.class);
+        Call<ApiResult<Gallery>> addCall = service.addGallery(gallery);
+        addCall.enqueue(new Callback<ApiResult<Gallery>>() {
+            @Override
+            public void onResponse(Call<ApiResult<Gallery>> call, Response<ApiResult<Gallery>> response) {
+                if(response.body().isSuccess()) {
+                    callback.getSingleNetworkResponse(response.body(), 200);
+                } else {
+                    callback.getErrorNetworkResponse(response.body().getError().getMessage(), response.body().getError().getCode());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ApiResult<Gallery>> call, Throwable t) {
+                callback.getErrorNetworkResponse(t.getMessage(), ApiErrorCode.UNKNOWN_SERVER_ERROR);
+            }
+        });
     }
 
     public void deleteGallery(Long id) {
