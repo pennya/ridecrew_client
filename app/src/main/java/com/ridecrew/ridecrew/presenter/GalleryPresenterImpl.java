@@ -42,7 +42,7 @@ public class GalleryPresenterImpl implements GalleryPresenter, ModelCallback<Gal
 
     @Override
     public void getSingleNetworkResponse(ApiResult<Gallery> result, int status) {
-
+        view.getGallery(result);
     }
 
     @Override
