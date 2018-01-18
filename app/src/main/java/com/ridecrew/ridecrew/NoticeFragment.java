@@ -26,7 +26,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     private NoticeRecyclerViewAdapter mRecyclerViewAdapter;
     private NoticePresenter mPresenter;
-    private List<Notice> mNoticeList;
+    private ArrayList<Notice> mNoticeList;
 
     @Nullable
     @Override
@@ -53,8 +53,9 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     @Override
     public void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult) {
          mNoticeList = apiResult.getData();
+         mRecyclerViewAdapter.setmItemLists(mNoticeList);
+         mRecyclerViewAdapter.notifyDataSetChanged();
     }
-
 
     private void layoutInit(View view) {
         mRecyclerView = (RecyclerView)view.findViewById(R.id.rv_fragment_notice_recycler_view);

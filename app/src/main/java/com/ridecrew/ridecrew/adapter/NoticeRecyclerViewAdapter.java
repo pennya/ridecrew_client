@@ -69,4 +69,13 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             mContents = (TextView)itemView.findViewById(R.id.tv_fragment_notice_recycler_view_contents);
         }
     }
+
+    public ArrayList<Notice> getmItemLists() {
+        return mItemLists;
+    }
+
+    public void setmItemLists(ArrayList<Notice> mItemLists) {
+        this.mItemLists = mItemLists;
+    }
+
 }
