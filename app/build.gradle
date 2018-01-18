@@ -45,4 +45,8 @@ dependencies {
     compile 'com.mikhaellopez:circularimageview:3.0.2'
     //image
     compile 'com.github.bumptech.glide:glide:4.2.0'
+    //aws
+    compile 'com.amazonaws:aws-android-sdk-core:2.2.+'
+    compile 'com.amazonaws:aws-android-sdk-s3:2.2.+'
+    compile 'com.amazonaws:aws-android-sdk-ddb:2.2.+'
 }

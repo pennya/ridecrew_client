@@ -19,13 +19,15 @@ import com.ridecrew.ridecrew.ui.GalleryFragment;
 
 import java.util.ArrayList;
 
+import Entity.Gallery;
+
 /**
  * Created by KJH on 2018-01-16.
  */
 
 public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public ArrayList<GalleryFragment.GalleryEntity> items;
+    public ArrayList<Gallery> items;
     public Activity context;
 
     public GalleryAdapter(Activity context) {
@@ -82,8 +84,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .apply(requestOptions)
                     .into(viewHolder.mainImage);
 
-            viewHolder.userId.setText(items.get(position).getUserId());
-            viewHolder.likeCount.setText(items.get(position).getLikeCount() + "");
+            viewHolder.userId.setText(items.get(position).getMember().getNickName());
         }
     }
 
