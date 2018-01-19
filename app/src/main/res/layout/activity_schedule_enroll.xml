@@ -19,7 +19,8 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="16dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -39,109 +40,199 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.9"/>
 
-            <EditText
-                android:id="@+id/edt_activity_schedule_enroll_date"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/edt_activity_schedule_enroll_date_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
                 app:layout_constraintRight_toLeftOf="@+id/btn_activity_schedule_enroll_datepicker"
-                android:layout_marginTop="8dp"
-                android:hint="날짜 선택"
-                />
+                android:layout_marginTop="16dp">
+
+                <EditText
+                    android:id="@+id/edt_activity_schedule_enroll_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="날짜선택"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
 
             <ImageButton
                 android:id="@+id/btn_activity_schedule_enroll_datepicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/edt_activity_schedule_enroll_date"
-                app:layout_constraintLeft_toRightOf="@+id/edt_activity_schedule_enroll_date"
+                app:layout_constraintBottom_toBottomOf="@+id/edt_activity_schedule_enroll_date_layout"
+                app:layout_constraintLeft_toRightOf="@+id/edt_activity_schedule_enroll_date_layout"
                 app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/ic_today_black_48dp"
                 />
 
-            <EditText
-                android:id="@+id/edt_activity_schedule_enroll_title"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/edt_activity_schedule_enroll_title_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_date"
+                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_date_layout"
                 app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
                 app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"
-                android:layout_marginTop="8dp"
-                android:hint="Title"
-                />
+                android:layout_marginTop="8dp">
 
-            <TimePicker
-                android:id="@+id/tp_activity_schedule_enroll_start_time"
+                <EditText
+                    android:id="@+id/edt_activity_schedule_enroll_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="제목"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_activity_schedule_enroll_timepicker_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_title"
-                app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
-                android:layout_marginTop="8dp"
-                android:timePickerMode="spinner"
-                />
-
-            <TimePicker
-                android:id="@+id/tp_activity_schedule_enroll_end_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/tp_activity_schedule_enroll_start_time"
-                app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
-                android:layout_marginTop="8dp"
-                android:timePickerMode="spinner"
-                />
-
-            <EditText
-                android:id="@+id/edt_activity_schedule_enroll_start_point"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/tp_activity_schedule_enroll_end_time"
+                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_title_layout"
                 app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
                 app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"
-                android:layout_marginTop="8dp"
-                android:hint="시작 지점(좌표)"
-                />
+                >
 
-            <EditText
-                android:id="@+id/edt_activity_schedule_enroll_end_point"
+                <TextView
+                    android:id="@+id/tv_activity_schedule_enroll_start_time_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="25dp"
+                    android:text="시작시간"
+                    android:textColor="@android:color/black"
+                    />
+
+                <TimePicker
+                    android:id="@+id/tp_activity_schedule_enroll_start_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_activity_schedule_enroll_start_time_title"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:timePickerMode="spinner"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_activity_schedule_enroll_end_time_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tp_activity_schedule_enroll_start_time"
+                    android:layout_marginTop="25dp"
+                    android:text="종료시간"
+                    android:textColor="@android:color/black"
+                    />
+
+                <TimePicker
+                    android:id="@+id/tp_activity_schedule_enroll_end_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_activity_schedule_enroll_end_time_title"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:timePickerMode="spinner"
+                    />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/edt_activity_schedule_enroll_start_spot_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_start_point"
+                app:layout_constraintTop_toBottomOf="@+id/cl_activity_schedule_enroll_timepicker_layout"
                 app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
                 app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"
-                android:layout_marginTop="8dp"
-                android:hint="종료 지점(좌표)"
-                />
+                android:layout_marginTop="8dp">
 
-            <EditText
-                android:id="@+id/edt_activity_schedule_enroll_way_point"
+                <EditText
+                    android:id="@+id/edt_activity_schedule_enroll_start_spot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="출발지"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/edt_activity_schedule_enroll_end_spot_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_end_point"
+                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_start_spot_layout"
                 app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
                 app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"
-                android:layout_marginTop="8dp"
-                android:hint="경유지(좌표)"
-                />
+                android:layout_marginTop="8dp">
 
-            <EditText
-                android:id="@+id/edt_activity_schedule_enroll_descriptions"
+                <EditText
+                    android:id="@+id/edt_activity_schedule_enroll_end_spot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="도착지"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!--<EditText-->
+                <!--android:id="@+id/edt_activity_schedule_enroll_start_point"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/cl_activity_schedule_enroll_timepicker_layout"-->
+                <!--app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"-->
+                <!--app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:hint="시작 지점(좌표)"-->
+                <!--/>-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/edt_activity_schedule_enroll_end_point"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_start_point"-->
+                <!--app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"-->
+                <!--app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:hint="종료 지점(좌표)"-->
+                <!--/>-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/edt_activity_schedule_enroll_way_point"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_end_point"-->
+                <!--app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"-->
+                <!--app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:hint="경유지(좌표)"-->
+                <!--/>-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/edt_activity_schedule_enroll_descriptions_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_way_point"
+                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_end_spot_layout"
                 app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
                 app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"
-                android:layout_marginTop="8dp"
-                android:hint="상세설명"
-                />
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edt_activity_schedule_enroll_descriptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="상세설명"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_activity_schedule_enroll_submit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_descriptions"
+                app:layout_constraintTop_toBottomOf="@+id/edt_activity_schedule_enroll_descriptions_layout"
                 app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
                 app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"
                 android:layout_marginTop="8dp"

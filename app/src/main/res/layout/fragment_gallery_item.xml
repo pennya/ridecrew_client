@@ -36,11 +36,11 @@
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
                     android:src="@drawable/messi"
-                    app:civ_border_color="@android:color/holo_orange_dark"
+                    app:civ_border_color="@color/colorPrimaryDark"
                     app:civ_border_width="4dp"
                     app:civ_shadow="true"
                     app:civ_shadow_radius="10"
-                    app:civ_shadow_color="#8BC34A"
+                    app:civ_shadow_color="#331a4c"
                     />
 
                 <TextView

@@ -3,11 +3,15 @@ package com.ridecrew.ridecrew.ui;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,25 +28,22 @@ import Define.DefineValue;
 import Entity.Schedule;
 import Entity.ScheduleDefaultEntitiy;
 
-public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePicker.OnTimeChangedListener, ScheduleEnrollPresenter.View {
+import static util.UtilsApp.requestFocus;
+
+public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.OnClickListener,
+        DatePickerDialog.OnDateSetListener, TimePicker.OnTimeChangedListener, ScheduleEnrollPresenter.View
+{
 
     private ScheduleEnrollPresenter mPresenter;
     private ImageButton mDatePicker;
-    private TimePicker mStartTime;
-    private TimePicker mEndTime;
+    private TimePicker mStartTime, mEndTime;
 
-    private EditText mDateText;
-    private EditText mTitleText;
-    private EditText mStartPointText;
-    private EditText mEndPointText;
-    private EditText mWayPointText;
-    private EditText mDescriptionsText;
+    // 날짜 제목 출발지 도착지 상세설명
+    private TextInputLayout mInputLayoutDate, mInputLayoutTitle, mInputLayoutStartSpot, mInputLayoutEndSpot, mInputLayoutDescription;
+    private EditText mDateText, mTitleText, mStartSpotText, mEndSpotText, mDescriptionsText;
 
     private Button mEnroll;
-    private String strStartTime;
-    private String strEndTime;
-    private String strSelectedDate;
-    private String strSelectedDayOfWeek;
+    private String strStartTime, strEndTime, strSelectedDate, strSelectedDayOfWeek;
     private ScheduleDefaultEntitiy mDefaultEntity;
 
     private Calendar mCalendar = Calendar.getInstance();
@@ -121,11 +122,16 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         mStartTime = (TimePicker) findViewById(R.id.tp_activity_schedule_enroll_start_time);
         mEndTime = (TimePicker) findViewById(R.id.tp_activity_schedule_enroll_end_time);
 
+        mInputLayoutDate = (TextInputLayout) findViewById(R.id.edt_activity_schedule_enroll_date_layout);
+        mInputLayoutTitle = (TextInputLayout) findViewById(R.id.edt_activity_schedule_enroll_title_layout);
+        mInputLayoutStartSpot = (TextInputLayout) findViewById(R.id.edt_activity_schedule_enroll_start_spot_layout);
+        mInputLayoutEndSpot = (TextInputLayout) findViewById(R.id.edt_activity_schedule_enroll_end_spot_layout);
+        mInputLayoutDescription = (TextInputLayout) findViewById(R.id.edt_activity_schedule_enroll_descriptions_layout);
+
         mDateText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_date);
         mTitleText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_title);
-        mStartPointText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_start_point);
-        mEndPointText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_end_point);
-        mWayPointText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_way_point);
+        mStartSpotText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_start_spot);
+        mEndSpotText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_end_spot);
         mDescriptionsText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_descriptions);
 
         mEnroll = (Button) findViewById(R.id.btn_activity_schedule_enroll_submit);
@@ -133,6 +139,12 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         mDateText.setKeyListener(null);
         mStartTime.setOnTimeChangedListener(this);
         mEndTime.setOnTimeChangedListener(this);
+
+        mDateText.addTextChangedListener(new ScheduleEnrollTextWatcher(mInputLayoutDate));
+        mTitleText.addTextChangedListener(new ScheduleEnrollTextWatcher(mTitleText));
+        mStartSpotText.addTextChangedListener(new ScheduleEnrollTextWatcher(mStartSpotText));
+        mEndSpotText.addTextChangedListener(new ScheduleEnrollTextWatcher(mEndSpotText));
+        mDescriptionsText.addTextChangedListener(new ScheduleEnrollTextWatcher(mDescriptionsText));
 
         mDatePicker.setOnClickListener(this);
         mEnroll.setOnClickListener(this);
@@ -148,14 +160,6 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         mDateText.setText(strSelectedDate + " " + strSelectedDayOfWeek);
 
         mPresenter = new ScheduleEnrollPresenterImpl(this);
-
-        //For test
-        mTitleText.setText("1");
-        mStartPointText.setText("1");
-        mEndPointText.setText("1");
-        mDescriptionsText.setText("1");
-        strStartTime = "11:11";
-        strEndTime = "22:22";
     }
 
     private void scheduleSubmit() {
@@ -163,16 +167,67 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
                             .setMember(mDefaultEntity.getMember())
                             .setDate(strSelectedDate)
                             .setTitle(mTitleText.getText().toString())
-                            .setStartPoint(mStartPointText.getText().toString())
-                            .setEndPoint(mEndPointText.getText().toString())
+                            .setStartPoint("")
+                            .setEndPoint("")
                             .setStartTime(strStartTime)
                             .setEndTime(strEndTime)
                             .setDescriptions(mDescriptionsText.getText().toString())
                             .setStatus(1)
-                            .setStartSpot("장소1")
-                            .setEndSpot("장소2");
+                            .setStartSpot(mStartSpotText.getText().toString())
+                            .setEndSpot(mEndSpotText.getText().toString());
 
         mPresenter.scheduleEnroll(schedule);
     }
 
+    class ScheduleEnrollTextWatcher implements TextWatcher {
+
+        private View view;
+
+        public ScheduleEnrollTextWatcher(View view) {
+            this.view = view;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            switch (view.getId()) {
+                case R.id.edt_activity_schedule_enroll_date:
+                    validateText(mDateText, mInputLayoutDate, "날짜를 선택해주세요");
+                    break;
+                case R.id.edt_activity_schedule_enroll_title:
+                    validateText(mTitleText, mInputLayoutTitle, "제목을 입력해주세요");
+                    break;
+                case R.id.edt_activity_schedule_enroll_start_spot:
+                    validateText(mStartSpotText, mInputLayoutStartSpot, "출발지를 입력해주세요");
+                    break;
+                case R.id.edt_activity_schedule_enroll_end_spot:
+                    validateText(mEndSpotText, mInputLayoutEndSpot, "도착지를 입력해주세요");
+                    break;
+                case R.id.edt_activity_schedule_enroll_descriptions:
+                    validateText(mDescriptionsText, mInputLayoutDescription, "상세정보를 입력해주세요");
+                    break;
+            }
+        }
+    }
+
+    private boolean validateText(TextView textView, TextInputLayout textInputLayout, String msg) {
+        if (textView.getText().toString().trim().isEmpty()) {
+            textInputLayout.setError(msg);
+            requestFocus(this, textView);
+            return false;
+        } else {
+            textInputLayout.setErrorEnabled(false);
+        }
+
+        return true;
+    }
 }
