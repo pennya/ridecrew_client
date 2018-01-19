@@ -18,6 +18,7 @@ import com.ridecrew.ridecrew.presenter.GalleryPresenterImpl;
 
 import java.util.ArrayList;
 
+import Define.DefineValue;
 import Entity.ApiResult;
 import Entity.Gallery;
 import Entity.MemberSingleton;
@@ -55,7 +56,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 99 && requestCode != RESULT_OK) {
+        if(requestCode == DefineValue.GALLERY_FRAGMENT_REQUEST_CODE && requestCode != RESULT_OK) {
             Gallery gallery = Gallery.builder()
                                             .setMember(MemberSingleton.getInstance().getMember())
                                             .setTitle("TEST TITLE")

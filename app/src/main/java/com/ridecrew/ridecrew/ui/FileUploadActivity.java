@@ -33,6 +33,8 @@ import com.ridecrew.ridecrew.R;
 
 import java.io.File;
 
+import Define.DefineValue;
+
 public class FileUploadActivity extends AppCompatActivity  implements View.OnClickListener {
 
     public static final int PICK_FROM_ALBUM = 1;
@@ -86,7 +88,7 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
 
                             Intent intent = new Intent();
                             intent.putExtra("imageUrl", finalUrl);
-                            setResult(99, intent);
+                            setResult(DefineValue.GALLERY_FRAGMENT_REQUEST_CODE, intent);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
                             finish();
                         }

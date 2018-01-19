@@ -2,6 +2,7 @@ package com.ridecrew.ridecrew.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
@@ -25,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import Define.DefineValue;
+import Entity.LocationInfo;
 import Entity.Schedule;
 import Entity.ScheduleDefaultEntitiy;
 
@@ -35,7 +37,7 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
 {
 
     private ScheduleEnrollPresenter mPresenter;
-    private ImageButton mDatePicker;
+    private ImageButton mBtnDatePicker, mBtnStartSpot, mBtnEndSpot;
     private TimePicker mStartTime, mEndTime;
 
     // 날짜 제목 출발지 도착지 상세설명
@@ -43,7 +45,7 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
     private EditText mDateText, mTitleText, mStartSpotText, mEndSpotText, mDescriptionsText;
 
     private Button mEnroll;
-    private String strStartTime, strEndTime, strSelectedDate, strSelectedDayOfWeek;
+    private String strStartTime, strEndTime, strSelectedDate, strSelectedDayOfWeek, strStartPoint, strEndPoint;
     private ScheduleDefaultEntitiy mDefaultEntity;
 
     private Calendar mCalendar = Calendar.getInstance();
@@ -55,6 +57,22 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         layoutInit();
         setDefaultSetting();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == DefineValue.LOCATION_SELECTION_REQUEST_CODE && resultCode != RESULT_OK) {
+            int key = data.getIntExtra("key", 0);
+            LocationInfo item = (LocationInfo)data.getSerializableExtra("item");
+
+            if(key == R.id.btn_activity_schedule_enroll_start_spot_location) {
+                mStartSpotText.setText(item.getTitle());
+                strStartPoint = String.valueOf(item.getLatitude()) + "|" + String.valueOf(item.getLongitude());
+            } else {
+                mEndSpotText.setText(item.getTitle());
+                strEndPoint = String.valueOf(item.getLatitude()) + "|" + String.valueOf(item.getLongitude());
+            }
+        }
     }
 
     @Override
@@ -72,6 +90,16 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         switch (view.getId()) {
             case R.id.btn_activity_schedule_enroll_datepicker:
                 new DatePickerDialog(this, this, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                break;
+
+            case R.id.btn_activity_schedule_enroll_start_spot_location:
+                startActivityForResult(new Intent(this, TMapLocationSelectActivity.class).putExtra("key", R.id.btn_activity_schedule_enroll_start_spot_location),
+                        DefineValue.LOCATION_SELECTION_REQUEST_CODE);
+                break;
+
+            case R.id.btn_activity_schedule_enroll_end_spot_location:
+                startActivityForResult(new Intent(this, TMapLocationSelectActivity.class).putExtra("key", R.id.btn_activity_schedule_enroll_end_spot_location),
+                        DefineValue.LOCATION_SELECTION_REQUEST_CODE);
                 break;
 
             case R.id.btn_activity_schedule_enroll_submit:
@@ -97,11 +125,20 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
     public void onTimeChanged(TimePicker timePicker, int hour, int minute) {
         switch (timePicker.getId()) {
             case R.id.tp_activity_schedule_enroll_start_time:
-                strStartTime = hour + ":" + minute;
+                if(hour < 10) {
+                    strStartTime = "0" + hour + ":" + minute;
+                } else {
+                    strStartTime = hour + ":" + minute;
+                }
                 break;
 
             case R.id.tp_activity_schedule_enroll_end_time:
-                strEndTime = hour + ":" + minute;
+                if(hour < 10) {
+                    strEndTime = "0" + hour + ":" + minute;
+                } else {
+                    strEndTime = hour + ":" + minute;
+                }
+
                 break;
         }
     }
@@ -118,7 +155,9 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
     }
 
     private void layoutInit() {
-        mDatePicker = (ImageButton) findViewById(R.id.btn_activity_schedule_enroll_datepicker);
+        mBtnDatePicker = (ImageButton) findViewById(R.id.btn_activity_schedule_enroll_datepicker);
+        mBtnStartSpot = (ImageButton) findViewById(R.id.btn_activity_schedule_enroll_start_spot_location);
+        mBtnEndSpot = (ImageButton) findViewById(R.id.btn_activity_schedule_enroll_end_spot_location);
         mStartTime = (TimePicker) findViewById(R.id.tp_activity_schedule_enroll_start_time);
         mEndTime = (TimePicker) findViewById(R.id.tp_activity_schedule_enroll_end_time);
 
@@ -137,6 +176,11 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         mEnroll = (Button) findViewById(R.id.btn_activity_schedule_enroll_submit);
 
         mDateText.setKeyListener(null);
+        mStartSpotText.setKeyListener(null);
+        mEndSpotText.setKeyListener(null);
+        mStartSpotText.setText("지도 아이콘 클릭");
+        mEndSpotText.setText("지도 아이콘 클릭");
+
         mStartTime.setOnTimeChangedListener(this);
         mEndTime.setOnTimeChangedListener(this);
 
@@ -146,7 +190,9 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         mEndSpotText.addTextChangedListener(new ScheduleEnrollTextWatcher(mEndSpotText));
         mDescriptionsText.addTextChangedListener(new ScheduleEnrollTextWatcher(mDescriptionsText));
 
-        mDatePicker.setOnClickListener(this);
+        mBtnDatePicker.setOnClickListener(this);
+        mBtnStartSpot.setOnClickListener(this);
+        mBtnEndSpot.setOnClickListener(this);
         mEnroll.setOnClickListener(this);
 
     }
@@ -163,12 +209,15 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
     }
 
     private void scheduleSubmit() {
+        if(strStartPoint == null || strEndPoint == null)
+            return;
+
         Schedule schedule = Schedule.builder()
                             .setMember(mDefaultEntity.getMember())
                             .setDate(strSelectedDate)
                             .setTitle(mTitleText.getText().toString())
-                            .setStartPoint("")
-                            .setEndPoint("")
+                            .setStartPoint(strStartPoint)
+                            .setEndPoint(strEndPoint)
                             .setStartTime(strStartTime)
                             .setEndTime(strEndTime)
                             .setDescriptions(mDescriptionsText.getText().toString())
