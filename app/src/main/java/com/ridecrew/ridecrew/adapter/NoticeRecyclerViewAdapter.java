@@ -1,11 +1,15 @@
 package com.ridecrew.ridecrew.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
@@ -17,7 +21,7 @@ import Entity.Notice;
  * Created by JooHyeong on 2018. 1. 11..
  */
 
-public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private ArrayList<Notice> mItemLists;
     private NoticeRecyclerViewCallback mCallback;
@@ -39,16 +43,18 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         final int itemPosition = position;
 
         if(holder instanceof ViewHolder) {
-            ViewHolder viewHolder = (ViewHolder)holder;
+            final ViewHolder viewHolder = (ViewHolder)holder;
             viewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
                     mCallback.showItem(itemPosition);
+                    viewHolder.mContents.setText(mItemLists.get(itemPosition).getContent());
+                    viewHolder.mImgUp.setImageResource(R.drawable.ic_action_arrow_up);
+                    viewHolder.mImgDown.setVisibility(View.INVISIBLE);
                 }
             });
             viewHolder.mTitle.setText(mItemLists.get(itemPosition).getTitle());
-            viewHolder.mContents.setText(mItemLists.get(itemPosition).getContent());
         }
     }
 
@@ -61,12 +67,16 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         protected CardView mCardView;
         protected TextView mTitle;
         protected TextView mContents;
+        private ImageView mImgUp;
+        private ImageView mImgDown;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView)itemView.findViewById(R.id.card_view_fragment_notice_recycler_view);
             mTitle = (TextView)itemView.findViewById(R.id.tv_fragment_notice_recycler_view_title);
             mContents = (TextView)itemView.findViewById(R.id.tv_fragment_notice_recycler_view_contents);
+            mImgUp = (ImageView)itemView.findViewById(R.id.img_arrow_up);
+            mImgDown = (ImageView)itemView.findViewById(R.id.img_arrow_down);
         }
     }
 

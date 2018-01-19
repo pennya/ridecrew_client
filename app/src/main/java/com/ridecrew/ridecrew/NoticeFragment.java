@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
@@ -23,7 +24,6 @@ import Entity.Notice;
 public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallback,NoticePresenter.View,View.OnClickListener{
 
     private RecyclerView mRecyclerView;
-
     private NoticeRecyclerViewAdapter mRecyclerViewAdapter;
     private NoticePresenter mPresenter;
     private ArrayList<Notice> mNoticeList;
@@ -34,7 +34,6 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notice, container, false);
-
         layoutInit(view);
         setDefaultSetting(view);
         loadData();
@@ -43,6 +42,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     @Override
     public void onClick(View view) {
+
     }
 
     @Override
