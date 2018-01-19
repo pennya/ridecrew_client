@@ -2,7 +2,6 @@ package com.ridecrew.ridecrew.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
@@ -29,6 +28,7 @@ import Define.DefineValue;
 import Entity.LocationInfo;
 import Entity.Schedule;
 import Entity.ScheduleDefaultEntitiy;
+import util.UtilsApp;
 
 import static util.UtilsApp.requestFocus;
 
@@ -145,6 +145,7 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
 
     @Override
     public void moveActivity() {
+        UtilsApp.ShowDialog(this, "스케줄 등록완료");
         setResult(DefineValue.SCHEDULE_FRAGMENT_REQEUST_CODE);
         finish();
     }

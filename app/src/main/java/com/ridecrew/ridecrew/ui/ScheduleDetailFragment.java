@@ -23,6 +23,7 @@ import Entity.Schedule;
 import Entity.ScheduleDefaultEntitiy;
 import Entity.ScheduleMember;
 import util.SharedUtils;
+import util.UtilsApp;
 
 /**
  * Created by KIM on 2018-01-03.
@@ -66,7 +67,7 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
 
     @Override
     public void showToast(String text) {
-        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+        UtilsApp.ShowDialog(getActivity(), text);
     }
 
     @Override
