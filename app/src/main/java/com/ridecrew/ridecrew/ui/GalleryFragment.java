@@ -49,14 +49,14 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_fragment_gallery_add:
-                startActivityForResult(new Intent(getActivity(), FileUploadActivity.class), 99);
+                startActivityForResult(new Intent(getActivity(), FileUploadActivity.class), DefineValue.GALLERY_FRAGMENT_REQUEST_CODE);
                 break;
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == DefineValue.GALLERY_FRAGMENT_REQUEST_CODE && requestCode != RESULT_OK) {
+        if(requestCode == DefineValue.GALLERY_FRAGMENT_REQUEST_CODE && resultCode != RESULT_OK) {
             Gallery gallery = Gallery.builder()
                                             .setMember(MemberSingleton.getInstance().getMember())
                                             .setTitle("TEST TITLE")
