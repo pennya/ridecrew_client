@@ -14,6 +14,8 @@ public class DefineValue {
     public static final int SCHEDULE_FRAGMENT_REQEUST_CODE = 1002;
     public static final int LOGIN_ACTIVITY_REQUEST_CODE = 2001;
     public static final int SIGN_UP_ACTIVITY_REQEUST_CODE = 2002;
+    public static final int GALLERY_FRAGMENT_REQUEST_CODE = 3001;
+    public static final int LOCATION_SELECTION_REQUEST_CODE = 4001;
 
 
     // 자동 로그인 용

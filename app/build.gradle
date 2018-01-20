@@ -1,22 +1,85 @@
 apply plugin: 'com.android.application'
 
+// versionName  <major>.<minor>.<patch>
+// major : 대규모 패치, 직접 count
+// minor : 큰 작은 버그 수정사항, 직접 count
+// patch : 별로 중요하지 않은 부분, 자동 count
+//
+// Gradle->herethere_android_Tasks->build->assembleRelease run하여 versionCode, patch 숫자를 올림  (ex. RELEASES-1.0.2-app-release-unsigned.apk )
+// Build->Generate Signed Apk로 Google Play Store에 올릴 apk 생성  (ex. RELEASES-1.0.2-app-release.apk )
 android {
     compileSdkVersion 26
-    defaultConfig {
-        applicationId "com.ridecrew.ridecrew"
-        minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    buildToolsVersion '27.0.1'
+
+    //File 불러오기
+    def versionPropsFile = file('version.properties')
+
+    //File Read 여부 체크
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        //Release 할대만 VersionCode 및 patch 값을 Count up해 준다.
+        def value = 0
+        def runTasks = gradle.startParameter.taskNames
+        if ('assembleRelease' in runTasks) {
+            value = 1;
+        }
+
+        def versionMajor = 1
+        def versionMinor = 1
+        def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
+
+        //Build 정보는 Debug, Release 상관없이 빌드하면 무조건 Count up
+        def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
+        def versionNumber = versionProps['VERSION_NUMBER'].toInteger() + value
+
+        versionProps['VERSION_PATCH'] = versionPatch.toString()
+        versionProps['VERSION_BUILD'] = versionBuild.toString()
+        versionProps['VERSION_NUMBER'] = versionNumber.toString()
+
+        //update 된 설정값들을 다시 version.properties 파일에 쓰기
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+
+        defaultConfig {
+            applicationId "com.ridecrew.ridecrew"
+            minSdkVersion 17
+            targetSdkVersion 26
+            versionCode versionNumber
+            versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                //apk 파일이 생성되는 folder 및 파일이름
+                def fileNaming = "apk/RELEASES"
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    output.outputFileName = new File("app/",
+                            "${fileNaming}-${versionMajor}.${versionMinor}.${versionPatch}-${outputFile.name}")
+                }
+            }
+        }
+
+    } else {
+        throw new GradleException("Could not read version.properties!")
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '27.0.1'
+
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.google.com' }
 }
 
 dependencies {
@@ -29,6 +92,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:design:26.1.0'
     androidTestCompile 'com.android.support:support-annotations:23.3.0'
+    compile files('libs/com.skp.Tmap_1.0.47.jar') /* TMap*/
     // rest api
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'

@@ -38,10 +38,14 @@
         <activity
             android:name=".ui.ScheduleEnrollActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ParticapationListActivity">
+        <activity android:name=".ui.ParticapationListActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.FileUploadActivity">
+        <activity android:name=".ui.FileUploadActivity"
+            android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".ui.TMapLocationSelectActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
