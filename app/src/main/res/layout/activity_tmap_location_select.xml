@@ -3,6 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/rl_tmap_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -10,11 +15,6 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-    <RelativeLayout
-        android:id="@+id/rl_tmap_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,14 +38,6 @@
             android:textStyle="bold"
             android:textSize="15dp"
             android:text="지도를 이동하여 위치를 지정해 주세요"/>
-
-        <Button
-            android:id="@+id/btn_tmap_location_select_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@android:color/transparent"
-            android:text="X"/>
 
     </RelativeLayout>
 

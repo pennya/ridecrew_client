@@ -53,6 +53,7 @@ public class MainActivity extends BaseToolbarActivity implements TabLayout.OnTab
                 else {
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     return true;
                 }
             default:

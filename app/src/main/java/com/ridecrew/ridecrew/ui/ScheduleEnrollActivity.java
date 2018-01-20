@@ -61,7 +61,7 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == DefineValue.LOCATION_SELECTION_REQUEST_CODE && resultCode != RESULT_OK) {
+        if(requestCode == DefineValue.LOCATION_SELECTION_REQUEST_CODE && resultCode == RESULT_OK) {
             int key = data.getIntExtra("key", 0);
             LocationInfo item = (LocationInfo)data.getSerializableExtra("item");
 
@@ -95,11 +95,13 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
             case R.id.btn_activity_schedule_enroll_start_spot_location:
                 startActivityForResult(new Intent(this, TMapLocationSelectActivity.class).putExtra("key", R.id.btn_activity_schedule_enroll_start_spot_location),
                         DefineValue.LOCATION_SELECTION_REQUEST_CODE);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
 
             case R.id.btn_activity_schedule_enroll_end_spot_location:
                 startActivityForResult(new Intent(this, TMapLocationSelectActivity.class).putExtra("key", R.id.btn_activity_schedule_enroll_end_spot_location),
                         DefineValue.LOCATION_SELECTION_REQUEST_CODE);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
 
             case R.id.btn_activity_schedule_enroll_submit:

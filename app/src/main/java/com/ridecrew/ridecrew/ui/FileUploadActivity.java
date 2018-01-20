@@ -35,7 +35,7 @@ import java.io.File;
 
 import Define.DefineValue;
 
-public class FileUploadActivity extends AppCompatActivity  implements View.OnClickListener {
+public class FileUploadActivity extends BaseToolbarActivity  implements View.OnClickListener {
 
     public static final int PICK_FROM_ALBUM = 1;
     public static final int REQUEST_PERMISSIONS_REQUEST_CODE = 99;
@@ -56,7 +56,6 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_file_upload);
 
         if (!checkPermissions() && Build.VERSION.SDK_INT >= 23) {
             requestPermissions();
@@ -65,6 +64,16 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
         initLayout();
         setDefaultSettings();
 
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_file_upload;
+    }
+
+    @Override
+    protected int getTitleToolBar() {
+        return R.string.app_name;
     }
 
     @Override
@@ -155,6 +164,7 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
                                     intent.setData(uri);
                                     intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
+                                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                 }
                             })
                             .create()
@@ -167,6 +177,7 @@ public class FileUploadActivity extends AppCompatActivity  implements View.OnCli
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     private String getPathFromUri(Uri uri){

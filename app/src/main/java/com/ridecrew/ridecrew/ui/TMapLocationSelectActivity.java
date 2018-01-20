@@ -3,7 +3,6 @@ package com.ridecrew.ridecrew.ui;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -17,7 +16,6 @@ import com.skp.Tmap.TMapView;
 
 import Define.DefineValue;
 import Entity.LocationInfo;
-import util.BaseTMapActivity;
 import util.UtilsApp;
 
 public class TMapLocationSelectActivity extends BaseTMapActivity implements TMapView.OnEnableScrollWithZoomLevelCallback,
@@ -26,7 +24,6 @@ public class TMapLocationSelectActivity extends BaseTMapActivity implements TMap
 
     private RelativeLayout mRootLayout;
     private Button mCompleteButton;
-    private Button mCloseButton;
     private TextView mLocationInfo;
 
     private TMapMarkerItem mCenterMarkerItem;
@@ -51,16 +48,6 @@ public class TMapLocationSelectActivity extends BaseTMapActivity implements TMap
     @Override
     protected int getTitleToolBar() {
         return R.string.app_name;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -90,9 +77,6 @@ public class TMapLocationSelectActivity extends BaseTMapActivity implements TMap
                 finish();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
-            case R.id.btn_tmap_location_select_close:
-                finish();
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
 
@@ -113,9 +97,7 @@ public class TMapLocationSelectActivity extends BaseTMapActivity implements TMap
 
         mRootLayout = (RelativeLayout)findViewById(R.id.rl_tmap_view);
         mCompleteButton = (Button)findViewById(R.id.btn_tmap_location_select_complete);
-        mCloseButton = (Button)findViewById(R.id.btn_tmap_location_select_close);
         mCompleteButton.setOnClickListener(this);
-        mCloseButton.setOnClickListener(this);
         mLocationInfo = (TextView)findViewById(R.id.tv_tmap_location_to_address);
     }
 

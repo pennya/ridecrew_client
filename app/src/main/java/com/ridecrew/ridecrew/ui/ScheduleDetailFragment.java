@@ -117,6 +117,7 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
                 else {
                     Intent intent = new Intent(getContext(),LoginActivity.class);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
                 break;
             case R.id.btn_fragment_schedule_detail_cancel:
