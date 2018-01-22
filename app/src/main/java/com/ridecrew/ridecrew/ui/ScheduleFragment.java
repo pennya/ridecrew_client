@@ -1,5 +1,8 @@
 package com.ridecrew.ridecrew.ui;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -41,6 +44,8 @@ import Entity.Schedule;
 import Entity.ScheduleDefaultEntitiy;
 import util.SharedUtils;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by kim on 2017. 12. 25..
  */
@@ -59,6 +64,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
     private final SimpleDateFormat DATE_FORMATTER;
     private ImageButton mEnroll;
     private CalendarDay mSelectedDate;
+    private ProgressDialog mDialog;
 
     public ScheduleFragment() {
         DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
@@ -132,13 +138,29 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if( resultCode == DefineValue.SCHEDULE_FRAGMENT_REQEUST_CODE ) {
+        if( resultCode == DefineValue.SCHEDULE_FRAGMENT_REQEUST_CODE && resultCode == RESULT_OK) {
             loadData();
         }
     }
 
     @Override
     public void getAllScheduleData(ApiResult<List<Schedule>> apiResult) {
+        mDialog.dismiss();
+
+        if(apiResult == null) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("알림")
+                    .setMessage("데이터가 없습니다. 재시작 해주세요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .create()
+                    .show();
+            return;
+        }
         mScheduleLists = apiResult.getData();
         ArrayList<CalendarDay> dates = new ArrayList<>();
 
@@ -194,10 +216,15 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
             mEnroll.setVisibility(View.GONE);
         }
 
+        mDialog = new ProgressDialog(getActivity());
+        mDialog.setMessage("로딩중..");
+        mDialog.setCancelable(false);
+
         mPresenter = new SchedulePresenterImpl(this);
     }
 
     private void loadData() {
+        mDialog.show();
 
         CalendarDay calendarDay = mCalendarView.getCurrentDate();
         String yearAndMonth = DATE_FORMATTER.format(calendarDay.getDate()).substring(0, 7);  /* yyyy-mm-dd */

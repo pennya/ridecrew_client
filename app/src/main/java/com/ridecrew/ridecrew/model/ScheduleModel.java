@@ -43,6 +43,7 @@ public class ScheduleModel {
             public void onFailure(Call<ApiResult<List<Schedule>>> call, Throwable t) {
                 Log.d(DefineValue.TAG, "requestScheduleList fail");
                 Log.d(DefineValue.TAG, t.getMessage());
+                mCallback.getAllScheduleData(null);
             }
         });
     }
