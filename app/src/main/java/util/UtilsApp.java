@@ -1,7 +1,9 @@
 package util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -37,5 +39,19 @@ public class UtilsApp {
         if (view.requestFocus()) {
             context.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
+    }
+
+    public static void ShowDialog(Activity activity, String msg) {
+        new AlertDialog.Builder(activity)
+                .setTitle("알림")
+                .setMessage(msg)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .create()
+                .show();
     }
 }
