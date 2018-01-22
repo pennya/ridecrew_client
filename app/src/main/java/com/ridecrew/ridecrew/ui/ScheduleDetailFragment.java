@@ -3,6 +3,7 @@ package com.ridecrew.ridecrew.ui;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -19,10 +20,14 @@ import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenter;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenterImpl;
 import com.skp.Tmap.TMapData;
+import com.skp.Tmap.TMapInfo;
 import com.skp.Tmap.TMapMarkerItem;
+import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import Define.DefineValue;
 import Entity.ApiResult;
@@ -49,6 +54,9 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
     private RelativeLayout mMap;
     private TMapView mTMapView;
     private View mMapFake;
+
+    private TMapMarkerItem startMarker, endMarker;
+    private TMapPoint startPoint, endPoint;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -107,7 +115,7 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
             public boolean onTouch(View v, MotionEvent event) {
                 // in order to not touch TMapView
                 // return true is required
-                return true;
+                return false;
             }
         });
     }
@@ -134,15 +142,46 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
 
         mMap.addView(mTMapView);
 
+        if(mCurrentSchedule.getStartPoint() == null || mCurrentSchedule.getEndPoint() == null
+                || mCurrentSchedule.getStartPoint().equals("") || mCurrentSchedule.getEndPoint().equals(""))
+            return;
+
+        StringTokenizer token = null;
+        token = new StringTokenizer(mCurrentSchedule.getStartPoint(), "|");
+        double startLat = Double.parseDouble(token.nextToken());
+        double startLong = Double.parseDouble(token.nextToken());
+
+        token = new StringTokenizer(mCurrentSchedule.getEndPoint(), "|");
+        double endLat = Double.parseDouble(token.nextToken());
+        double endLong = Double.parseDouble(token.nextToken());
+
+        startPoint = new TMapPoint(startLat, startLong);
+        endPoint = new TMapPoint(endLat, endLong);
+
         // 출발,도착 마커 최적화해서 보이기
-        //mTMapView.getDisplayTMapInfo(arrays);
+        ArrayList<TMapPoint> point = new ArrayList<>();
+        point.add(startPoint);
+        point.add(endPoint);
 
-        // 출발,도착 마커
-        /*Bitmap start = BitmapFactory.decodeResource(context.getResources(),R.drawable.Start);
-        Bitmap end = BitmapFactory.decodeResource(context.getResources(),R.drawable.End);
-        Bitmap pass = BitmapFactory.decodeResource(context.getResources(),R.drawable.Pass);
-        tmapview.setTMapPathIcon(start, end, pass);*/
+        TMapInfo info = null;
+        info = mTMapView.getDisplayTMapInfo(point);
 
+        startMarker = new TMapMarkerItem();
+        startMarker.setIcon(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_start_location));
+        startMarker.setTMapPoint(startPoint);
+        startMarker.setVisible(startMarker.VISIBLE);
+        mTMapView.addMarkerItem("startMarker", startMarker);
+
+        endMarker = new TMapMarkerItem();
+        endMarker.setIcon(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_end_location));
+        endMarker.setTMapPoint(endPoint);
+        endMarker.setVisible(endMarker.VISIBLE);
+        mTMapView.addMarkerItem("endMarker", endMarker);
+
+        Log.d("KJH", "current : " + mTMapView.getZoomLevel() + " want to set : " + info.getTMapZoomLevel());
+        mTMapView.setZoomLevel(6);
+        mTMapView.setLocationPoint(info.getTMapPoint().getLongitude(), info.getTMapPoint().getLatitude());
+        mTMapView.setCenterPoint(info.getTMapPoint().getLongitude(), info.getTMapPoint().getLatitude());
     }
 
     //다이어로그창에서 참가하기, 수정하기, 취소 터치했을 때 이벤트

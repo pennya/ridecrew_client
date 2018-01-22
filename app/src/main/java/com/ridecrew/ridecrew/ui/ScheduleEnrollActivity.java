@@ -148,7 +148,7 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
     @Override
     public void moveActivity() {
         UtilsApp.ShowDialog(this, "스케줄 등록완료");
-        setResult(DefineValue.SCHEDULE_FRAGMENT_REQEUST_CODE);
+        setResult(RESULT_OK);
         finish();
     }
 
@@ -221,8 +221,8 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
                             .setTitle(mTitleText.getText().toString())
                             .setStartPoint(strStartPoint)
                             .setEndPoint(strEndPoint)
-                            .setStartTime(strStartTime)
-                            .setEndTime(strEndTime)
+                            .setStartTime(strStartTime == null ? strStartTime : null)
+                            .setEndTime(strEndTime == null ? strEndTime : null)
                             .setDescriptions(mDescriptionsText.getText().toString())
                             .setStatus(1)
                             .setStartSpot(mStartSpotText.getText().toString())

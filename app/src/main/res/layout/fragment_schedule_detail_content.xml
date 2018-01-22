@@ -27,15 +27,38 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp"/>
 
-        <LinearLayout
-            android:id="@+id/ll_fragment_schedule_calender_card_description"
+        <Button
+            android:id="@+id/btn_fragment_schedule_detail_join"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
+            app:layout_constraintRight_toLeftOf="@+id/btn_fragment_schedule_detail_cancel"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:text="참가하기"/>
+
+        <Button
+            android:id="@+id/btn_fragment_schedule_detail_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/btn_fragment_schedule_detail_join"
+            app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:text="취소하기"/>
+
+
+        <LinearLayout
+            android:id="@+id/ll_fragment_schedule_calender_card_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/btn_fragment_schedule_detail_join"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
             app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
             android:orientation="vertical"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp">
 
             <TextView
@@ -195,29 +218,6 @@
                 />
 
         </RelativeLayout>
-
-        <Button
-            android:id="@+id/btn_fragment_schedule_detail_join"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/rl_fragment_schedule_calender_card_map"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
-            app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
-            android:layout_marginTop="40dp"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="참가하기"/>
-
-        <Button
-            android:id="@+id/btn_fragment_schedule_detail_cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/btn_fragment_schedule_detail_join"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
-            app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
-            android:layout_marginTop="8dp"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="취소하기"/>
-
 
     </android.support.constraint.ConstraintLayout>
 

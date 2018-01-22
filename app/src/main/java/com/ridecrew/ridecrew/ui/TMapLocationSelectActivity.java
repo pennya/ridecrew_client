@@ -73,7 +73,7 @@ public class TMapLocationSelectActivity extends BaseTMapActivity implements TMap
                 Intent intent = new Intent();
                 intent.putExtra("item", Item);
                 intent.putExtra("key", mKey);
-                setResult(DefineValue.LOCATION_SELECTION_REQUEST_CODE, intent);
+                setResult(RESULT_OK, intent);
                 finish();
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;

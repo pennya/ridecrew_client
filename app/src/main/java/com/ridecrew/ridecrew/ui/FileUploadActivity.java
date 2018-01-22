@@ -97,7 +97,7 @@ public class FileUploadActivity extends BaseToolbarActivity  implements View.OnC
 
                             Intent intent = new Intent();
                             intent.putExtra("imageUrl", finalUrl);
-                            setResult(DefineValue.GALLERY_FRAGMENT_REQUEST_CODE, intent);
+                            setResult(RESULT_OK, intent);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
                             finish();
                         }
