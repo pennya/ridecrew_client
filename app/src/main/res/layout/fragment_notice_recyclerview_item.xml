@@ -17,8 +17,10 @@
         >
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_fragment_notice_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/border"
             android:layout_margin="4dp">
 
             <ImageView
@@ -53,7 +55,7 @@
                 android:layout_marginLeft="20dp"
                 android:fontFamily="sans-serif-thin"
                 android:singleLine="true"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:textColor="@android:color/black"
                 />
 
@@ -64,6 +66,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_fragment_notice_recycler_view_title"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="sans-serif-thin"
+                android:textColor="@android:color/black"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/tv_fragment_notice_recycler_view_createdDateTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv_fragment_notice_recycler_view_contents"
+                app:layout_constraintRight_toLeftOf="@id/img_arrow_down"
                 android:layout_marginTop="4dp"
                 android:layout_marginLeft="20dp"
                 android:fontFamily="sans-serif-thin"
