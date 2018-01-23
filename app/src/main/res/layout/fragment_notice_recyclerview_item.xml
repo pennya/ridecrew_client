@@ -2,8 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view_fragment_notice_recycler_view"
@@ -13,7 +12,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="5dp"
         >
 
         <android.support.constraint.ConstraintLayout
@@ -24,25 +22,15 @@
             android:layout_margin="4dp">
 
             <ImageView
-                android:id="@+id/img_arrow_down"
+                android:id="@+id/img_arrow"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:scaleType="fitEnd"
                 android:src="@drawable/ic_action_arrow_down"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
-
-            <ImageView
-                android:id="@+id/img_arrow_up"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:scaleType="fitEnd"
-                android:src="@drawable/ic_action_arrow_up"
-                android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/tv_fragment_notice_recycler_view_title"
@@ -77,13 +65,13 @@
                 android:id="@+id/tv_fragment_notice_recycler_view_createdDateTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fragment_notice_recycler_view_contents"
-                app:layout_constraintRight_toLeftOf="@id/img_arrow_down"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/img_arrow"
                 android:layout_marginTop="4dp"
                 android:layout_marginLeft="20dp"
                 android:fontFamily="sans-serif-thin"
                 android:textColor="@android:color/black"
-                android:visibility="gone"
+                android:textSize="10dp"
                 />
 
         </android.support.constraint.ConstraintLayout>

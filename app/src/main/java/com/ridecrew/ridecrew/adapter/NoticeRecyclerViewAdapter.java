@@ -30,12 +30,13 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private ArrayList<Notice> mItemLists;
     private ArrayList<Boolean> mExpands;
     private NoticeRecyclerViewCallback mCallback;
-    private int mOriginalHeight = 0;
+    private int mOriginalHeight;
 
     public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback) {
         mCallback = callback;
         mItemLists = new ArrayList<>();
         mExpands = new ArrayList<>();
+        mOriginalHeight = 0;
     }
 
     @Override
@@ -70,14 +71,13 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                         viewHolder.mContents.setVisibility(view.VISIBLE);
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_up);
                         viewHolder.mCreateDateTime.setVisibility(view.VISIBLE);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight,mOriginalHeight+(int)(mOriginalHeight*2.0));
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight,mOriginalHeight+(int)(mOriginalHeight*3.0));
                         mExpands.set(itemPosition,true);
                     } else {    //card view가 펼쳐져 있을 때 접는 애니메이션
-                        viewHolder.mContents.setVisibility(View.INVISIBLE);
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_down);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + (int) (mOriginalHeight * 2.0), mOriginalHeight);
-                        Animation animation = new AlphaAnimation(1.00f, 0.00f);
-                        animation.setDuration(200);
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + (int) (mOriginalHeight * 3.0), mOriginalHeight);
+                        Animation animation = new AlphaAnimation(1.00f, 1.00f);
+                        animation.setDuration(100);
                         mExpands.set(itemPosition,false);
 
                         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -141,7 +141,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             mTitle = (TextView) itemView.findViewById(R.id.tv_fragment_notice_recycler_view_title);
             mContents = (TextView) itemView.findViewById(R.id.tv_fragment_notice_recycler_view_contents);
             mCreateDateTime = (TextView)itemView.findViewById(R.id.tv_fragment_notice_recycler_view_createdDateTime);
-            mImgArrow = (ImageView) itemView.findViewById(R.id.img_arrow_down);
+            mImgArrow = (ImageView) itemView.findViewById(R.id.img_arrow);
             mConstraintLayout = (ConstraintLayout)itemView.findViewById(R.id.cl_fragment_notice_layout);
         }
     }
