@@ -48,6 +48,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     @Override
     public void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult) {
+        //addData();
         mNoticeList = apiResult.getData();
         mRecyclerViewAdapter.setmItemLists(mNoticeList);
         mRecyclerViewAdapter.notifyDataSetChanged();
@@ -68,5 +69,10 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     private void loadData() {
         mPresenter.loadAllNoticeData();
+    }
+
+    //공지 추가
+    private void addData() {
+        mPresenter.addNoticeData(mNoticeList);
     }
 }

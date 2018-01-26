@@ -24,8 +24,9 @@ public class Notice implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public Notice setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public int getType() {
@@ -49,8 +50,9 @@ public class Notice implements Serializable {
         return content;
     }
 
-    public void setContent(String content) {
+    public Notice setContent(String content) {
         this.content = content;
+        return this;
     }
 
     public String getImageUrl() {

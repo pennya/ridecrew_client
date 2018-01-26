@@ -6,5 +6,4 @@ package com.ridecrew.ridecrew.callback;
 
 public interface NoticeRecyclerViewCallback {
     void showItem(int position);
-
 }

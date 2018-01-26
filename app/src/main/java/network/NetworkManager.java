@@ -13,7 +13,7 @@ public class NetworkManager {
 
     private NetworkManager() { }
 
-    public static NetworkManager getIntance() {
+    public static NetworkManager getInstance() {
         return networkManager;
     }
 
