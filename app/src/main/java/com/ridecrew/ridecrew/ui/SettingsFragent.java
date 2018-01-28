@@ -15,6 +15,8 @@ import Entity.MemberSingleton;
 import util.SharedUtils;
 import util.UtilsApp;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by KIM on 2018-01-02.
  */
@@ -72,7 +74,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if( resultCode == DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE) {
+        if( requestCode == DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE && resultCode == RESULT_OK) {
             Long loginIdPk = SharedUtils.getLongValue(getActivity(), DefineValue.LOGIN_ID_PK);
             String nickName = SharedUtils.getStringValue(getActivity(), DefineValue.NICKNAME);
             String currentLoginId = SharedUtils.getStringValue(getActivity(), DefineValue.CURRENT_LOGIN_ID);

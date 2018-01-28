@@ -1,4 +1,4 @@
-package util;
+package com.ridecrew.ridecrew.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,14 +23,13 @@ public abstract class BaseTMapActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
+        configureToolbar();
 
         mTMapView = new TMapView(this);
         mTMapView.setSKPMapApiKey(TMAP_API_KEY);
         mTMapView.setMapType(TMapView.MAPTYPE_STANDARD);
         mTMapView.setLanguage(TMapView.LANGUAGE_KOREAN);
         mTMapView.setTileType(TMapView.TILETYPE_HDTILE);
-
-        configureToolbar();
     }
 
     @Override
@@ -38,6 +37,7 @@ public abstract class BaseTMapActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
         }
         return super.onOptionsItemSelected(item);

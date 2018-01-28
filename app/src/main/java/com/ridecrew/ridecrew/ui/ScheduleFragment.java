@@ -44,6 +44,8 @@ import Entity.Schedule;
 import Entity.ScheduleDefaultEntitiy;
 import util.SharedUtils;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by kim on 2017. 12. 25..
  */
@@ -136,7 +138,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if( resultCode == DefineValue.SCHEDULE_FRAGMENT_REQEUST_CODE ) {
+        if( requestCode == DefineValue.SCHEDULE_FRAGMENT_REQEUST_CODE && resultCode == RESULT_OK) {
             loadData();
         }
     }

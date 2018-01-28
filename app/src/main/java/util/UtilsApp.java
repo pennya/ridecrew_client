@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.WindowManager;
 
+import java.lang.reflect.Method;
+
 /**
  * Created by KIM on 2018-01-02.
  */
