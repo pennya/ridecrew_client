@@ -51,9 +51,9 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
     private Schedule mCurrentSchedule;
     private TextView mTitle, mAuthor, mDate, mStartTime, mEndTime, mStartSpot, mEndSpot, mDescription;
     private Button mBtnJoin, mBtnCancel;
-    private RelativeLayout mMap;
+    /*private RelativeLayout mMap;
     private TMapView mTMapView;
-    private View mMapFake;
+    private View mMapFake;*/
 
     private TMapMarkerItem startMarker, endMarker;
     private TMapPoint startPoint, endPoint;
@@ -65,7 +65,7 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
 
         layoutInit(scheduleDetailView);
         setDefaultSetting();
-        TMapInit();
+        //TMapInit();
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setView(scheduleDetailView);
@@ -105,19 +105,19 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
         mBtnJoin = (Button)view.findViewById(R.id.btn_fragment_schedule_detail_join);
         mBtnCancel = (Button)view.findViewById(R.id.btn_fragment_schedule_detail_cancel);
 
-        mMap = (RelativeLayout) view.findViewById(R.id.rl_fragment_schedule_detail_map_view);
-        mMapFake = (View) view.findViewById(R.id.v_fragment_schedule_detail_map_view_fake);
+        /*mMap = (RelativeLayout) view.findViewById(R.id.rl_fragment_schedule_detail_map_view);
+        mMapFake = (View) view.findViewById(R.id.v_fragment_schedule_detail_map_view_fake);*/
         mBtnJoin.setOnClickListener(this);
         mBtnCancel.setOnClickListener(this);
 
-        mMapFake.setOnTouchListener(new View.OnTouchListener() {
+        /*mMapFake.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // in order to not touch TMapView
                 // return true is required
                 return false;
             }
-        });
+        });*/
     }
 
     private void setDefaultSetting() {
@@ -133,7 +133,7 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
         presenter = new ScheduleMemberPresenterImpl(this);
     }
 
-    private void TMapInit() {
+    /*private void TMapInit() {
         mTMapView = new TMapView(getActivity());
         mTMapView.setSKPMapApiKey(TMAP_API_KEY);
         mTMapView.setMapType(TMapView.MAPTYPE_STANDARD);
@@ -182,7 +182,7 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
         mTMapView.setZoomLevel(6);
         mTMapView.setLocationPoint(info.getTMapPoint().getLongitude(), info.getTMapPoint().getLatitude());
         mTMapView.setCenterPoint(info.getTMapPoint().getLongitude(), info.getTMapPoint().getLatitude());
-    }
+    }*/
 
     //다이어로그창에서 참가하기, 수정하기, 취소 터치했을 때 이벤트
     public void onClick(View view) {

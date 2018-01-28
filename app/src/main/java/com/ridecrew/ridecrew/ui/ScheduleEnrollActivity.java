@@ -1,11 +1,16 @@
 package com.ridecrew.ridecrew.ui;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,6 +25,8 @@ import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.ScheduleEnrollPresenter;
 import com.ridecrew.ridecrew.presenter.ScheduleEnrollPresenterImpl;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,22 +40,25 @@ import util.UtilsApp;
 import static util.UtilsApp.requestFocus;
 
 public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.OnClickListener,
-        DatePickerDialog.OnDateSetListener, TimePicker.OnTimeChangedListener, ScheduleEnrollPresenter.View
+        DatePickerDialog.OnDateSetListener, ScheduleEnrollPresenter.View
 {
 
     private ScheduleEnrollPresenter mPresenter;
-    private ImageButton mBtnDatePicker, mBtnStartSpot, mBtnEndSpot;
-    private TimePicker mStartTime, mEndTime;
+    private ImageButton mBtnDatePicker;
 
     // 날짜 제목 출발지 도착지 상세설명
-    private TextInputLayout mInputLayoutDate, mInputLayoutTitle, mInputLayoutStartSpot, mInputLayoutEndSpot, mInputLayoutDescription;
-    private EditText mDateText, mTitleText, mStartSpotText, mEndSpotText, mDescriptionsText;
+    private TextInputLayout mInputLayoutDate, mInputLayoutTitle, mInputLayoutStartSpot,
+            mInputLayoutEndSpot, mInputLayoutDescription;
+    private EditText mDateText, mTitleText, mStartSpotText, mEndSpotText, mDescriptionsText,
+            mStartTimeText, mEndTimeText;
 
     private Button mEnroll;
-    private String strStartTime, strEndTime, strSelectedDate, strSelectedDayOfWeek, strStartPoint, strEndPoint;
+    private String strSelectedDate, strSelectedDayOfWeek;
     private ScheduleDefaultEntitiy mDefaultEntity;
 
     private Calendar mCalendar = Calendar.getInstance();
+
+    private int currentTimePickerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,22 +67,6 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         layoutInit();
         setDefaultSetting();
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == DefineValue.LOCATION_SELECTION_REQUEST_CODE && resultCode == RESULT_OK) {
-            int key = data.getIntExtra("key", 0);
-            LocationInfo item = (LocationInfo)data.getSerializableExtra("item");
-
-            if(key == R.id.btn_activity_schedule_enroll_start_spot_location) {
-                mStartSpotText.setText(item.getTitle());
-                strStartPoint = String.valueOf(item.getLatitude()) + "|" + String.valueOf(item.getLongitude());
-            } else {
-                mEndSpotText.setText(item.getTitle());
-                strEndPoint = String.valueOf(item.getLatitude()) + "|" + String.valueOf(item.getLongitude());
-            }
-        }
     }
 
     @Override
@@ -92,20 +86,18 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
                 new DatePickerDialog(this, this, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
                 break;
 
-            case R.id.btn_activity_schedule_enroll_start_spot_location:
-                startActivityForResult(new Intent(this, TMapLocationSelectActivity.class).putExtra("key", R.id.btn_activity_schedule_enroll_start_spot_location),
-                        DefineValue.LOCATION_SELECTION_REQUEST_CODE);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                break;
-
-            case R.id.btn_activity_schedule_enroll_end_spot_location:
-                startActivityForResult(new Intent(this, TMapLocationSelectActivity.class).putExtra("key", R.id.btn_activity_schedule_enroll_end_spot_location),
-                        DefineValue.LOCATION_SELECTION_REQUEST_CODE);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                break;
-
             case R.id.btn_activity_schedule_enroll_submit:
                 scheduleSubmit();
+                break;
+
+            case R.id.edt_activity_schedule_enroll_start_time:
+                showHourPicker("시작시간");
+                currentTimePickerId = R.id.edt_activity_schedule_enroll_start_time;
+                break;
+
+            case R.id.edt_activity_schedule_enroll_end_time:
+                showHourPicker("종료시간");
+                currentTimePickerId = R.id.edt_activity_schedule_enroll_end_time;
                 break;
         }
     }
@@ -124,28 +116,6 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
     }
 
     @Override
-    public void onTimeChanged(TimePicker timePicker, int hour, int minute) {
-        switch (timePicker.getId()) {
-            case R.id.tp_activity_schedule_enroll_start_time:
-                if(hour < 10) {
-                    strStartTime = "0" + hour + ":" + minute;
-                } else {
-                    strStartTime = hour + ":" + minute;
-                }
-                break;
-
-            case R.id.tp_activity_schedule_enroll_end_time:
-                if(hour < 10) {
-                    strEndTime = "0" + hour + ":" + minute;
-                } else {
-                    strEndTime = hour + ":" + minute;
-                }
-
-                break;
-        }
-    }
-
-    @Override
     public void moveActivity() {
         UtilsApp.ShowDialog(this, "스케줄 등록완료");
         setResult(RESULT_OK);
@@ -159,10 +129,6 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
 
     private void layoutInit() {
         mBtnDatePicker = (ImageButton) findViewById(R.id.btn_activity_schedule_enroll_datepicker);
-        mBtnStartSpot = (ImageButton) findViewById(R.id.btn_activity_schedule_enroll_start_spot_location);
-        mBtnEndSpot = (ImageButton) findViewById(R.id.btn_activity_schedule_enroll_end_spot_location);
-        mStartTime = (TimePicker) findViewById(R.id.tp_activity_schedule_enroll_start_time);
-        mEndTime = (TimePicker) findViewById(R.id.tp_activity_schedule_enroll_end_time);
 
         mInputLayoutDate = (TextInputLayout) findViewById(R.id.edt_activity_schedule_enroll_date_layout);
         mInputLayoutTitle = (TextInputLayout) findViewById(R.id.edt_activity_schedule_enroll_title_layout);
@@ -175,17 +141,18 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         mStartSpotText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_start_spot);
         mEndSpotText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_end_spot);
         mDescriptionsText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_descriptions);
+        mStartTimeText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_start_time);
+        mEndTimeText = (EditText) findViewById(R.id.edt_activity_schedule_enroll_end_time);
 
         mEnroll = (Button) findViewById(R.id.btn_activity_schedule_enroll_submit);
 
         mDateText.setKeyListener(null);
-        mStartSpotText.setKeyListener(null);
-        mEndSpotText.setKeyListener(null);
-        mStartSpotText.setText("지도 아이콘 클릭");
-        mEndSpotText.setText("지도 아이콘 클릭");
-
-        mStartTime.setOnTimeChangedListener(this);
-        mEndTime.setOnTimeChangedListener(this);
+        mStartTimeText.setKeyListener(null);
+        mEndTimeText.setKeyListener(null);
+        mStartTimeText.setFocusable(false);
+        mEndTimeText.setFocusable(false);
+        mStartTimeText.setClickable(false);
+        mEndTimeText.setClickable(false);
 
         mDateText.addTextChangedListener(new ScheduleEnrollTextWatcher(mInputLayoutDate));
         mTitleText.addTextChangedListener(new ScheduleEnrollTextWatcher(mTitleText));
@@ -194,9 +161,9 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         mDescriptionsText.addTextChangedListener(new ScheduleEnrollTextWatcher(mDescriptionsText));
 
         mBtnDatePicker.setOnClickListener(this);
-        mBtnStartSpot.setOnClickListener(this);
-        mBtnEndSpot.setOnClickListener(this);
         mEnroll.setOnClickListener(this);
+        mStartTimeText.setOnClickListener(this);
+        mEndTimeText.setOnClickListener(this);
 
     }
 
@@ -212,17 +179,14 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
     }
 
     private void scheduleSubmit() {
-        if(strStartPoint == null || strEndPoint == null)
-            return;
-
         Schedule schedule = Schedule.builder()
                             .setMember(mDefaultEntity.getMember())
                             .setDate(strSelectedDate)
                             .setTitle(mTitleText.getText().toString())
-                            .setStartPoint(strStartPoint)
-                            .setEndPoint(strEndPoint)
-                            .setStartTime(strStartTime == null ? strStartTime : null)
-                            .setEndTime(strEndTime == null ? strEndTime : null)
+                            .setStartPoint(mStartSpotText.getText().toString())
+                            .setEndPoint(mEndSpotText.getText().toString())
+                            .setStartTime(mStartTimeText.getText().toString())
+                            .setEndTime(mEndTimeText.getText().toString())
                             .setDescriptions(mDescriptionsText.getText().toString())
                             .setStatus(1)
                             .setStartSpot(mStartSpotText.getText().toString())
@@ -281,5 +245,33 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         }
 
         return true;
+    }
+
+    public void showHourPicker(String title) {
+        final Calendar myCalender = Calendar.getInstance();
+        int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalender.get(Calendar.MINUTE);
+
+
+        TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                if (view.isShown()) {
+                    myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    myCalender.set(Calendar.MINUTE, minute);
+
+                    if(currentTimePickerId == R.id.edt_activity_schedule_enroll_start_time) {
+                        mStartTimeText.setText(String.format("%02d:%02d", hourOfDay, minute));
+                    } else {
+                        mEndTimeText.setText(String.format("%02d:%02d", hourOfDay, minute));
+                    }
+
+                }
+            }
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+        timePickerDialog.setTitle(title);
+        timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        timePickerDialog.show();
     }
 }
