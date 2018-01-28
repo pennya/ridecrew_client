@@ -25,7 +25,7 @@ public class SignUpModel {
 
     public void requestSignUp(Member member)
     {
-        MemberService memberService = NetworkManager.getIntance().getRetrofit(MemberService.class);
+        MemberService memberService = NetworkManager.getInstance().getRetrofit(MemberService.class);
 
         Call<ApiResult<Member>> signUpCall = memberService.signUpMember(member);
         signUpCall.enqueue(new Callback<ApiResult<Member>>() {

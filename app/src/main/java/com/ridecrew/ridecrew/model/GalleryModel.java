@@ -25,7 +25,7 @@ public class GalleryModel {
     }
 
     public void loadGalleries() {
-        GalleryService service = NetworkManager.getIntance().getRetrofit(GalleryService.class);
+        GalleryService service = NetworkManager.getInstance().getRetrofit(GalleryService.class);
         Call<ApiResult<ArrayList<Gallery>>> getAllCall = service.getAllGalleries();
         getAllCall.enqueue(new Callback<ApiResult<ArrayList<Gallery>>>() {
             @Override
@@ -47,7 +47,7 @@ public class GalleryModel {
     }
 
     public void addGallery(Gallery gallery) {
-        GalleryService service = NetworkManager.getIntance().getRetrofit(GalleryService.class);
+        GalleryService service = NetworkManager.getInstance().getRetrofit(GalleryService.class);
         Call<ApiResult<Gallery>> addCall = service.addGallery(gallery);
         addCall.enqueue(new Callback<ApiResult<Gallery>>() {
             @Override

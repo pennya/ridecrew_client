@@ -28,7 +28,7 @@ public class ScheduleModel {
     }
 
     public void requestScheduleList(String date) {
-        ScheduleService service = NetworkManager.getIntance().getRetrofit(ScheduleService.class);
+        ScheduleService service = NetworkManager.getInstance().getRetrofit(ScheduleService.class);
         Call<ApiResult<List<Schedule>>> scheduleListCall = service.getAllSchedules(date);
         scheduleListCall.enqueue(new Callback<ApiResult<List<Schedule>>>() {
             @Override
