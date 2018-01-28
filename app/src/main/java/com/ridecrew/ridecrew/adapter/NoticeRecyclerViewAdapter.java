@@ -67,6 +67,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     mCallback.showItem(itemPosition);
                     viewHolder.mContents.setVisibility(view.VISIBLE);
 
+                    // mOriginalHeight 초기화 작업이 이루어 지지 않으면 리스트마다 크기가 다름
                     if(mOriginalHeight == 0) {
                         mOriginalHeight = view.getHeight();
 
