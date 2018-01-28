@@ -12,13 +12,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="5dp"
         >
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cl_fragment_notice_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/border"
             android:layout_margin="4dp">
 
             <ImageView
