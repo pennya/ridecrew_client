@@ -67,6 +67,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     }
                     ValueAnimator valueAnimator;
                     //card view가 접혀있을 때 펼치는 애니메이션
+                    viewHolder.mConstraintLayout.setVisibility(View.VISIBLE);
                     if(mExpands.get(itemPosition)==false) {
                         viewHolder.mContents.setVisibility(view.VISIBLE);
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_up);
