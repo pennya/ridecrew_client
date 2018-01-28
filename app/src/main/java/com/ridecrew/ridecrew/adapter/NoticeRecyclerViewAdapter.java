@@ -30,13 +30,14 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private ArrayList<Notice> mItemLists;
     private ArrayList<Boolean> mExpands;
     private NoticeRecyclerViewCallback mCallback;
-    private int mOriginalHeight;
+    private int mOriginalHeight, mContentHeight;
 
     public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback) {
         mCallback = callback;
         mItemLists = new ArrayList<>();
         mExpands = new ArrayList<>();
         mOriginalHeight = 0;
+        mContentHeight = 0;
     }
 
     @Override
@@ -62,20 +63,27 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onClick(final View view) {
                     mCallback.showItem(itemPosition);
-                    if (mOriginalHeight == 0) {
+                    viewHolder.mContents.setVisibility(view.VISIBLE);
+
+                    if(mOriginalHeight == 0) {
                         mOriginalHeight = view.getHeight();
+
+                        viewHolder.mContents.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                        int widht = viewHolder.mContents.getMeasuredWidth();
+                        int height = viewHolder.mContents.getMeasuredHeight();
+                        mContentHeight = height;
                     }
+
                     ValueAnimator valueAnimator;
                     //card view가 접혀있을 때 펼치는 애니메이션
                     if(mExpands.get(itemPosition)==false) {
-                        viewHolder.mContents.setVisibility(view.VISIBLE);
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_up);
                         viewHolder.mCreateDateTime.setVisibility(view.VISIBLE);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight,mOriginalHeight+(int)(mOriginalHeight*3.0));
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight, mOriginalHeight + mContentHeight);
                         mExpands.set(itemPosition,true);
                     } else {    //card view가 펼쳐져 있을 때 접는 애니메이션
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_down);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + (int) (mOriginalHeight * 3.0), mOriginalHeight);
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + mContentHeight, mOriginalHeight);
                         Animation animation = new AlphaAnimation(1.00f, 1.00f);
                         animation.setDuration(100);
                         mExpands.set(itemPosition,false);
