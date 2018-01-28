@@ -62,3 +62,6 @@ freeline_project_description.json
 #Release
 app/Release
 Release
+
+#version
+version.properties
