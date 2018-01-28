@@ -25,7 +25,7 @@ public class ScheduleMemberModel {
     }
 
     public void addScheduleMember(ScheduleMember scheduleMember) {
-        ScheduleService service = NetworkManager.getIntance().getRetrofit(ScheduleService.class);
+        ScheduleService service = NetworkManager.getInstance().getRetrofit(ScheduleService.class);
         Call<ApiResult<ScheduleMember>> addCall = service.addScheduleMember(scheduleMember);
         addCall.enqueue(new Callback<ApiResult<ScheduleMember>>() {
             @Override
@@ -48,7 +48,7 @@ public class ScheduleMemberModel {
     }
 
     public void deleteScheduleMember(Long scheduleId, Long memberId) {
-        ScheduleService service = NetworkManager.getIntance().getRetrofit(ScheduleService.class);
+        ScheduleService service = NetworkManager.getInstance().getRetrofit(ScheduleService.class);
         Call<ApiResult<Void>> deleteCall = service.deleteScheduleMember(scheduleId, memberId);
         deleteCall.enqueue(new Callback<ApiResult<Void>>() {
             @Override
@@ -71,7 +71,7 @@ public class ScheduleMemberModel {
     }
 
     public void getScheduleMemberListByMemberId(Long memberId) {
-        ScheduleService service = NetworkManager.getIntance().getRetrofit(ScheduleService.class);
+        ScheduleService service = NetworkManager.getInstance().getRetrofit(ScheduleService.class);
         Call<ApiResult<List<ScheduleMember>>> findCall = service.getAllScheduleMemberByMemberId(memberId);
         findCall.enqueue(new Callback<ApiResult<List<ScheduleMember>>>() {
             @Override

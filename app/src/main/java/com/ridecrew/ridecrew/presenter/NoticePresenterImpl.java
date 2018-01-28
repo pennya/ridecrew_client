@@ -25,6 +25,11 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
     public void loadAllNoticeData() { mModel.requestNoticeList(); }
 
     @Override
+    public void addNoticeData(ArrayList<Notice> itemLists) {
+        mModel.addNoticeList( Notice.builder() ); }
+
+
+    @Override
     public void getAllNoticeDate(ApiResult<ArrayList<Notice>> apiResult) {
         mView.getAllNoticeData(apiResult);
     }
