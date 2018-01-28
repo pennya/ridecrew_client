@@ -28,7 +28,7 @@ public class LoginModel {
     }
 
     public void requestLogin(String email, String pw){
-        MemberService userService = NetworkManager.getIntance().getRetrofit(MemberService.class);
+        MemberService userService = NetworkManager.getInstance().getRetrofit(MemberService.class);
 
         Call<ApiResult<Member>> LoginCall = userService.loginMember(email, pw);
         LoginCall.enqueue(new Callback<ApiResult<Member>>() {

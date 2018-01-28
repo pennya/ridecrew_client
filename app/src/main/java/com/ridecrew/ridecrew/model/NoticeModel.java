@@ -26,7 +26,7 @@ public class NoticeModel {
     }
 
     public void requestNoticeList() {
-        NoticeService service = NetworkManager.getIntance().getRetrofit(NoticeService.class);
+        NoticeService service = NetworkManager.getInstance().getRetrofit(NoticeService.class);
         Call<ApiResult<ArrayList<Notice>>> noticeListCall = service.getAllNoticeData();
         noticeListCall.enqueue(new Callback<ApiResult<ArrayList<Notice>>>() {
 
@@ -45,4 +45,26 @@ public class NoticeModel {
             }
         });
     }
+
+    public void addNoticeList(Notice notice) {
+        NoticeService service = NetworkManager.getInstance().getRetrofit(NoticeService.class);
+        Call<ApiResult<ArrayList<Notice>>> noticeListCall = service.addNotice(notice);
+        noticeListCall.enqueue(new Callback<ApiResult<ArrayList<Notice>>>() {
+
+            @Override
+            public void onResponse(Call<ApiResult<ArrayList<Notice>>> call, Response<ApiResult<ArrayList<Notice>>> response) {
+                if(response.isSuccessful() && response.code() == 200) {
+                    ApiResult<ArrayList<Notice>> result = response.body();
+                    mCallback.getAllNoticeDate(result);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResult<ArrayList<Notice>>> call, Throwable t) {
+                Log.d(DefineValue.TAG,"requestNoticeList falil");
+                Log.d(DefineValue.TAG,t.getMessage());
+            }
+        });
+    }
+
 }

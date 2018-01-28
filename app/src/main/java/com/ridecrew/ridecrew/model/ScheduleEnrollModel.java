@@ -24,7 +24,7 @@ public class ScheduleEnrollModel {
     }
 
     public void scheduleEnroll(Schedule schedule) {
-        ScheduleService scheduleService = NetworkManager.getIntance().getRetrofit(ScheduleService.class);
+        ScheduleService scheduleService = NetworkManager.getInstance().getRetrofit(ScheduleService.class);
         Call<ApiResult<Schedule>> addCall = scheduleService.addSchedule(schedule);
         addCall.enqueue(new Callback<ApiResult<Schedule>>() {
             @Override
