@@ -1,6 +1,7 @@
 package com.ridecrew.ridecrew.adapter;
 
 import android.animation.ValueAnimator;
+import android.graphics.Rect;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +32,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private ArrayList<Boolean> mExpands;
     private ArrayList<Integer> mHeightList;
     private NoticeRecyclerViewCallback mCallback;
-    private int mOriginalHeight, mContentHeight;
+    private int mOriginalHeight;
 
     public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback) {
         mCallback = callback;
@@ -39,7 +40,6 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         mExpands = new ArrayList<>();
         mHeightList = new ArrayList<>();
         mOriginalHeight = 0;
-        mContentHeight = 0;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final int itemPosition = position;
         mExpands.addAll(Collections.nCopies(mItemLists.size(),Boolean.FALSE));
-
+        mHeightList.addAll(Collections.nCopies(mItemLists.size(),0));
         if (holder instanceof ViewHolder) {
             final ViewHolder viewHolder = (ViewHolder) holder;
             if(mExpands.get(itemPosition) == false) {
@@ -68,13 +68,10 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     viewHolder.mContents.setVisibility(view.VISIBLE);
 
                     // mOriginalHeight 초기화 작업이 이루어 지지 않으면 리스트마다 크기가 다름
-                    if(mOriginalHeight == 0) {
+                    if(mHeightList.get(itemPosition) == 0) {
                         mOriginalHeight = view.getHeight();
-
                         viewHolder.mContents.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                        int widht = viewHolder.mContents.getMeasuredWidth();
-                        int height = viewHolder.mContents.getMeasuredHeight();
-                        mHeightList.add(height);
+                        mHeightList.add(itemPosition,viewHolder.mContents.getMeasuredHeight());
                     }
 
                     ValueAnimator valueAnimator;
@@ -87,9 +84,9 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                         mExpands.set(itemPosition,true);
                     } else {    //card view가 펼쳐져 있을 때 접는 애니메이션
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_down);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + mContentHeight, mOriginalHeight);
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + mHeightList.get(itemPosition), mOriginalHeight);
                         Animation animation = new AlphaAnimation(1.00f, 1.00f);
-                        animation.setDuration(100);
+                        animation.setDuration(140);
                         mExpands.set(itemPosition,false);
 
                         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -110,7 +107,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                         });
                         viewHolder.mConstraintLayout.startAnimation(animation);
                     }
-                    valueAnimator.setDuration(500);
+                    valueAnimator.setDuration(100);
                     valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
                     valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override

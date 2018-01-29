@@ -8,16 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
+
 import java.util.ArrayList;
 import Entity.ApiResult;
 import Entity.Notice;
 
-public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallback, NoticePresenter.View, View.OnClickListener {
+public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallback, NoticePresenter.View, View.OnClickListener{
 
     private RecyclerView mRecyclerView;
     private NoticeRecyclerViewAdapter mRecyclerViewAdapter;
