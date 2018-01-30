@@ -1,6 +1,7 @@
 package com.ridecrew.ridecrew.adapter;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
@@ -58,6 +59,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             final ViewHolder viewHolder = (ViewHolder) holder;
             if(mExpands.get(itemPosition) == false) {
                 viewHolder.mConstraintLayout.setVisibility(View.VISIBLE);
+                viewHolder.mImgType.setVisibility(View.VISIBLE);
                 viewHolder.mConstraintLayout.setEnabled(false);
             }
             viewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +82,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     if(mExpands.get(itemPosition)==false) {
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_up);
                         viewHolder.mCreateDateTime.setVisibility(view.VISIBLE);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight, mOriginalHeight + mHeightList.get(itemPosition));
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight, mOriginalHeight + mHeightList.get(itemPosition)+30);
                         mExpands.set(itemPosition,true);
                     } else {    //card view가 펼쳐져 있을 때 접는 애니메이션
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_down);
@@ -124,6 +126,17 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             viewHolder.mContents.setText(mItemLists.get(itemPosition).getContent());
             viewHolder.mCreateDateTime.setText(mItemLists.get(itemPosition).getCreatedDateTime());
             viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_down);
+            switch(Notice.builder().getType()) {
+                case 0:
+                    viewHolder.mImgType.setImageResource(R.drawable.ic_type_notice);
+                    break;
+                case 1:
+                    viewHolder.mImgType.setImageResource(R.drawable.ic_type_event);
+                    break;
+                case 2:
+                    viewHolder.mImgType.setImageResource(R.drawable.ic_type_update);
+                    break;
+            }
         }
     }
 
@@ -142,6 +155,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         protected TextView mCreateDateTime;
         protected TextView mLastModifiedDateTime;
         protected ImageView mImgArrow;
+        protected ImageView mImgType;
         protected ConstraintLayout mConstraintLayout;
 
         public ViewHolder(View itemView) {
@@ -152,6 +166,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             mCreateDateTime = (TextView)itemView.findViewById(R.id.tv_fragment_notice_recycler_view_createdDateTime);
             mImgArrow = (ImageView) itemView.findViewById(R.id.img_arrow);
             mConstraintLayout = (ConstraintLayout)itemView.findViewById(R.id.cl_fragment_notice_layout);
+            mImgType = (ImageView) itemView.findViewById(R.id.img_type_notice);
         }
     }
 

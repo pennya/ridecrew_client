@@ -2,6 +2,7 @@ package com.ridecrew.ridecrew.callback;
 
 import java.util.ArrayList;
 
+import Entity.ApiErrorCode;
 import Entity.ApiResult;
 import Entity.Notice;
 

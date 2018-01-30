@@ -6,6 +6,7 @@ import com.ridecrew.ridecrew.callback.NoticeModelCallback;
 import java.util.ArrayList;
 import java.util.List;
 import Define.DefineValue;
+import Entity.ApiErrorCode;
 import Entity.ApiResult;
 import Entity.Notice;
 import network.NetworkManager;
@@ -66,5 +67,5 @@ public class NoticeModel {
             }
         });
     }
-
 }
+

@@ -33,18 +33,24 @@
                 android:src="@drawable/ic_action_arrow_down"
                  />
 
+
+            <ImageView
+                android:id="@+id/img_type_notice"
+                android:layout_width="40dp"
+                android:layout_height="15dp"
+                android:src="@drawable/ic_type_notice"
+                android:visibility="gone"/>
+
             <TextView
-                android:text="test"
                 android:id="@+id/tv_fragment_notice_recycler_view_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/img_type_notice"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:fontFamily="sans-serif-thin"
                 android:singleLine="true"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@android:color/black"
                 />
 
