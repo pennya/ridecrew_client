@@ -126,14 +126,14 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             viewHolder.mContents.setText(mItemLists.get(itemPosition).getContent());
             viewHolder.mCreateDateTime.setText(mItemLists.get(itemPosition).getCreatedDateTime());
             viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_down);
-            switch(Notice.builder().getType()) {
-                case 0:
+            switch(mItemLists.get(itemPosition).getType()) {
+                case 0: //공지
                     viewHolder.mImgType.setImageResource(R.drawable.ic_type_notice);
                     break;
-                case 1:
+                case 1: //이벤트
                     viewHolder.mImgType.setImageResource(R.drawable.ic_type_event);
                     break;
-                case 2:
+                case 2: //업데이트
                     viewHolder.mImgType.setImageResource(R.drawable.ic_type_update);
                     break;
             }
