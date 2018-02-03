@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import Entity.ApiResult;
 import Entity.Notice;
 
-public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallback, NoticePresenter.View, View.OnClickListener{
+public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallback, NoticePresenter.View, View.OnClickListener {
 
     private RecyclerView mRecyclerView;
     private NoticeRecyclerViewAdapter mRecyclerViewAdapter;
@@ -42,10 +42,6 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     }
 
-    @Override
-    public void showItem(int position) {
-
-    }
 
     @Override
     public void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult) {
