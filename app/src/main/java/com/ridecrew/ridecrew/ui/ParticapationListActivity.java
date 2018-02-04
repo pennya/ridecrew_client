@@ -1,6 +1,8 @@
 package com.ridecrew.ridecrew.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
@@ -10,6 +12,7 @@ import com.ridecrew.ridecrew.adapter.ScheduleMemberAdapter;
 import com.ridecrew.ridecrew.callback.ScheduleMemberRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenter;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenterImpl;
+import com.ridecrew.ridecrew.ui.custom.FixAppBarLayoutBehavior;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,9 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppBarLayout abl = findViewById(R.id.appBarLayout);
+        ((CoordinatorLayout.LayoutParams) abl.getLayoutParams()).setBehavior(new FixAppBarLayoutBehavior());
 
         initLayout();
         setDefaultSetting();
