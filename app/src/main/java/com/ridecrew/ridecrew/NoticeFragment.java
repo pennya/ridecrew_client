@@ -8,15 +8,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
-
 import java.util.ArrayList;
+
 import Entity.ApiResult;
 import Entity.Notice;
+
+import static android.support.v7.widget.RecyclerView.*;
 
 public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallback, NoticePresenter.View, View.OnClickListener {
 
@@ -51,17 +54,33 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
+
     private void layoutInit(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_fragment_notice_recycler_view);
     }
 
     private void setDefaultSetting(View view) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerViewAdapter = new NoticeRecyclerViewAdapter(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setHasFixedSize(true);
         mPresenter = new NoticePresenterImpl(this);
+
+        mRecyclerView.addOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                for(Boolean check : mRecyclerViewAdapter.getterExpand()) {
+                    if(check.booleanValue()) {
+                        mRecyclerViewAdapter.setterFlag(mRecyclerViewAdapter.getterExpand());
+                    }
+                    else {
+                        mRecyclerViewAdapter.setterFlag(mRecyclerViewAdapter.getterExpand());
+                    }
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
     }
 
     private void loadData() {
@@ -72,4 +91,6 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     private void addData() {
         mPresenter.addNoticeData(mNoticeList);
     }
+
+
 }
