@@ -67,5 +67,28 @@ public class NoticeModel {
             }
         });
     }
+
+    public void deleteNoticeList(Long noticeId) {
+        NoticeService service = NetworkManager.getInstance().getRetrofit(NoticeService.class);
+        final Call<ApiResult<Void>> deleteCall = service.deleteNotice(noticeId);
+        deleteCall.enqueue(new Callback<ApiResult<Void>>() {
+            @Override
+            public void onResponse(Call<ApiResult<Void>> call, Response<ApiResult<Void>> response) {
+                if(response.isSuccessful() && response.code() == 200) {
+                    ApiResult<Void> result = response.body();
+                    if (result.isSuccess()) {
+                        mCallback.getDeleteNetworkResponse(result, 200);
+                    } else {
+                        mCallback.getNetWorkResponse(result.getError().getMessage(), result.getError().getCode());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResult<Void>> call, Throwable t) {
+                mCallback.getNetWorkResponse(t.getMessage(),ApiErrorCode.UNKNOWN_SERVER_ERROR);
+            }
+        });
+    }
 }
 

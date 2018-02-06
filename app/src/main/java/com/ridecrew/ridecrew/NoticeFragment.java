@@ -54,6 +54,11 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void showToast(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
 
     private void layoutInit(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_fragment_notice_recycler_view);
@@ -90,6 +95,10 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     //공지 추가
     private void addData() {
         mPresenter.addNoticeData(mNoticeList);
+    }
+
+    private void deleteData(long noticeId) {
+        mPresenter.deleteNoticeData(noticeId);
     }
 
 

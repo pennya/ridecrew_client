@@ -12,7 +12,9 @@ import Entity.Notice;
 public interface NoticePresenter {
     void loadAllNoticeData();
     void addNoticeData(ArrayList<Notice> itemLists);
+    void deleteNoticeData(Long noticeId);
     interface View {
         void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult);
+        void showToast(String text);
     }
 }

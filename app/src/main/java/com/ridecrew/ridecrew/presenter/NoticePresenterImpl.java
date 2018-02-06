@@ -30,7 +30,27 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
         mModel.addNoticeList( Notice.builder() ); }
 
     @Override
+    public void deleteNoticeData(Long noticeId) {
+        mModel.deleteNoticeList(noticeId);
+    }
+
+    @Override
     public void getAllNoticeDate(ApiResult<ArrayList<Notice>> apiResult) {
         mView.getAllNoticeData(apiResult);
     }
+
+    @Override
+    public void getDeleteNetworkResponse(ApiResult<Void> notice, int status) {
+        mView.showToast("삭제 완료");
+    }
+
+    @Override
+    public void getNetWorkResponse(String msg, ApiErrorCode code) {
+        switch (code) {
+            default:
+                mView.showToast(msg);
+                break;
+        }
+    }
+
 }

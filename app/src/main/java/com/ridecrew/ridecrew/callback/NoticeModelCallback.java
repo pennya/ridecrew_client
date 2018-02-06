@@ -12,4 +12,6 @@ import Entity.Notice;
 
 public interface NoticeModelCallback {
     void getAllNoticeDate(ApiResult<ArrayList<Notice>> apiResult);
+    void getDeleteNetworkResponse(ApiResult<Void> notice, int status);
+    void getNetWorkResponse(String msg, ApiErrorCode code);
 }
