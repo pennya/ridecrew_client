@@ -11,7 +11,7 @@ import Entity.Notice;
 
 public interface NoticePresenter {
     void loadAllNoticeData();
-    void addNoticeData(ArrayList<Notice> itemLists);
+    void addNoticeData(ArrayList<Notice> itemList);
     void deleteNoticeData(Long noticeId);
     interface View {
         void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult);

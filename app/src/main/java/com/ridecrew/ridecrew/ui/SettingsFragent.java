@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,13 +38,11 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         prefNotification = findPreference("prefNotification");
         prefLogon = findPreference("prefLogon");
         prefPaticipation = findPreference("prefPaticipation");
-
         setInitialConfiguration();
 
         String versionName = UtilsApp.getAppVersionName(getActivity());
         int versionCode = UtilsApp.getAppVersionCode(getActivity());
         prefVersion.setTitle(getResources().getString(R.string.app_name) + " v" + versionName + " (" + versionCode + ")");
-
         prefLogon.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -56,7 +55,6 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                     prefLogon.setTitle("로그인");
                     prefLogon.setSummary("print your login id");
                     SharedUtils.prefClear(getActivity());
-
                 }
                 return false;
             }

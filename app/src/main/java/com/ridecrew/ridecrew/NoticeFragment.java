@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,16 +9,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
+import com.ridecrew.ridecrew.presenter.LoginPresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
+import com.ridecrew.ridecrew.ui.NoticeAddActivity;
+
 import java.util.ArrayList;
 
+import Define.DefineValue;
 import Entity.ApiResult;
+import Entity.Member;
+import Entity.MemberSingleton;
 import Entity.Notice;
+import util.SharedUtils;
 
 import static android.support.v7.widget.RecyclerView.*;
 
@@ -27,6 +37,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     private NoticeRecyclerViewAdapter mRecyclerViewAdapter;
     private NoticePresenter mPresenter;
     private ArrayList<Notice> mNoticeList;
+    private ImageButton mAddNotice;
 
     @Nullable
     @Override
@@ -45,10 +56,9 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     }
 
-
     @Override
     public void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult) {
-        //addData();
+        addData();
         mNoticeList = apiResult.getData();
         mRecyclerViewAdapter.setmItemLists(mNoticeList);
         mRecyclerViewAdapter.notifyDataSetChanged();
@@ -62,6 +72,8 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     private void layoutInit(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_fragment_notice_recycler_view);
+        mAddNotice = (ImageButton) view.findViewById(R.id.btn_fragment_notice_add);
+        mAddNotice.setOnClickListener(this);
     }
 
     private void setDefaultSetting(View view) {
@@ -86,6 +98,19 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
+        //관리자 계정일 때 버튼 visible
+        if(MemberSingleton.getInstance().getMember().getMemberType() == 0) {
+            mAddNotice.setVisibility(View.VISIBLE);
+            mAddNotice.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(),NoticeAddActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            mAddNotice.setVisibility(View.GONE);
+        }
     }
 
     private void loadData() {
@@ -96,7 +121,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     private void addData() {
         mPresenter.addNoticeData(mNoticeList);
     }
-
+    //공지 삭제
     private void deleteData(long noticeId) {
         mPresenter.deleteNoticeData(noticeId);
     }
