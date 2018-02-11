@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew.model;
 
+import android.content.Context;
 import android.util.Log;
 import com.ridecrew.ridecrew.callback.NoticeModelCallback;
 

@@ -9,25 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
-import com.ridecrew.ridecrew.presenter.LoginPresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
 import com.ridecrew.ridecrew.ui.NoticeAddActivity;
 
 import java.util.ArrayList;
-
-import Define.DefineValue;
 import Entity.ApiResult;
-import Entity.Member;
 import Entity.MemberSingleton;
 import Entity.Notice;
-import util.SharedUtils;
 
 import static android.support.v7.widget.RecyclerView.*;
 
@@ -58,7 +52,6 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     @Override
     public void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult) {
-        addData();
         mNoticeList = apiResult.getData();
         mRecyclerViewAdapter.setmItemLists(mNoticeList);
         mRecyclerViewAdapter.notifyDataSetChanged();
@@ -117,14 +110,9 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
         mPresenter.loadAllNoticeData();
     }
 
-    //공지 추가
-    private void addData() {
-        mPresenter.addNoticeData(mNoticeList);
-    }
     //공지 삭제
     private void deleteData(long noticeId) {
         mPresenter.deleteNoticeData(noticeId);
     }
-
 
 }
