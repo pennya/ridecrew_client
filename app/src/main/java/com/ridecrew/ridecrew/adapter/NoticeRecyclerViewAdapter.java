@@ -12,6 +12,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ridecrew.ridecrew.R;
@@ -45,7 +47,6 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         mFlag = new ArrayList<>();
     }
 
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -63,7 +64,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             viewHolder.mConstraintLayout.setVisibility(View.VISIBLE);
             viewHolder.mImgType.setVisibility(View.VISIBLE);
             viewHolder.mConstraintLayout.setEnabled(false);
-
+            //onScrolled이벤트 발생 시에 속성값 유지
             if(mFlag.get(itemPosition).booleanValue()) {
                 viewHolder.mConstraintLayout.setVisibility(View.VISIBLE);
                 viewHolder.mImgType.setVisibility(View.VISIBLE);
@@ -146,7 +147,6 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             }
         }
     }
-
     @Override
     public int getItemCount() {
         return mItemLists.size();

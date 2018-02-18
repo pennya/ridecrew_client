@@ -19,24 +19,35 @@
         android:hint="제목"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+    <Spinner
+        android:id="@+id/spin_activity_notice_type"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toBottomOf="@+id/edt_activity_notice_add_title"
+        style="@style/Widget.AppCompat.Spinner.Underlined">
+    </Spinner>
+
     <EditText
         android:id="@+id/edt_activity_notice_add_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="112dp"
-        android:layout_marginBottom="70dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/spin_activity_notice_type"
+        app:layout_constraintBottom_toTopOf="@id/btn_activity_notice_add_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:background="@null"
         android:gravity="top"
         android:hint="내용"
-        app:layout_constraintBottom_toTopOf="@+id/btn_activity_notice_add_button"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
     <Button
         android:id="@+id/btn_activity_notice_add_button"
         android:text="등록"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
