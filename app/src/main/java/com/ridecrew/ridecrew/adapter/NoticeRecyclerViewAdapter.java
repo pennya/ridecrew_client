@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ridecrew.ridecrew.NoticeFragment;
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
 
@@ -37,6 +38,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private NoticeRecyclerViewCallback mCallback;
     private int mOriginalHeight;
     private ArrayList<Boolean> mFlag;
+    private int mPosition;
 
     public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback) {
         mCallback = callback;
@@ -58,12 +60,14 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
         final int itemPosition = position;
+        mPosition = position;
         if (holder instanceof ViewHolder) {
             final ViewHolder viewHolder = (ViewHolder) holder;
             //초기 화면
             viewHolder.mConstraintLayout.setVisibility(View.VISIBLE);
             viewHolder.mImgType.setVisibility(View.VISIBLE);
             viewHolder.mConstraintLayout.setEnabled(false);
+            mCallback.deleteVisible(viewHolder.mDelete);
             //onScrolled이벤트 발생 시에 속성값 유지
             if(mFlag.get(itemPosition).booleanValue()) {
                 viewHolder.mConstraintLayout.setVisibility(View.VISIBLE);
@@ -92,6 +96,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_up);
                         valueAnimator = ValueAnimator.ofInt(mOriginalHeight, mOriginalHeight + mHeightList.get(itemPosition) + 30);
                         mExpands.set(itemPosition, true);
+
                     } else {    //card view가 펼쳐져 있을 때 접는 애니메이션
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_down);
                         valueAnimator = ValueAnimator.ofInt(mOriginalHeight + mHeightList.get(itemPosition) + 30, mOriginalHeight);
@@ -154,7 +159,6 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected CardView mCardView;
-        protected int mType;
         protected TextView mTitle;
         protected TextView mContents;
         protected TextView mImgUrl;
@@ -164,6 +168,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         protected ImageView mImgArrow;
         protected ImageView mImgType;
         protected ConstraintLayout mConstraintLayout;
+        protected ImageView mDelete;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -174,6 +179,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             mImgArrow = (ImageView) itemView.findViewById(R.id.img_arrow);
             mConstraintLayout = (ConstraintLayout) itemView.findViewById(R.id.cl_fragment_notice_layout);
             mImgType = (ImageView) itemView.findViewById(R.id.img_type_notice);
+            mDelete = (ImageView) itemView.findViewById(R.id.img_delete);
         }
     }
 
@@ -196,5 +202,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public void setterFlag(ArrayList<Boolean> flag) {
         this.mFlag = flag;
     }
+
+    public int getterPosition() { return mPosition;}
 }
 
