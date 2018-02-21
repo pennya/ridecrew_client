@@ -15,12 +15,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ridecrew.ridecrew.NoticeFragment;
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
 import com.ridecrew.ridecrew.callback.NoticeModelCallback;
+import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ public class NoticeAddActivity extends BaseToolbarActivity implements View.OnCli
     private Button mButton;
     private NoticePresenter mPresenter;
     private Spinner mSpinner;
+    private NoticeRecyclerViewCallback mCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,19 +65,22 @@ public class NoticeAddActivity extends BaseToolbarActivity implements View.OnCli
         if (mTitle.getText().length() == 0 || mContent.getText().length() == 0) {
             showToast("내용을 입력해주세요");
         } else {
-            mPresenter.addNoticeData(Notice.builder()
-                    .setTitle(mTitle.getText().toString())
-                    .setContent(mContent.getText().toString())
-                    .setType(mSpinner.getSelectedItemPosition())
-            );
-            setResult(RESULT_OK);
-            overridePendingTransition(R.anim.slide_in_right,R.anim.fade_back);
-            showToast("등록 완료");
-            finish();
+            addData(mTitle,mContent,mSpinner.getSelectedItemPosition());
         }
     }
+
+    @Override
+    public void getNoticeData(ApiResult<Notice> apiResult) {
+        Notice n = apiResult.getData();
+        Intent intent = new Intent();
+        intent.putExtra("data",n);
+        setResult(RESULT_OK,intent);
+        finish();
+    }
+
     @Override
     public void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult) {
+
     }
 
     @Override
@@ -89,9 +95,19 @@ public class NoticeAddActivity extends BaseToolbarActivity implements View.OnCli
         mButton.setOnClickListener(this);
         mSpinner = (Spinner)findViewById(R.id.spin_activity_notice_type);
     }
+
     private void setDefaultSetting() {
         mPresenter = new NoticePresenterImpl(this);
         ArrayAdapter<String>spinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.type));
         mSpinner.setAdapter(spinnerAdapter);
+    }
+
+    //공지 추가
+    private void addData(TextView title, TextView content, int type) {
+        Notice notice = Notice.builder()
+                .setTitle(title.getText().toString())
+                .setContent(content.getText().toString())
+                .setType(type);
+        mPresenter.addNoticeData(notice);
     }
 }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -83,7 +84,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     private void setDefaultSetting(View view) {
         LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerViewAdapter = new NoticeRecyclerViewAdapter(this);
+        mRecyclerViewAdapter = new NoticeRecyclerViewAdapter(this,getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setHasFixedSize(true);
@@ -129,7 +130,10 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == DefineValue.NOTICE_FRAGMENT_REQUEST_CODE && resultCode == RESULT_OK) {
-            loadData();
+            Notice notice = (Notice)data.getSerializableExtra("data");
+            mNoticeList.add(0,notice);
+            mRecyclerViewAdapter.setmItemLists(mNoticeList);
+            mRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
 
@@ -137,18 +141,26 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     public void deleteVisible(ImageView imageView) {
         if(mDeleteFlag) {
             imageView.setVisibility(VISIBLE);
-            imageView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = mRecyclerViewAdapter.getterPosition();
-                    deleteData(mNoticeList.get(position).getId());
-                    Toast.makeText(getContext(), "삭제 완료", Toast.LENGTH_SHORT).show();
-                    loadData();
-                }
-            });
         } else {
             imageView.setVisibility(GONE);
         }
+    }
+
+    @Override
+    public void deleteFucntion(int position) {
+        deleteData(mNoticeList.get(position).getId());
+        Toast.makeText(getContext(), "삭제 완료", Toast.LENGTH_SHORT).show();
+        loadData();
+    }
+
+    @Override
+    public void getNoticeData(ApiResult<Notice> apiResult) {
+
+    }
+
+    @Override
+    public void noticeData(Notice notice) {
+        //mNoticeList.add(notice);
     }
 
     private void loadData() {
@@ -159,5 +171,4 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     private void deleteData(long noticeId) {
         mPresenter.deleteNoticeData(noticeId);
     }
-
 }

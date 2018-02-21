@@ -14,6 +14,7 @@ public interface NoticePresenter {
     void addNoticeData(Notice itemList);
     void deleteNoticeData(Long noticeId);
     interface View {
+        void getNoticeData(ApiResult<Notice> apiResult);
         void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult);
         void showToast(String text);
     }

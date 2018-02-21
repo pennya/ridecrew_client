@@ -7,6 +7,8 @@ import com.ridecrew.ridecrew.model.NoticeModel;
 import com.ridecrew.ridecrew.ui.NoticeAddActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import Entity.ApiErrorCode;
 import Entity.ApiResult;
@@ -39,7 +41,13 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
     }
 
     @Override
-    public void getAllNoticeDate(ApiResult<ArrayList<Notice>> apiResult) {
+    public void getNoticeData(ApiResult<Notice> apiResult) {
+        mView.getNoticeData(apiResult);
+    }
+
+    @Override
+    public void getAllNoticeData(ApiResult<ArrayList<Notice>> apiResult) {
+        Collections.sort(apiResult.getData(), new AscendingObj());
         mView.getAllNoticeData(apiResult);
     }
 
@@ -54,6 +62,14 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
             default:
                 mView.showToast(msg);
                 break;
+        }
+    }
+    class AscendingObj implements Comparator<Notice> {
+
+        @Override
+        public int compare(Notice o1, Notice o2) {
+            //생성시간 오름차순
+            return o2.getCreatedDateTime().compareTo(o1.getCreatedDateTime());
         }
     }
 

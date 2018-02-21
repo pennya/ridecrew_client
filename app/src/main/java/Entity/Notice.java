@@ -73,7 +73,7 @@ public class Notice implements Serializable {
     }
 
     public String getCreatedDateTime() {
-        return createdDateTime.substring(0,10);
+        return createdDateTime;
     }
 
     public void setCreatedDateTime(String createdDateTime) {

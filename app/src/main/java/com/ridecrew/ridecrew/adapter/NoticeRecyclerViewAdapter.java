@@ -1,6 +1,7 @@
 package com.ridecrew.ridecrew.adapter;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -39,8 +40,10 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private int mOriginalHeight;
     private ArrayList<Boolean> mFlag;
     private int mPosition;
+    private Activity context;
 
-    public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback) {
+    public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback,Activity context) {
+        this.context = context;
         mCallback = callback;
         mItemLists = new ArrayList<>();
         mExpands = new ArrayList<>();
@@ -150,6 +153,12 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     viewHolder.mImgType.setImageResource(R.drawable.ic_type_update);
                     break;
             }
+            viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mCallback.deleteFucntion(itemPosition);
+                }
+            });
         }
     }
     @Override
