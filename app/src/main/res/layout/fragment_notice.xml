@@ -1,22 +1,22 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     tools:context="com.ridecrew.ridecrew.NoticeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_fragment_notice_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fab_notice_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         fab:menu_animationDelayPerItem="55"
@@ -47,23 +47,30 @@
         fab:menu_shadowRadius="4dp"
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="4dp"
-        fab:menu_showShadow="true"
-        android:visibility="gone">
+        fab:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_notice_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_label="공지 추가"
             android:src="@drawable/ic_action_create"
+            fab:fab_label="공지 추가"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_notice_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_label="공지 삭제"
             android:src="@drawable/ic_action_delete"
+            fab:fab_label="공지 삭제"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_notice_modify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_modify"
+            fab:fab_label="공지 수정"
             fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>

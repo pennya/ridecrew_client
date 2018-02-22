@@ -15,5 +15,4 @@ import Entity.Notice;
 public interface NoticeRecyclerViewCallback {
     void deleteVisible(ImageView imageView);
     void deleteFucntion(int position);
-    void noticeData(Notice notice);
 }

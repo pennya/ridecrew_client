@@ -39,7 +39,6 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private NoticeRecyclerViewCallback mCallback;
     private int mOriginalHeight;
     private ArrayList<Boolean> mFlag;
-    private int mPosition;
     private Activity context;
 
     public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback,Activity context) {
@@ -63,7 +62,6 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
         final int itemPosition = position;
-        mPosition = position;
         if (holder instanceof ViewHolder) {
             final ViewHolder viewHolder = (ViewHolder) holder;
             //초기 화면
@@ -211,7 +209,5 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public void setterFlag(ArrayList<Boolean> flag) {
         this.mFlag = flag;
     }
-
-    public int getterPosition() { return mPosition;}
 }
 

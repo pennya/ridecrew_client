@@ -72,5 +72,4 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
             return o2.getCreatedDateTime().compareTo(o1.getCreatedDateTime());
         }
     }
-
 }
