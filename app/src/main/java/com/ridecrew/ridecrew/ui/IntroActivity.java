@@ -1,14 +1,18 @@
 package com.ridecrew.ridecrew.ui;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.ridecrew.ridecrew.MainActivity;
 import com.ridecrew.ridecrew.R;
 
-public class IntroActivity extends AppCompatActivity {
+/**
+ * Created by JooHyeong on 2018. 2. 22..
+ */
+
+public class IntroActivity extends Activity {
 
     /** 로딩 화면이 떠있는 시간(밀리초단위)  **/
     private final int SPLASH_DISPLAY_LENGTH = 2500;
@@ -24,11 +28,9 @@ public class IntroActivity extends AppCompatActivity {
             public void run() {
                 /* 메액티비티를 실행하고 로딩화면을 종료.*/
                 Intent mainIntent = new Intent(IntroActivity.this,MainActivity.class);
-                startActivity(mainIntent);
-                finish();
+                IntroActivity.this.startActivity(mainIntent);
+                IntroActivity.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
-
-
 }

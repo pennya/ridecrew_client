@@ -33,8 +33,9 @@ public class Notice implements Serializable {
         return type;
     }
 
-    public void setType(int type) {
+    public Notice setType(int type) {
         this.type = type;
+        return this;
     }
 
     public String getTitle() {
@@ -72,7 +73,7 @@ public class Notice implements Serializable {
     }
 
     public String getCreatedDateTime() {
-        return createdDateTime.substring(0,10);
+        return createdDateTime;
     }
 
     public void setCreatedDateTime(String createdDateTime) {

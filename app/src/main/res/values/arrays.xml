@@ -4,4 +4,10 @@
         <item >남자</item>
         <item >여자</item>
     </string-array>
+
+    <string-array name="type">
+        <item>공지</item>
+        <item>이벤트</item>
+        <item>업데이트</item>
+    </string-array>
 </resources>
