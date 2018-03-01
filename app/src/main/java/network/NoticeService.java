@@ -20,12 +20,15 @@ public interface NoticeService {
     @GET("/rest/v1/notice")
     Call<ApiResult<ArrayList<Notice>>> getAllNoticeData();
 
+    @GET("/rest/v1/notice")
+    Call<ApiResult<Notice>> getNoticeData();
+
     @POST("/rest/v1/notice")
-    Call<ApiResult<ArrayList<Notice>>> addNotice(@Body Notice notice);
+    Call<ApiResult<Notice>> addNotice(@Body Notice notice);
 
     @DELETE("/rest/v1/notice/{pk}")
     Call<ApiResult<Void>> deleteNotice(@Path("pk") Long pk);
 
     @PATCH("/rest/v1/notice/{pk}")
-    Call<ApiResult<Void>> patchNotice(@Path("pk") Long pk, @Body Notice notice);
+    Call<ApiResult<Notice>> patchNotice(@Path("pk") Long pk, @Body Notice notice);
 }
