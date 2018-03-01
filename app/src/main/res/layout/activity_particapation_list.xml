@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    xmlns:recyclerviewfastscroller="http://schemas.android.com/tools">
+    android:fitsSystemWindows="true">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/appList"
@@ -14,23 +13,13 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller
-        android:id="@+id/fast_scroller"
-        android:visibility="gone"
-        android:layout_width="24dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:paddingRight="@dimen/margin_small"
-        android:paddingEnd="@dimen/margin_small"
-        recyclerviewfastscroller:rfs_barColor="@color/transparent"
-        recyclerviewfastscroller:rfs_handleBackground="@drawable/fastscroller_rounded"/>
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_behavior="com.ridecrew.ridecrew.ui.custom.FixAppBarLayoutBehavior">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbarLayout"
