@@ -127,7 +127,6 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
         else if(requestCode == DefineValue.NOTICE_FRAGMENT_MODIFY_CODE && resultCode == RESULT_OK) {
             Notice notice = (Notice) data.getSerializableExtra("data");
             mNoticeList.set(mRecyclerViewAdapter.getterPosition(),notice);
-            int p = mRecyclerViewAdapter.getterPosition();
             mRecyclerViewAdapter.setmItemLists(mNoticeList);
             mRecyclerViewAdapter.notifyDataSetChanged();
         }

@@ -100,11 +100,11 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     ValueAnimator valueAnimator;
                     if (mExpands.get(itemPosition) == false) {
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_up);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight, mOriginalHeight + mHeightList.get(itemPosition) + 50);
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight, mOriginalHeight + mHeightList.get(itemPosition) + 30);
                         mExpands.set(itemPosition, true);
                     } else {    //card view가 펼쳐져 있을 때 접는 애니메이션
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_down);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + mHeightList.get(itemPosition) + 50, mOriginalHeight);
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + mHeightList.get(itemPosition) + 30, mOriginalHeight);
                         Animation animation = new AlphaAnimation(1.00f, 1.00f);
                         animation.setDuration(140);
                         mExpands.set(itemPosition, false);
