@@ -27,6 +27,25 @@ public class NoticeModel {
         mCallback = callback;
     }
 
+    public void getNoticeData() {
+        NoticeService service = NetworkManager.getInstance().getRetrofit(NoticeService.class);
+        Call<ApiResult<Notice>> noticeCall = service.getNoticeData();
+        noticeCall.enqueue(new Callback<ApiResult<Notice>>() {
+            @Override
+            public void onResponse(Call<ApiResult<Notice>> call, Response<ApiResult<Notice>> response) {
+                if(response.isSuccessful() && response.code() == 200) {
+                    ApiResult<Notice> result = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResult<Notice>> call, Throwable t) {
+                Log.d(DefineValue.TAG,"requestNoticeList fail");
+                Log.d(DefineValue.TAG,t.getMessage());
+            }
+        });
+    }
+
     public void requestNoticeList() {
         NoticeService service = NetworkManager.getInstance().getRetrofit(NoticeService.class);
         Call<ApiResult<ArrayList<Notice>>> noticeListCall = service.getAllNoticeData();
@@ -57,21 +76,25 @@ public class NoticeModel {
             public void onResponse(Call<ApiResult<Notice>> call, Response<ApiResult<Notice>> response) {
                 if(response.isSuccessful() && response.code() == 200) {
                     ApiResult<Notice> result = response.body();
-                    mCallback.getNoticeData(result);
+                    if(result.isSuccess()) {
+                        mCallback.getAddNetworkResponse(result,200);
+                        mCallback.getNoticeData(result);
+                    } else {
+                        mCallback.getNetWorkResponse(result.getError().getMessage(),result.getError().getCode());
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResult<Notice>> call, Throwable t) {
-                Log.d(DefineValue.TAG,"requestNoticeList falil");
-                Log.d(DefineValue.TAG,t.getMessage());
+                mCallback.getNetWorkResponse(t.getMessage(),ApiErrorCode.UNKNOWN_SERVER_ERROR);
             }
         });
     }
 
     public void deleteNoticeList(Long noticeId) {
         NoticeService service = NetworkManager.getInstance().getRetrofit(NoticeService.class);
-        final Call<ApiResult<Void>> deleteCall = service.deleteNotice(noticeId);
+        Call<ApiResult<Void>> deleteCall = service.deleteNotice(noticeId);
         deleteCall.enqueue(new Callback<ApiResult<Void>>() {
             @Override
             public void onResponse(Call<ApiResult<Void>> call, Response<ApiResult<Void>> response) {
@@ -91,5 +114,28 @@ public class NoticeModel {
             }
         });
     }
-}
 
+    public void modifyNoticeData(long noticeId,Notice notice){
+        NoticeService service = NetworkManager.getInstance().getRetrofit(NoticeService.class);
+        Call<ApiResult<Notice>> modifyCall = service.patchNotice(noticeId, notice);
+        modifyCall.enqueue(new Callback<ApiResult<Notice>>() {
+            @Override
+            public void onResponse(Call<ApiResult<Notice>> call, Response<ApiResult<Notice>> response) {
+                if(response.isSuccessful() && response.code() == 200) {
+                    ApiResult<Notice> result = response.body();
+                    if(result.isSuccess()) {
+                        mCallback.getModifyNetworkResponse(result,200);
+                        mCallback.getNoticeData(result);
+                    } else {
+                        mCallback.getNetWorkResponse(result.getError().getMessage(),result.getError().getCode());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResult<Notice>> call, Throwable t) {
+                mCallback.getNetWorkResponse(t.getMessage(),ApiErrorCode.UNKNOWN_SERVER_ERROR);
+            }
+        });
+    }
+}

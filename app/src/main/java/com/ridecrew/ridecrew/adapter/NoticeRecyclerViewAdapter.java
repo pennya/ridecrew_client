@@ -12,15 +12,9 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.ridecrew.ridecrew.NoticeFragment;
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -40,8 +34,12 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private int mOriginalHeight;
     private ArrayList<Boolean> mFlag;
     private Activity context;
+    private int mPosition;
+    private boolean mModifyFlag;
+    public static long id;
 
-    public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback,Activity context) {
+
+    public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback, Activity context) {
         this.context = context;
         mCallback = callback;
         mItemLists = new ArrayList<>();
@@ -49,6 +47,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         mHeightList = new ArrayList<>();
         mOriginalHeight = 0;
         mFlag = new ArrayList<>();
+        mModifyFlag = false;
     }
 
     @Override
@@ -70,18 +69,24 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             viewHolder.mConstraintLayout.setEnabled(false);
             mCallback.deleteVisible(viewHolder.mDelete);
             //onScrolled이벤트 발생 시에 속성값 유지
-            if(mFlag.get(itemPosition).booleanValue()) {
+            if (mFlag.get(itemPosition).booleanValue()) {
                 viewHolder.mConstraintLayout.setVisibility(View.VISIBLE);
                 viewHolder.mImgType.setVisibility(View.VISIBLE);
                 viewHolder.mConstraintLayout.setEnabled(false);
                 viewHolder.mContents.setVisibility(View.VISIBLE);
-                mFlag.set(itemPosition,true);
+                mFlag.set(itemPosition, true);
             }
-
             viewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(final View view) {
+                    //수정기능이 활성화일 때
+                    if (mModifyFlag) {
+                        mPosition = position;
+                        mCallback.modifyFunction(context);
+                        id = mItemLists.get(itemPosition).getId();
+                        return;
+                    }
                     viewHolder.mContents.setVisibility(view.VISIBLE);
                     // mOriginalHeight 초기화 작업이 이루어 지지 않으면 리스트마다 크기가 다름
                     if (mHeightList.get(itemPosition) == 0) {
@@ -90,17 +95,16 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                         mHeightList.set(itemPosition, viewHolder.mContents.getMeasuredHeight());
                     }
 
-                    ValueAnimator valueAnimator;
                     //card view가 접혀있을 때 펼치는 애니메이션
                     viewHolder.mConstraintLayout.setVisibility(View.VISIBLE);
+                    ValueAnimator valueAnimator;
                     if (mExpands.get(itemPosition) == false) {
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_up);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight, mOriginalHeight + mHeightList.get(itemPosition) + 30);
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight, mOriginalHeight + mHeightList.get(itemPosition) + 50);
                         mExpands.set(itemPosition, true);
-
                     } else {    //card view가 펼쳐져 있을 때 접는 애니메이션
                         viewHolder.mImgArrow.setImageResource(R.drawable.ic_action_arrow_down);
-                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + mHeightList.get(itemPosition) + 30, mOriginalHeight);
+                        valueAnimator = ValueAnimator.ofInt(mOriginalHeight + mHeightList.get(itemPosition) + 50, mOriginalHeight);
                         Animation animation = new AlphaAnimation(1.00f, 1.00f);
                         animation.setDuration(140);
                         mExpands.set(itemPosition, false);
@@ -136,6 +140,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     valueAnimator.start();
                 }
             });
+
             viewHolder.mTitle.setText(mItemLists.get(itemPosition).getTitle());
             viewHolder.mContents.setText(mItemLists.get(itemPosition).getContent());
             viewHolder.mCreateDateTime.setText(mItemLists.get(itemPosition).getCreatedDateTime());
@@ -159,6 +164,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             });
         }
     }
+
     @Override
     public int getItemCount() {
         return mItemLists.size();
@@ -168,9 +174,9 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         protected CardView mCardView;
         protected TextView mTitle;
         protected TextView mContents;
+        protected TextView mCreateDateTime;
         protected TextView mImgUrl;
         protected TextView mWebUrl;
-        protected TextView mCreateDateTime;
         protected TextView mLastModifiedDateTime;
         protected ImageView mImgArrow;
         protected ImageView mImgType;
@@ -202,12 +208,14 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         mHeightList.addAll(Collections.nCopies(mItemLists.size(), 0));
     }
 
-    public ArrayList<Boolean> getterExpand() {
-        return mExpands;
-    }
+    public ArrayList<Boolean> getterExpand() { return mExpands; }
 
     public void setterFlag(ArrayList<Boolean> flag) {
         this.mFlag = flag;
     }
+
+    public int getterPosition() { return mPosition; }
+
+    public void setterModifyFlag(boolean flag) {this.mModifyFlag = flag;}
 }
 

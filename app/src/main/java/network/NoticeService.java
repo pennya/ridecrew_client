@@ -30,5 +30,5 @@ public interface NoticeService {
     Call<ApiResult<Void>> deleteNotice(@Path("pk") Long pk);
 
     @PATCH("/rest/v1/notice/{pk}")
-    Call<ApiResult<Void>> patchNotice(@Path("pk") Long pk, @Body Notice notice);
+    Call<ApiResult<Notice>> patchNotice(@Path("pk") Long pk, @Body Notice notice);
 }

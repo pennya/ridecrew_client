@@ -18,7 +18,7 @@
             android:id="@+id/cl_fragment_notice_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp">
+            android:layout_margin="8dp">
 
             <ImageView
                 android:id="@+id/img_delete"
@@ -45,7 +45,8 @@
                 android:layout_height="15dp"
                 android:src="@drawable/ic_type_notice"
                 android:visibility="gone"
-                app:layout_constraintLeft_toRightOf="@id/img_delete" />
+                app:layout_constraintLeft_toRightOf="@id/img_delete"
+                app:layout_constraintBottom_toTopOf="@id/tv_fragment_notice_recycler_view_title"/>
 
             <TextView
                 android:id="@+id/tv_fragment_notice_recycler_view_title"
@@ -55,12 +56,13 @@
                 android:fontFamily="sans-serif-thin"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 app:layout_constraintLeft_toRightOf="@id/img_delete"
                 app:layout_constraintTop_toBottomOf="@+id/img_type_notice" />
 
             <TextView
                 android:id="@+id/tv_fragment_notice_recycler_view_contents"
+                android:lineSpacingExtra="5dip"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"

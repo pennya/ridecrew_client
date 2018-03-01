@@ -1,8 +1,11 @@
 package com.ridecrew.ridecrew.presenter;
 
 import android.app.Activity;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.ridecrew.ridecrew.callback.NoticeModelCallback;
+import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
 import com.ridecrew.ridecrew.model.NoticeModel;
 import com.ridecrew.ridecrew.ui.NoticeAddActivity;
 
@@ -41,6 +44,11 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
     }
 
     @Override
+    public void modifyNoticeData(Long noticeId, Notice notice) {
+        mModel.modifyNoticeData(noticeId,notice);
+    }
+
+    @Override
     public void getNoticeData(ApiResult<Notice> apiResult) {
         mView.getNoticeData(apiResult);
     }
@@ -52,8 +60,18 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
     }
 
     @Override
+    public void getAddNetworkResponse(ApiResult<Notice> notice, int status) {
+        mView.showToast("추가 완료");
+    }
+
+    @Override
     public void getDeleteNetworkResponse(ApiResult<Void> notice, int status) {
         mView.showToast("삭제 완료");
+    }
+
+    @Override
+    public void getModifyNetworkResponse(ApiResult<Notice> notice, int status) {
+        mView.showToast("수정 완료");
     }
 
     @Override
@@ -64,6 +82,7 @@ public class NoticePresenterImpl implements NoticePresenter, NoticeModelCallback
                 break;
         }
     }
+
     class AscendingObj implements Comparator<Notice> {
 
         @Override

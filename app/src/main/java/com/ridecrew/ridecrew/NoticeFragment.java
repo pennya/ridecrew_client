@@ -1,10 +1,9 @@
 package com.ridecrew.ridecrew;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.opengl.Matrix;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
@@ -21,7 +23,9 @@ import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
 import com.ridecrew.ridecrew.ui.NoticeAddActivity;
+
 import java.util.ArrayList;
+
 import Define.DefineValue;
 import Entity.ApiResult;
 import Entity.MemberSingleton;
@@ -43,6 +47,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     private FloatingActionButton mDeleteButton;
     private FloatingActionButton mModifyButton;
     private boolean mDeleteFlag;
+    private boolean mModifyFlag;
 
     @Nullable
     @Override
@@ -81,11 +86,13 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     }
 
     @Override
-    public void getNoticeData(ApiResult<Notice> apiResult) { }
+    public void getNoticeData(ApiResult<Notice> apiResult) {
+
+    }
 
     @Override
     public void deleteVisible(ImageView imageView) {
-        if(mDeleteFlag) {
+        if (mDeleteFlag) {
             imageView.setVisibility(VISIBLE);
         } else {
             imageView.setVisibility(GONE);
@@ -93,10 +100,34 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     }
 
     @Override
+    public void modifyFlag(boolean flag) {
+        if(flag) {
+            mModifyFlag = true;
+        } else {
+            mModifyFlag = false;
+        }
+    }
+
+    @Override
+    public void modifyFunction(Activity context) {
+        Intent intent = new Intent(getContext(),NoticeAddActivity.class);
+        intent.putExtra("flag",mModifyFlag);
+        startActivityForResult(intent,DefineValue.NOTICE_FRAGMENT_MODIFY_CODE);
+        getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == DefineValue.NOTICE_FRAGMENT_REQUEST_CODE && resultCode == RESULT_OK) {
-            Notice notice = (Notice)data.getSerializableExtra("data");
-            mNoticeList.add(0,notice);
+            Notice notice = (Notice) data.getSerializableExtra("data");
+            mNoticeList.add(0, notice);
+            mRecyclerViewAdapter.setmItemLists(mNoticeList);
+            mRecyclerViewAdapter.notifyDataSetChanged();
+        }
+        else if(requestCode == DefineValue.NOTICE_FRAGMENT_MODIFY_CODE && resultCode == RESULT_OK) {
+            Notice notice = (Notice) data.getSerializableExtra("data");
+            mNoticeList.set(mRecyclerViewAdapter.getterPosition(),notice);
+            int p = mRecyclerViewAdapter.getterPosition();
             mRecyclerViewAdapter.setmItemLists(mNoticeList);
             mRecyclerViewAdapter.notifyDataSetChanged();
         }
@@ -105,7 +136,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser) {
+        if (isVisibleToUser) {
             getFragmentManager().beginTransaction().detach(this).attach(this).commit();
         }
     }
@@ -121,7 +152,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
 
     private void setDefaultSetting(View view) {
         LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerViewAdapter = new NoticeRecyclerViewAdapter(this,getActivity());
+        mRecyclerViewAdapter = new NoticeRecyclerViewAdapter(this, getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setHasFixedSize(true);
@@ -145,11 +176,12 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
         if (!SharedUtils.getBooleanValue(getContext(), DefineValue.IS_LOGIN) || MemberSingleton.getInstance().getMember().getId() != 17) {
             mFabButton.setVisibility(View.GONE);
         } else if (MemberSingleton.getInstance().getMember().getId() == 17) {
-            //Floating Action Button OnClick and 공지 추가
+            //Floating Action Button OnClick
             mFabButton.setVisibility(View.VISIBLE);
             mAddButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mModifyFlag = false;
                     startActivityForResult(new Intent(getActivity(), NoticeAddActivity.class), DefineValue.NOTICE_FRAGMENT_REQUEST_CODE);
                     getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
@@ -157,9 +189,26 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
             mDeleteButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mDeleteFlag) { mDeleteFlag = false; }
-                    else { mDeleteFlag = true; }
+                    if (mDeleteFlag) {
+                        mDeleteFlag = false;
+                    } else {
+                        mDeleteFlag = true;
+                    }
                     mRecyclerViewAdapter.notifyDataSetChanged();
+                }
+            });
+            mModifyButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mModifyFlag) {
+                        mModifyFlag = false;
+                        mRecyclerViewAdapter.setterModifyFlag(false);
+                        Toast.makeText(getContext(), "수정기능 비활성화", Toast.LENGTH_SHORT).show();
+                    } else {
+                        mModifyFlag = true;
+                        Toast.makeText(getContext(), "수정기능 활성화, 수정할 리스트 선택", Toast.LENGTH_SHORT).show();
+                        mRecyclerViewAdapter.setterModifyFlag(true);
+                    }
                 }
             });
             //FAB버튼 활성화 중에 빈 공간 클릭시 애니메이션 비활성화

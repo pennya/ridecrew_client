@@ -1,15 +1,8 @@
 package com.ridecrew.ridecrew.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.FragmentTransaction;
-import android.app.ListActivity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,15 +10,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.ridecrew.ridecrew.NoticeFragment;
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
-import com.ridecrew.ridecrew.callback.NoticeModelCallback;
 import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
 import java.util.ArrayList;
+
 import Entity.ApiResult;
 import Entity.Notice;
 
@@ -33,15 +24,13 @@ import Entity.Notice;
  * Created by JooHyeong on 2018. 2. 10..
  */
 
-public class NoticeAddActivity extends BaseToolbarActivity implements View.OnClickListener, NoticePresenter.View {
-    public static final int ADD_DATA = 1;
-    public static final int REQUEST_PERMISSIONS_REQUEST_CODE = 99;
-
+public class NoticeAddActivity extends BaseToolbarActivity implements NoticePresenter.View {
+    private Activity context;
     private EditText mTitle, mContent;
-    private Button mButton;
+    private Button mEnroll;
+    private Button mModifyButton;
     private NoticePresenter mPresenter;
     private Spinner mSpinner;
-    private NoticeRecyclerViewCallback mCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,20 +50,11 @@ public class NoticeAddActivity extends BaseToolbarActivity implements View.OnCli
     }
 
     @Override
-    public void onClick(View view) {
-        if (mTitle.getText().length() == 0 || mContent.getText().length() == 0) {
-            showToast("내용을 입력해주세요");
-        } else {
-            addData(mTitle,mContent,mSpinner.getSelectedItemPosition());
-        }
-    }
-
-    @Override
     public void getNoticeData(ApiResult<Notice> apiResult) {
         Notice n = apiResult.getData();
         Intent intent = new Intent();
-        intent.putExtra("data",n);
-        setResult(RESULT_OK,intent);
+        intent.putExtra("data", n);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -89,17 +69,49 @@ public class NoticeAddActivity extends BaseToolbarActivity implements View.OnCli
     }
 
     private void layoutInit() {
-        mButton = (Button) findViewById(R.id.btn_activity_notice_add_button);
+        mEnroll = (Button) findViewById(R.id.btn_activity_notice_add_button);
+        mModifyButton = (Button) findViewById(R.id.btn_activity_notice_notify_button);
         mTitle = (EditText) findViewById(R.id.edt_activity_notice_add_title);
         mContent = (EditText) findViewById(R.id.edt_activity_notice_add_content);
-        mButton.setOnClickListener(this);
-        mSpinner = (Spinner)findViewById(R.id.spin_activity_notice_type);
+        mSpinner = (Spinner) findViewById(R.id.spin_activity_notice_type);
     }
 
     private void setDefaultSetting() {
         mPresenter = new NoticePresenterImpl(this);
-        ArrayAdapter<String>spinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.type));
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.type));
         mSpinner.setAdapter(spinnerAdapter);
+        Intent intent = new Intent(this.getIntent());
+        boolean flag = intent.getBooleanExtra("flag",false);
+        if(flag) {
+            mEnroll.setVisibility(View.GONE);
+            mModifyButton.setVisibility(View.VISIBLE);
+        } else {
+            mEnroll.setVisibility(View.VISIBLE);
+            mModifyButton.setVisibility(View.GONE);
+        }
+
+        //등록 버튼
+        mEnroll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mTitle.getText().length() == 0 || mContent.getText().length() == 0) {
+                    showToast("내용을 입력해주세요");
+                } else {
+                    addData(mTitle, mContent, mSpinner.getSelectedItemPosition());
+                }
+            }
+        });
+        //수정 버튼
+        mModifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mTitle.getText().length() == 0 || mContent.getText().length() == 0) {
+                    showToast("내용을 입력해주세요");
+                } else {
+                    modifyData(mTitle, mContent, mSpinner.getSelectedItemPosition());
+                }
+            }
+        });
     }
 
     //공지 추가
@@ -109,5 +121,14 @@ public class NoticeAddActivity extends BaseToolbarActivity implements View.OnCli
                 .setContent(content.getText().toString())
                 .setType(type);
         mPresenter.addNoticeData(notice);
+    }
+
+    //수정할 공지내용
+    private void modifyData(TextView title, TextView content, int type) {
+        Notice notice = Notice.builder()
+                .setTitle(title.getText().toString())
+                .setContent(content.getText().toString())
+                .setType(type);
+        mPresenter.modifyNoticeData(NoticeRecyclerViewAdapter.id,notice);
     }
 }

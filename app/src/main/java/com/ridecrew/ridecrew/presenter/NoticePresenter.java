@@ -1,5 +1,7 @@
 package com.ridecrew.ridecrew.presenter;
 
+import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
+
 import java.util.ArrayList;
 
 import Entity.ApiResult;
@@ -11,8 +13,10 @@ import Entity.Notice;
 
 public interface NoticePresenter {
     void loadAllNoticeData();
-    void addNoticeData(Notice itemList);
+    void getNoticeData(ApiResult<Notice> apiResult);
+    void addNoticeData(Notice notice);
     void deleteNoticeData(Long noticeId);
+    void modifyNoticeData(Long noticeId, Notice notice);
 
     interface View {
         void getNoticeData(ApiResult<Notice> apiResult);
