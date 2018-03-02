@@ -9,6 +9,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.ridecrew.ridecrew.MainActivity;
 import com.ridecrew.ridecrew.R;
 
@@ -18,6 +19,7 @@ import Entity.MemberSingleton;
 import util.SharedUtils;
 import util.UtilsApp;
 
+import static Define.DefineValue.FACEBOOK_LOGIN;
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -58,6 +60,13 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                     prefLogon.setTitle("로그인");
                     prefLogon.setSummary("print your login id");
                     prefPersonalInfo.setVisible(false);
+                    prefLogon.setSummary("로그인을 해야 서비스 가능합니다");
+
+                    int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
+                    if(memberType == FACEBOOK_LOGIN) {
+                        LoginManager.getInstance().logOut();
+                    }
+
                     SharedUtils.prefClear(getActivity());
                 }
                 return false;
@@ -94,13 +103,16 @@ public class SettingsFragent extends PreferenceFragmentCompat {
             String nickName = SharedUtils.getStringValue(getActivity(), DefineValue.NICKNAME);
             String currentLoginId = SharedUtils.getStringValue(getActivity(), DefineValue.CURRENT_LOGIN_ID);
             String deviceId = SharedUtils.getStringValue(getActivity(), DefineValue.DEVICE_ID);
+            int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
+
             prefLogon.setTitle("로그아웃");
             prefLogon.setSummary(currentLoginId + " / " + nickName);
             MemberSingleton ms = MemberSingleton.getInstance();
             Member member = Member.builder()
                     .setEmail(currentLoginId)
                     .setId(loginIdPk)
-                    .setDeviceId(deviceId);
+                    .setDeviceId(deviceId)
+                    .setMemberType(memberType);
             ms.setMember(member);
         }
     }
@@ -110,6 +122,8 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         String nickName = SharedUtils.getStringValue(getActivity(), DefineValue.NICKNAME);
         String currentLoginId = SharedUtils.getStringValue(getActivity(), DefineValue.CURRENT_LOGIN_ID);
         String deviceId = SharedUtils.getStringValue(getActivity(), DefineValue.DEVICE_ID);
+        int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
+
         if(SharedUtils.getBooleanValue(getActivity(), DefineValue.IS_LOGIN)) {
             prefLogon.setTitle("로그아웃");
             prefLogon.setSummary(currentLoginId + " / " + nickName);
@@ -119,7 +133,8 @@ public class SettingsFragent extends PreferenceFragmentCompat {
             Member member = Member.builder()
                     .setEmail(currentLoginId)
                     .setId(loginIdPk)
-                    .setDeviceId(deviceId);
+                    .setDeviceId(deviceId)
+                    .setMemberType(memberType);
             ms.setMember(member);
         } else {
             prefLogon.setTitle("로그인");

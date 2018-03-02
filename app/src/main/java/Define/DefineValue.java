@@ -30,4 +30,17 @@ public class DefineValue {
     public static final String NICKNAME = "NICKNAME";
     public static final String DEVICE_ID = "DEVICE_ID";
     public static final String IS_LOGIN = "IS_LOGIN";
+    public static final String MEMBER_TYPE = "MEMBER_TYPE";
+
+    // SNS TYPE
+    public static final int NORMAL_LOGIN = 1;
+    public static final int FACEBOOK_LOGIN = 2;
+    public static final int GOOGLE_LOGIN = 3;
+    public static final int NAVER_LOGIN = 4;
+    public static final int KAKAO_LOGIN = 5;
+
+    // Return Code
+    public static final int NORMAL_LOGIN_COMPLETE = 200;
+    public static final int FACEBOOK_LOGIN_COMPLETE = 201;
+    public static final int SIGNUP_COMPLETE = 202;
 }

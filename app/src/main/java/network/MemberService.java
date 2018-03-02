@@ -21,4 +21,7 @@ public interface MemberService {
     @FormUrlEncoded
     @POST("/rest/v1/member_login")
     Call<ApiResult<Member>> loginMember(@Field("email") String email, @Field("pwd") String pwd);
+
+    @POST("/rest/v1/sns_member_login")
+    Call<ApiResult<Member>> snsLogin(@Body Member member);
 }
