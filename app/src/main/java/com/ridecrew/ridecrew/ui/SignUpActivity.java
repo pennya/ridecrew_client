@@ -21,6 +21,7 @@ import com.ridecrew.ridecrew.presenter.SignUpPresenterImpl;
 import java.util.Random;
 
 import Entity.Member;
+import Entity.MemberSingleton;
 import util.DeviceUuidFactory;
 
 import static util.UtilsApp.requestFocus;
@@ -28,11 +29,12 @@ import static util.UtilsApp.requestFocus;
 public class SignUpActivity extends BaseToolbarActivity implements SignUpPresenter.View, View.OnClickListener, Spinner.OnItemSelectedListener{
 
     private SignUpPresenter mPresenter;
-    private Button mSubmit;
+    private Button mSubmit, mModify;
     private EditText mNickName, mEmail, mPassword, mPasswordCheck;
     private TextInputLayout mInputLayoutNickName, mInputLayoutEmail, mInputLayoutPassword, mInputLayoutPasswordCheck;
     private Spinner mSex;
     private int sexType; /* man is 0, woman is 1*/
+    private boolean modify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,11 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
 
                 mPresenter.actionJoinMember(member);
                 break;
+
+            case R.id.btn_activity_modify_submit:
+                duf = new DeviceUuidFactory(this);
+
+                break;
         }
     }
 
@@ -98,6 +105,7 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
 
     private void layoutInit() {
         mSubmit = (Button)findViewById(R.id.btn_activity_sign_up_submit);
+        mModify = (Button)findViewById(R.id.btn_activity_modify_submit);
         mNickName = (EditText)findViewById(R.id.edt_activity_sign_up_nickname);
         mEmail = (EditText)findViewById(R.id.edt_activity_sign_up_email);
         mPassword = (EditText)findViewById(R.id.edt_activity_sign_up_password);
@@ -109,6 +117,7 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
         mInputLayoutPasswordCheck = (TextInputLayout)findViewById(R.id.til_activity_sign_up_password_check_layout);
 
         mSubmit.setOnClickListener(this);
+        mModify.setOnClickListener(this);
         mSex.setOnItemSelectedListener(this);
 
         mNickName.addTextChangedListener(new SignUpTextWatcher(mNickName));
@@ -120,6 +129,14 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
     private void setDefaultSetting() {
         sexType = 0;
         mPasswordCheck.setEnabled(false);
+        Intent intent = new Intent(this.getIntent());
+        modify = intent.getBooleanExtra("modify",false);
+        if(modify) {
+            mEmail.setVisibility(View.GONE);
+            mInputLayoutEmail.setVisibility(View.GONE);
+            mModify.setVisibility(View.VISIBLE);
+            mSubmit.setVisibility(View.GONE);
+        }
     }
 
     private boolean validateEmail() {

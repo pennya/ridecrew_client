@@ -36,7 +36,7 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private Activity context;
     private int mPosition;
     private boolean mModifyFlag;
-    public static long id;
+    private long id;
 
 
     public NoticeRecyclerViewAdapter(NoticeRecyclerViewCallback callback, Activity context) {
@@ -82,9 +82,9 @@ public class NoticeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 public void onClick(final View view) {
                     //수정기능이 활성화일 때
                     if (mModifyFlag) {
-                        mPosition = position;
-                        mCallback.modifyFunction(context);
                         id = mItemLists.get(itemPosition).getId();
+                        mPosition = position;
+                        mCallback.modifyFunction(context,id);
                         return;
                     }
                     viewHolder.mContents.setVisibility(view.VISIBLE);

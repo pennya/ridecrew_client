@@ -109,8 +109,9 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     }
 
     @Override
-    public void modifyFunction(Activity context) {
+    public void modifyFunction(Activity context,long id) {
         Intent intent = new Intent(getContext(),NoticeAddActivity.class);
+        intent.putExtra("id",id);
         intent.putExtra("flag",mModifyFlag);
         startActivityForResult(intent,DefineValue.NOTICE_FRAGMENT_MODIFY_CODE);
         getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
@@ -172,9 +173,9 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
         });
 
         //관리자 계정일 때 버튼 visible
-        if (!SharedUtils.getBooleanValue(getContext(), DefineValue.IS_LOGIN) || MemberSingleton.getInstance().getMember().getId() != 17) {
+        if (!SharedUtils.getBooleanValue(getContext(), DefineValue.IS_LOGIN) || MemberSingleton.getInstance().getMember().getId() != 19) {
             mFabButton.setVisibility(View.GONE);
-        } else if (MemberSingleton.getInstance().getMember().getId() == 17) {
+        } else if (MemberSingleton.getInstance().getMember().getId() == 19) {
             //Floating Action Button OnClick
             mFabButton.setVisibility(View.VISIBLE);
             mAddButton.setOnClickListener(new OnClickListener() {

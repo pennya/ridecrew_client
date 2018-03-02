@@ -6,6 +6,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.view.View;
+import android.widget.Toast;
 
 import com.ridecrew.ridecrew.MainActivity;
 import com.ridecrew.ridecrew.R;
@@ -24,7 +26,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class SettingsFragent extends PreferenceFragmentCompat {
 
-    private Preference prefVersion, prefNotification, prefLogon, prefPaticipation;
+    private Preference prefVersion, prefNotification, prefLogon, prefPaticipation, prefPersonalInfo;
 
     public SettingsFragent() {
 
@@ -38,6 +40,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         prefNotification = findPreference("prefNotification");
         prefLogon = findPreference("prefLogon");
         prefPaticipation = findPreference("prefPaticipation");
+        prefPersonalInfo = findPreference("prefPersonalInfo");
         setInitialConfiguration();
 
         String versionName = UtilsApp.getAppVersionName(getActivity());
@@ -68,7 +71,20 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                 return false;
             }
         });
+
+        prefPersonalInfo.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                boolean modify = true;
+                Intent intent = new Intent(getActivity(),SignUpActivity.class);
+                intent.putExtra("modify",modify);
+                startActivityForResult(intent,DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE);
+                getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.fade_back);
+                return false;
+            }
+        });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -79,7 +95,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
             String deviceId = SharedUtils.getStringValue(getActivity(), DefineValue.DEVICE_ID);
             prefLogon.setTitle("로그아웃");
             prefLogon.setSummary(currentLoginId + " / " + nickName);
-
+            prefPersonalInfo.setVisible(false);
             MemberSingleton ms = MemberSingleton.getInstance();
             Member member = Member.builder()
                     .setEmail(currentLoginId)
@@ -95,6 +111,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         String currentLoginId = SharedUtils.getStringValue(getActivity(), DefineValue.CURRENT_LOGIN_ID);
         String deviceId = SharedUtils.getStringValue(getActivity(), DefineValue.DEVICE_ID);
         if(SharedUtils.getBooleanValue(getActivity(), DefineValue.IS_LOGIN)) {
+            prefPersonalInfo.setVisible(true);
             prefLogon.setTitle("로그아웃");
             prefLogon.setSummary(currentLoginId + " / " + nickName);
 
@@ -106,6 +123,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
             ms.setMember(member);
         } else {
             prefLogon.setTitle("로그인");
+            prefPersonalInfo.setVisible(false);
         }
 
         // Pre-Lollipop devices

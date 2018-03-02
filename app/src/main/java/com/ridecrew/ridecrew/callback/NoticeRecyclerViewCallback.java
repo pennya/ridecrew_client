@@ -14,6 +14,6 @@ import android.widget.TextView;
 public interface NoticeRecyclerViewCallback {
     void deleteVisible(ImageView imageView);
     void deleteFucntion(int position);
-    void modifyFunction(Activity context);
+    void modifyFunction(Activity context,long id);
     void modifyFlag(boolean flag);
 }
