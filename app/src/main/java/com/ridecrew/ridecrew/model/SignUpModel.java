@@ -47,4 +47,8 @@ public class SignUpModel {
             }
         });
     }
+
+    public void updateMember(long id, Member member) {
+
+    }
 }

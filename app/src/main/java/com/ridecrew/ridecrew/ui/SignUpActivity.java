@@ -84,7 +84,6 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
                 break;
 
             case R.id.btn_activity_modify_submit:
-                duf = new DeviceUuidFactory(this);
 
                 break;
         }
@@ -129,6 +128,7 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
     private void setDefaultSetting() {
         sexType = 0;
         mPasswordCheck.setEnabled(false);
+        //개인정보 수정
         Intent intent = new Intent(this.getIntent());
         modify = intent.getBooleanExtra("modify",false);
         if(modify) {
