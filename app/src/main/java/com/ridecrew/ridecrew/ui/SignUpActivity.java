@@ -1,13 +1,11 @@
 package com.ridecrew.ridecrew.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,8 +13,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ridecrew.ridecrew.R;
-import com.ridecrew.ridecrew.presenter.SignUpPresenter;
-import com.ridecrew.ridecrew.presenter.SignUpPresenterImpl;
+import com.ridecrew.ridecrew.presenter.LoginPresenter;
+import com.ridecrew.ridecrew.presenter.LoginPresenterImpl;
 
 import java.util.Random;
 
@@ -25,9 +23,9 @@ import util.DeviceUuidFactory;
 
 import static util.UtilsApp.requestFocus;
 
-public class SignUpActivity extends BaseToolbarActivity implements SignUpPresenter.View, View.OnClickListener, Spinner.OnItemSelectedListener{
+public class SignUpActivity extends BaseToolbarActivity implements LoginPresenter.View, View.OnClickListener, Spinner.OnItemSelectedListener{
 
-    private SignUpPresenter mPresenter;
+    private LoginPresenter mPresenter;
     private Button mSubmit;
     private EditText mNickName, mEmail, mPassword, mPasswordCheck;
     private TextInputLayout mInputLayoutNickName, mInputLayoutEmail, mInputLayoutPassword, mInputLayoutPasswordCheck;
@@ -40,7 +38,7 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
 
         layoutInit();
         setDefaultSetting();
-        mPresenter = new SignUpPresenterImpl(this, this);
+        mPresenter = new LoginPresenterImpl(this, this);
     }
 
     @Override
@@ -76,7 +74,7 @@ public class SignUpActivity extends BaseToolbarActivity implements SignUpPresent
                         .setPwd(mPassword.getText().toString().trim())
                         .setSex(sexType)
                         .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
-                        .setMemberType(1) /* member is 1, non member is 0*/ ;
+                        .setMemberType(1) ;
 
                 mPresenter.actionJoinMember(member);
                 break;

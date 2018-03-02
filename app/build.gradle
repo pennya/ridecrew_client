@@ -78,6 +78,7 @@ android {
 }
 
 repositories {
+    jcenter()
     mavenCentral()
     maven { url 'https://maven.google.com' }
 }
@@ -119,4 +120,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'com.github.clans:fab:1.6.2'
+    implementation 'com.facebook.android:facebook-login:[4,5)'
 }
