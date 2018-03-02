@@ -6,27 +6,51 @@ import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.LoginPresenter;
 import com.ridecrew.ridecrew.presenter.LoginPresenterImpl;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.Random;
+
 import Define.DefineValue;
+import Entity.Member;
+import util.DeviceUuidFactory;
 
 import static util.UtilsApp.requestFocus;
 
 public class LoginActivity extends BaseToolbarActivity implements LoginPresenter.View, View.OnClickListener{
 
-    LoginPresenter mPresenter;
+    private LoginPresenter mPresenter;
     private Button mSubmit;
     private EditText mEmail, mPassword;
     private TextInputLayout mInputLayoutEmail, mInputlayoutPassword;
     private TextView mEnroll;
+
+    /**
+     * Facebook login
+     */
+    private Button btnFbLogin;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +68,12 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
     @Override
     protected int getTitleToolBar() {
         return R.string.app_name;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -71,6 +101,9 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                 overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
                 break;
 
+            case R.id.facebook_login_button:
+                loginFacebook();
+                break;
         }
     }
 
@@ -81,9 +114,11 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
         mEnroll = (TextView) findViewById(R.id.tv_activity_login_enroll);
         mInputLayoutEmail = (TextInputLayout) findViewById(R.id.til_activity_login_email_layout);
         mInputlayoutPassword = (TextInputLayout) findViewById(R.id.til_activity_login_pwd_layout);
+        btnFbLogin = (Button) findViewById(R.id.facebook_login_button);
 
         mSubmit.setOnClickListener(this);
         mEnroll.setOnClickListener(this);
+        btnFbLogin.setOnClickListener(this);
 
         mEmail.addTextChangedListener(new LoginTextWatcher(mEmail));
         mPassword.addTextChangedListener(new LoginTextWatcher(mPassword));
@@ -91,7 +126,62 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
 
     private void setDefaultSettings() {
         mPresenter = new LoginPresenterImpl(this, this);
+        callbackManager = CallbackManager.Factory.create();
     }
+
+    private void loginFacebook() {
+
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email"));
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.i("ridecrew_KJH", "1 : " + loginResult.getAccessToken().getUserId());
+
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                String fb_id, name, email, picture;
+                                int gender;
+                                try {
+                                    fb_id = object.getString("id");
+                                    name = object.getString("name");
+                                    email = object.getString("email");
+                                    gender = object.getString("gender").equals("male") ? 0 : 1;
+
+                                    DeviceUuidFactory duf = new DeviceUuidFactory(getApplicationContext());
+                                    Member member = Member.builder()
+                                            .setNickName(name)
+                                            .setEmail(fb_id + "_" + email)
+                                            .setPwd(mPassword.getText().toString().trim())
+                                            .setSex(gender)
+                                            .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
+                                            .setMemberType(2) ;
+
+                                    mPresenter.actionSnsLogin(member);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,picture");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("ridecrew_KJH","onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("ridecrew_KJH","onError");
+            }
+        });
+    }
+
 
     private boolean validateEmail() {
         String email = mEmail.getText().toString().trim();
