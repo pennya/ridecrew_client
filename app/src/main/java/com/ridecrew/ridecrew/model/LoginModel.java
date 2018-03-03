@@ -105,4 +105,25 @@ public class LoginModel {
             }
         });
     }
+
+    public void requestUpdateInfo(long id, Member member) {
+        MemberService service = NetworkManager.getInstance().getRetrofit(MemberService.class);
+        Call<ApiResult<Member>> updateCall = service.updateMember(id,member);
+        updateCall.enqueue(new Callback<ApiResult<Member>>() {
+            @Override
+            public void onResponse(Call<ApiResult<Member>> call, Response<ApiResult<Member>> response) {
+                ApiResult<Member> result = response.body();
+                if(result.isSuccess()) {
+                    mLoginCallback.getNetworkResponse(result,200);
+                } else {
+                    mLoginCallback.getNetworkResponse(result.getError().getMessage(),result.getError().getCode());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResult<Member>> call, Throwable t) {
+                mLoginCallback.getNetworkResponse(t.getMessage(),ApiErrorCode.UNKNOWN_SERVER_ERROR);
+            }
+        });
+    }
 }

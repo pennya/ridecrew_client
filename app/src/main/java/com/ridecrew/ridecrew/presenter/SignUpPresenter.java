@@ -8,7 +8,6 @@ import Entity.Member;
 
 public interface SignUpPresenter {
     void actionJoinMember(Member member);
-    void actionUpdateMember(long id, Member member);
 
     interface View{
         void moveActivity();

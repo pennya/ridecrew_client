@@ -49,6 +49,11 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
     }
 
     @Override
+    public void actionUpdateMember(long id, Member member) {
+        loginModel.requestUpdateInfo(id,member);
+    }
+
+    @Override
     public void getNetworkResponse(ApiResult<Member> member, int status) {
 
         switch(status)

@@ -1,6 +1,5 @@
 package com.ridecrew.ridecrew.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ public class SettingsFragent extends PreferenceFragmentCompat {
     private Preference prefVersion, prefNotification, prefLogon, prefPaticipation, prefPersonalInfo;
 
     public SettingsFragent() {
-
     }
 
     @Override
@@ -106,6 +104,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
             int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
 
             prefLogon.setTitle("로그아웃");
+            prefPersonalInfo.setVisible(true);
             prefLogon.setSummary(currentLoginId + " / " + nickName);
             MemberSingleton ms = MemberSingleton.getInstance();
             Member member = Member.builder()

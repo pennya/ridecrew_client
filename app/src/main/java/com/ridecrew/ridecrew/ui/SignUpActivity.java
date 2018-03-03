@@ -3,6 +3,8 @@ package com.ridecrew.ridecrew.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -26,9 +28,8 @@ import util.DeviceUuidFactory;
 
 import static util.UtilsApp.requestFocus;
 
-public class SignUpActivity extends BaseToolbarActivity implements LoginPresenter.View, View.OnClickListener, Spinner.OnItemSelectedListener{
+public class SignUpActivity extends BaseToolbarActivity implements LoginPresenter.View, View.OnClickListener, Spinner.OnItemSelectedListener {
 
-//    private SignUpPresenter mPresenter;
     private LoginPresenter mPresenter;
     private Button mSubmit, mModify;
     private EditText mNickName, mEmail, mPassword, mPasswordCheck;
@@ -69,7 +70,7 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_activity_sign_up_submit:
                 DeviceUuidFactory duf = new DeviceUuidFactory(this);
 
@@ -79,20 +80,24 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
                         .setPwd(mPassword.getText().toString().trim())
                         .setSex(sexType)
                         .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
-                        .setMemberType(1) ;
-
+                        .setMemberType(1);
                 mPresenter.actionJoinMember(member);
+                MemberSingleton.getInstance().setMember(member);
                 break;
 
             case R.id.btn_activity_modify_submit:
-
+                Member m = MemberSingleton.getInstance().getMember();
+                m.setNickName(mNickName.getText().toString().trim())
+                        .setPwd(mPassword.getText().toString().trim());
+                mPresenter.actionUpdateMember(MemberSingleton.getInstance().getMember().getId(), m);
+                showToast("수정 완료");
                 break;
         }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        if( ((String)adapterView.getItemAtPosition(position)).equals("남자"))
+        if (((String) adapterView.getItemAtPosition(position)).equals("남자"))
             sexType = 0;
         else
             sexType = 1;
@@ -104,17 +109,17 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
     }
 
     private void layoutInit() {
-        mSubmit = (Button)findViewById(R.id.btn_activity_sign_up_submit);
-        mModify = (Button)findViewById(R.id.btn_activity_modify_submit);
-        mNickName = (EditText)findViewById(R.id.edt_activity_sign_up_nickname);
-        mEmail = (EditText)findViewById(R.id.edt_activity_sign_up_email);
-        mPassword = (EditText)findViewById(R.id.edt_activity_sign_up_password);
-        mPasswordCheck = (EditText)findViewById(R.id.edt_activity_sign_up_password_check);
-        mSex = (Spinner)findViewById(R.id.spinner_activity_sign_up_sex);
-        mInputLayoutNickName = (TextInputLayout)findViewById(R.id.til_activity_sign_up_nickname_layout);
-        mInputLayoutEmail = (TextInputLayout)findViewById(R.id.til_activity_sign_up_email_layout);
-        mInputLayoutPassword = (TextInputLayout)findViewById(R.id.til_activity_sign_up_password_layout);
-        mInputLayoutPasswordCheck = (TextInputLayout)findViewById(R.id.til_activity_sign_up_password_check_layout);
+        mSubmit = (Button) findViewById(R.id.btn_activity_sign_up_submit);
+        mModify = (Button) findViewById(R.id.btn_activity_modify_submit);
+        mNickName = (EditText) findViewById(R.id.edt_activity_sign_up_nickname);
+        mEmail = (EditText) findViewById(R.id.edt_activity_sign_up_email);
+        mPassword = (EditText) findViewById(R.id.edt_activity_sign_up_password);
+        mPasswordCheck = (EditText) findViewById(R.id.edt_activity_sign_up_password_check);
+        mSex = (Spinner) findViewById(R.id.spinner_activity_sign_up_sex);
+        mInputLayoutNickName = (TextInputLayout) findViewById(R.id.til_activity_sign_up_nickname_layout);
+        mInputLayoutEmail = (TextInputLayout) findViewById(R.id.til_activity_sign_up_email_layout);
+        mInputLayoutPassword = (TextInputLayout) findViewById(R.id.til_activity_sign_up_password_layout);
+        mInputLayoutPasswordCheck = (TextInputLayout) findViewById(R.id.til_activity_sign_up_password_check_layout);
 
         mSubmit.setOnClickListener(this);
         mModify.setOnClickListener(this);
@@ -131,8 +136,8 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
         mPasswordCheck.setEnabled(false);
         //개인정보 수정
         Intent intent = new Intent(this.getIntent());
-        modify = intent.getBooleanExtra("modify",false);
-        if(modify) {
+        modify = intent.getBooleanExtra("modify", false);
+        if (modify) {
             mEmail.setVisibility(View.GONE);
             mInputLayoutEmail.setVisibility(View.GONE);
             mModify.setVisibility(View.VISIBLE);

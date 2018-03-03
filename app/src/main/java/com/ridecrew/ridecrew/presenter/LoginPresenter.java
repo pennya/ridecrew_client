@@ -10,6 +10,7 @@ public interface LoginPresenter {
     void actionJoinMember(Member member);
     void actionLogin(String id, String pw);
     void actionSnsLogin(Member member);
+    void actionUpdateMember(long id, Member member);
 
     interface View{
         void moveActivity();

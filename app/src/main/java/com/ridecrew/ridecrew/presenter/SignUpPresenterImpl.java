@@ -30,11 +30,6 @@ public class SignUpPresenterImpl implements SignUpPresenter , SignUpCallback {
     }
 
     @Override
-    public void actionUpdateMember(long id, Member member) {
-
-    }
-
-    @Override
     public void getNetworkResponse(int code) {
         if( code == 200) {
             view.moveActivity();
