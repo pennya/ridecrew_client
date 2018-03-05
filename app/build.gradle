@@ -84,7 +84,6 @@ repositories {
 }
 
 dependencies {
-
     ext {
         support_library_version = '27.0.1'
         google_play_services_version = '11.8.0'
@@ -133,3 +132,5 @@ dependencies {
     //facebook
     implementation 'com.facebook.android:facebook-login:[4,5)'
 }
+
+apply plugin: 'com.google.gms.google-services'

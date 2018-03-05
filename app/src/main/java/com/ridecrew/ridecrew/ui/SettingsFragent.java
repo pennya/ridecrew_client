@@ -8,6 +8,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ridecrew.ridecrew.MainActivity;
 import com.ridecrew.ridecrew.R;
 
@@ -18,6 +19,7 @@ import util.SharedUtils;
 import util.UtilsApp;
 
 import static Define.DefineValue.FACEBOOK_LOGIN;
+import static Define.DefineValue.GOOGLE_LOGIN;
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -60,6 +62,8 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                     int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
                     if(memberType == FACEBOOK_LOGIN) {
                         LoginManager.getInstance().logOut();
+                    } else if(memberType == GOOGLE_LOGIN) {
+                        FirebaseAuth.getInstance().signOut();
                     }
 
                     SharedUtils.prefClear(getActivity());

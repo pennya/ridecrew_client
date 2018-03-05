@@ -18,6 +18,7 @@ public class DefineValue {
     public static final int NOTICE_FRAGMENT_REQUEST_CODE = 3002;
     public static final int NOTICE_FRAGMENT_MODIFY_CODE = 3003;
     public static final int LOCATION_SELECTION_REQUEST_CODE = 4001;
+    public static final int GOOGLE_SIGN_IN_REQUEST_CODE = 5001;
 
 
     // 자동 로그인 용
