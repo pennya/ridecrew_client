@@ -54,6 +54,7 @@ import Entity.Member;
 import util.DeviceUuidFactory;
 
 import static Define.DefineValue.GOOGLE_SIGN_IN_REQUEST_CODE;
+import static Define.DefineValue.SIGN_IN_AGREEMENT_REQUEST_CODE;
 import static util.UtilsApp.requestFocus;
 
 public class LoginActivity extends BaseToolbarActivity implements LoginPresenter.View, View.OnClickListener{
@@ -112,6 +113,29 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                 }
             }
         }
+
+        if(requestCode == SIGN_IN_AGREEMENT_REQUEST_CODE && resultCode == RESULT_OK) {
+            int type = data.getIntExtra("type", -1);
+            switch (type) {
+                case R.id.tv_activity_login_enroll:
+                    Intent intent = new Intent(this, SignUpActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+                    break;
+
+                case R.id.facebook_login_button:
+                    loginFacebook();
+                    break;
+
+                case R.id.google_login_button:
+                    loginGoogle();
+                    break;
+
+                default:
+                    Toast.makeText(this, "비허가 진입", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 
     @Override
@@ -134,17 +158,15 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                 break;
 
             case R.id.tv_activity_login_enroll:
-                Intent intent = new Intent(this, SignUpActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+                signInAgree(R.id.tv_activity_login_enroll);
                 break;
 
             case R.id.facebook_login_button:
-                loginFacebook();
+                signInAgree(R.id.facebook_login_button);
                 break;
 
             case R.id.google_login_button:
-                loginGoogle();
+                signInAgree(R.id.google_login_button);
                 break;
         }
     }
@@ -173,6 +195,14 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
         callbackManager = CallbackManager.Factory.create();
 
         setGoogleLogin();
+    }
+
+    private void signInAgree(int type) {
+        Intent signInAgreeIntent = new Intent(this, SignInAgreeActivity.class);
+        signInAgreeIntent.putExtra("type", type);
+
+        startActivityForResult(signInAgreeIntent, SIGN_IN_AGREEMENT_REQUEST_CODE);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
     }
 
     private void loginFacebook() {

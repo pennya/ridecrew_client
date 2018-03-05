@@ -42,7 +42,6 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
 
         layoutInit(scheduleDetailView);
         setDefaultSetting();
-        //TMapInit();
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setView(scheduleDetailView);

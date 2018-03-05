@@ -51,7 +51,7 @@
         <activity android:name=".ui.FileUploadActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.TMapLocationSelectActivity"
+        <activity android:name=".ui.SignInAgreeActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.NoticeAddActivity"
             android:screenOrientation="portrait" />
