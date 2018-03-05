@@ -3,43 +3,26 @@ package com.ridecrew.ridecrew.ui;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.widget.NestedScrollView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenter;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenterImpl;
-import com.skp.Tmap.TMapData;
-import com.skp.Tmap.TMapInfo;
-import com.skp.Tmap.TMapMarkerItem;
-import com.skp.Tmap.TMapPoint;
-import com.skp.Tmap.TMapView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import Define.DefineValue;
 import Entity.ApiResult;
-import Entity.Member;
 import Entity.MemberSingleton;
 import Entity.Schedule;
-import Entity.ScheduleDefaultEntitiy;
 import Entity.ScheduleMember;
 import util.SharedUtils;
 import util.UtilsApp;
-
-import static com.ridecrew.ridecrew.ui.BaseTMapActivity.TMAP_API_KEY;
 
 /**
  * Created by KIM on 2018-01-03.
@@ -51,12 +34,6 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
     private Schedule mCurrentSchedule;
     private TextView mTitle, mAuthor, mDate, mStartTime, mEndTime, mStartSpot, mEndSpot, mDescription;
     private Button mBtnJoin, mBtnCancel;
-    /*private RelativeLayout mMap;
-    private TMapView mTMapView;
-    private View mMapFake;*/
-
-    private TMapMarkerItem startMarker, endMarker;
-    private TMapPoint startPoint, endPoint;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

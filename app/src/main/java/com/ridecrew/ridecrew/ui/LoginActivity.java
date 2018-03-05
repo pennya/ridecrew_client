@@ -52,6 +52,11 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
     private Button btnFbLogin;
     private CallbackManager callbackManager;
 
+    /**
+     * Google login
+     */
+    private Button btnGgLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +109,10 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
             case R.id.facebook_login_button:
                 loginFacebook();
                 break;
+
+            case R.id.google_login_button:
+                
+                break;
         }
     }
 
@@ -115,10 +124,12 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
         mInputLayoutEmail = (TextInputLayout) findViewById(R.id.til_activity_login_email_layout);
         mInputlayoutPassword = (TextInputLayout) findViewById(R.id.til_activity_login_pwd_layout);
         btnFbLogin = (Button) findViewById(R.id.facebook_login_button);
+        btnGgLogin = (Button) findViewById(R.id.google_login_button);
 
         mSubmit.setOnClickListener(this);
         mEnroll.setOnClickListener(this);
         btnFbLogin.setOnClickListener(this);
+        btnGgLogin.setOnClickListener(this);
 
         mEmail.addTextChangedListener(new LoginTextWatcher(mEmail));
         mPassword.addTextChangedListener(new LoginTextWatcher(mPassword));

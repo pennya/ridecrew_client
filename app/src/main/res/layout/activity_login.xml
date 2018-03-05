@@ -88,7 +88,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tv_activity_login_enroll"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/google_login_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="16dp"
@@ -97,6 +97,26 @@
         android:background="#3b5998"
         android:text="페이스북으로 시작하기"
         android:textColor="#FFFFFF"
+        style="@style/Widget.AppCompat.Button.Colored"
         />
+
+    <Button
+        android:id="@+id/google_login_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/facebook_login_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#dd4b39"
+        android:text="구글로 시작하기"
+        android:textColor="#FFFFFF"
+        style="@style/Widget.AppCompat.Button.Colored"
+        />
+
+
 
 </android.support.constraint.ConstraintLayout>
