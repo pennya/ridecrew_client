@@ -1,6 +1,7 @@
 package com.ridecrew.ridecrew.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -212,22 +213,23 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                String fb_id, name, email, picture;
+                                String fb_id, name, picture;
                                 int gender;
                                 try {
                                     fb_id = object.getString("id");
                                     name = object.getString("name");
-                                    email = object.getString("email");
                                     gender = object.getString("gender").equals("male") ? 0 : 1;
+                                    picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
 
                                     DeviceUuidFactory duf = new DeviceUuidFactory(getApplicationContext());
                                     Member member = Member.builder()
                                             .setNickName(name)
-                                            .setEmail(fb_id + "_" + email)
+                                            .setEmail("fb_" + fb_id)
                                             .setPwd(mPassword.getText().toString().trim())
                                             .setSex(gender)
                                             .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
-                                            .setMemberType(2) ;
+                                            .setMemberType(2)
+                                            .setImageUrl(picture);
 
                                     mPresenter.actionSnsLogin(member);
                                 } catch (JSONException e) {
@@ -280,19 +282,21 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            String uid, email, name;
+                            String uid, name;
+                            Uri picture;
+
                             uid = user.getUid();
-                            email = user.getEmail();
                             name = user.getDisplayName();
+                            picture = user.getPhotoUrl();
 
                             DeviceUuidFactory duf = new DeviceUuidFactory(getApplicationContext());
                             Member member = Member.builder()
                                     .setNickName(name)
-                                    .setEmail(uid + "_" + email)
+                                    .setEmail("gg_" + uid)
                                     .setPwd(mPassword.getText().toString().trim())
-                                    .setSex(0)
                                     .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
-                                    .setMemberType(3) ;
+                                    .setMemberType(3)
+                                    .setImageUrl(picture.toString());
 
                             mPresenter.actionSnsLogin(member);
                         } else {

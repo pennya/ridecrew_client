@@ -13,10 +13,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static Define.DefineValue.FACEBOOK_LOGIN_COMPLETE;
 import static Define.DefineValue.NORMAL_LOGIN_COMPLETE;
 import static Define.DefineValue.SIGNUP_COMPLETE;
 import static Define.DefineValue.SIGNUP_MODIFY;
+import static Define.DefineValue.SNS_LOGIN_COMPLETE;
 
 /**
  * Created by KJH on 2017-12-30.
@@ -67,7 +67,7 @@ public class LoginModel {
 
                     ApiResult<Member> result = response.body();
                     if( result.isSuccess()) {
-                        mLoginCallback.getNetworkResponse(result, FACEBOOK_LOGIN_COMPLETE);
+                        mLoginCallback.getNetworkResponse(result, SNS_LOGIN_COMPLETE);
                     } else {
                         mLoginCallback.getNetworkResponse(result.getError().getMessage(), result.getError().getCode());
                     }
