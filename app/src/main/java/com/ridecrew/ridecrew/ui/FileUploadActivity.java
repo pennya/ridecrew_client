@@ -38,6 +38,7 @@ import Define.DefineValue;
 public class FileUploadActivity extends BaseToolbarActivity  implements View.OnClickListener {
 
     public static final int PICK_FROM_ALBUM = 1;
+    public static final int TAKE_PICTURE = 0;
     public static final int REQUEST_PERMISSIONS_REQUEST_CODE = 99;
 
     // AWS S3

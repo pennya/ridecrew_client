@@ -16,6 +16,7 @@ import static Define.DefineValue.FACEBOOK_LOGIN_COMPLETE;
 import static Define.DefineValue.NORMAL_LOGIN;
 import static Define.DefineValue.NORMAL_LOGIN_COMPLETE;
 import static Define.DefineValue.SIGNUP_COMPLETE;
+import static Define.DefineValue.SIGNUP_MODIFY;
 
 /**
  * Created by KJH on 2017-12-30.
@@ -49,6 +50,11 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
     }
 
     @Override
+    public void actionUpdateMember(long id, Member member) {
+        loginModel.requestUpdateInfo(id,member);
+    }
+
+    @Override
     public void getNetworkResponse(ApiResult<Member> member, int status) {
 
         switch(status)
@@ -67,6 +73,10 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
                 if(member.getData().getMemberType() != NORMAL_LOGIN) {
                     setMemberProperties(member.getData());
                 }
+                view.moveActivity();
+                break;
+            case SIGNUP_MODIFY:
+                setMemberProperties(member.getData());
                 view.moveActivity();
                 break;
         }
@@ -104,5 +114,6 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
         SharedUtils.setStringValue(context, DefineValue.DEVICE_ID, memberInfo.getDeviceId());
         SharedUtils.setBooleanValue(context, DefineValue.IS_LOGIN, true);
         SharedUtils.setIntValue(context, DefineValue.MEMBER_TYPE, memberInfo.getMemberType());
+        SharedUtils.setStringValue(context,DefineValue.PROFILE_URL,memberInfo.getImageUrl());
     }
 }

@@ -31,6 +31,7 @@ public class NoticeAddActivity extends BaseToolbarActivity implements NoticePres
     private Button mModifyButton;
     private NoticePresenter mPresenter;
     private Spinner mSpinner;
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,7 @@ public class NoticeAddActivity extends BaseToolbarActivity implements NoticePres
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.type));
         mSpinner.setAdapter(spinnerAdapter);
         Intent intent = new Intent(this.getIntent());
+        id = intent.getLongExtra("id",-1);
         boolean flag = intent.getBooleanExtra("flag",false);
         if(flag) {
             mEnroll.setVisibility(View.GONE);
@@ -129,6 +131,6 @@ public class NoticeAddActivity extends BaseToolbarActivity implements NoticePres
                 .setTitle(title.getText().toString())
                 .setContent(content.getText().toString())
                 .setType(type);
-        mPresenter.modifyNoticeData(NoticeRecyclerViewAdapter.id,notice);
+        mPresenter.modifyNoticeData(id,notice);
     }
 }

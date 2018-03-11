@@ -58,6 +58,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="15sp"
                 app:layout_constraintLeft_toRightOf="@id/img_delete"
+                app:layout_constraintRight_toLeftOf="@id/tv_fragment_notice_recycler_view_createdDateTime"
                 app:layout_constraintTop_toBottomOf="@+id/img_type_notice" />
 
             <TextView

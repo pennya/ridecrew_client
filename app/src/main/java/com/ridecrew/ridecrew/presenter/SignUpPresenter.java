@@ -6,11 +6,8 @@ import Entity.Member;
  * Created by KJH on 2017-12-30.
  */
 
-public interface LoginPresenter {
+public interface SignUpPresenter {
     void actionJoinMember(Member member);
-    void actionLogin(String id, String pw);
-    void actionSnsLogin(Member member);
-    void actionUpdateMember(long id, Member member);
 
     interface View{
         void moveActivity();

@@ -1,11 +1,12 @@
 package com.ridecrew.ridecrew.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.ridecrew.ridecrew.MainActivity;
@@ -26,10 +27,9 @@ import static android.app.Activity.RESULT_OK;
 
 public class SettingsFragent extends PreferenceFragmentCompat {
 
-    private Preference prefVersion, prefNotification, prefLogon, prefPaticipation;
+    private Preference prefVersion, prefNotification, prefLogon, prefPaticipation, prefPersonalInfo;
 
     public SettingsFragent() {
-
     }
 
     @Override
@@ -40,6 +40,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         prefNotification = findPreference("prefNotification");
         prefLogon = findPreference("prefLogon");
         prefPaticipation = findPreference("prefPaticipation");
+        prefPersonalInfo = findPreference("prefPersonalInfo");
         setInitialConfiguration();
 
         String versionName = UtilsApp.getAppVersionName(getActivity());
@@ -55,6 +56,8 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                     startActivityForResult(new Intent(getActivity(), LoginActivity.class), DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE);
                     getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     prefLogon.setTitle("로그인");
+                    prefLogon.setSummary("print your login id");
+                    prefPersonalInfo.setVisible(false);
                     prefLogon.setSummary("로그인을 해야 서비스 가능합니다");
 
                     int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
@@ -76,7 +79,20 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                 return false;
             }
         });
+
+        prefPersonalInfo.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                boolean modify = true;
+                Intent intent = new Intent(getActivity(),SignUpActivity.class);
+                intent.putExtra("modify",modify);
+                startActivityForResult(intent,DefineValue.MY_PAGE_FRAGMENT_REQEUST_CODE);
+                getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.fade_back);
+                return false;
+            }
+        });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -88,8 +104,8 @@ public class SettingsFragent extends PreferenceFragmentCompat {
             int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
 
             prefLogon.setTitle("로그아웃");
+            prefPersonalInfo.setVisible(true);
             prefLogon.setSummary(currentLoginId + " / " + nickName);
-
             MemberSingleton ms = MemberSingleton.getInstance();
             Member member = Member.builder()
                     .setEmail(currentLoginId)
@@ -110,6 +126,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         if(SharedUtils.getBooleanValue(getActivity(), DefineValue.IS_LOGIN)) {
             prefLogon.setTitle("로그아웃");
             prefLogon.setSummary(currentLoginId + " / " + nickName);
+            prefPersonalInfo.setVisible(true);
 
             MemberSingleton ms = MemberSingleton.getInstance();
             Member member = Member.builder()
@@ -120,6 +137,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
             ms.setMember(member);
         } else {
             prefLogon.setTitle("로그인");
+            prefPersonalInfo.setVisible(false);
         }
 
         // Pre-Lollipop devices

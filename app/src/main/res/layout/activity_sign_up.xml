@@ -13,6 +13,16 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+    <ImageView
+        android:id="@+id/iv_activity_sign_up_profile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_profile"
+        app:layout_constraintBottom_toTopOf="@id/til_activity_sign_up_nickname_layout"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_activity_sign_up_nickname_layout"
         android:layout_width="0dp"
@@ -130,5 +140,19 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:text="등   록"/>
 
+    <Button
+        android:id="@+id/btn_activity_modify_submit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_activity_sign_up_sex"
+        app:layout_constraintBottom_toBottomOf="@id/btn_activity_sign_up_submit"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:text="수   정"/>
 
 </android.support.constraint.ConstraintLayout>

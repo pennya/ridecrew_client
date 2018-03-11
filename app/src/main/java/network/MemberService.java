@@ -6,7 +6,10 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 /**
  * Created by KJH on 2017-12-30.
@@ -22,4 +25,7 @@ public interface MemberService {
 
     @POST("/rest/v1/sns_member_login")
     Call<ApiResult<Member>> snsLogin(@Body Member member);
+
+    @PUT("/rest/v1/members/{pk}")
+    Call<ApiResult<Member>> updateMember(@Path("pk")Long pk, @Body Member member);
 }

@@ -24,6 +24,11 @@
             android:title="Login"
             android:summary="print your login id"
             />
+
+        <PreferenceScreen
+            android:key="prefPersonalInfo"
+            android:title="개인정보수정"
+            />
     </PreferenceCategory>
 
 </PreferenceScreen>
