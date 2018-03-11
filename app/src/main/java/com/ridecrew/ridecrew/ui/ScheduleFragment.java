@@ -150,7 +150,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
         if(apiResult == null) {
             new AlertDialog.Builder(getActivity())
                     .setTitle("알림")
-                    .setMessage("데이터가 없습니다. 재시작 해주세요.")
+                    .setMessage("데이터가 없습니다. 인터넷 연결을 확인해주세요")
                     .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
