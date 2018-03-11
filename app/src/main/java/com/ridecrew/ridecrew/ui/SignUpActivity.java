@@ -1,31 +1,63 @@
 package com.ridecrew.ridecrew.ui;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.ridecrew.ridecrew.BuildConfig;
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.LoginPresenter;
 import com.ridecrew.ridecrew.presenter.LoginPresenterImpl;
-import com.ridecrew.ridecrew.presenter.SignUpPresenter;
 
+import java.io.File;
 import java.util.Random;
 
+import Define.DefineValue;
 import Entity.Member;
 import Entity.MemberSingleton;
 import util.DeviceUuidFactory;
+import util.RealPathUtil;
+import util.SharedUtils;
 
+import static com.ridecrew.ridecrew.ui.FileUploadActivity.PICK_FROM_ALBUM;
+import static com.ridecrew.ridecrew.ui.FileUploadActivity.REQUEST_PERMISSIONS_REQUEST_CODE;
+import static com.ridecrew.ridecrew.ui.FileUploadActivity.TAKE_PICTURE;
 import static util.UtilsApp.requestFocus;
 
 public class SignUpActivity extends BaseToolbarActivity implements LoginPresenter.View, View.OnClickListener, Spinner.OnItemSelectedListener {
@@ -36,7 +68,15 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
     private TextInputLayout mInputLayoutNickName, mInputLayoutEmail, mInputLayoutPassword, mInputLayoutPasswordCheck;
     private Spinner mSex;
     private int sexType; /* man is 0, woman is 1*/
+    private ImageView mProfile;
+    private String url;
     private boolean modify;
+    private File f;
+    // AWS S3
+    private CognitoCachingCredentialsProvider credentialsProvider;
+    private AmazonS3 s3;
+    private TransferUtility transferUtility;
+    private TransferObserver observer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,25 +113,69 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
         switch (view.getId()) {
             case R.id.btn_activity_sign_up_submit:
                 DeviceUuidFactory duf = new DeviceUuidFactory(this);
-
                 Member member = Member.builder()
                         .setNickName(mNickName.getText().toString().trim())
                         .setEmail(mEmail.getText().toString().trim())
                         .setPwd(mPassword.getText().toString().trim())
                         .setSex(sexType)
                         .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
-                        .setMemberType(1);
+                        .setMemberType(1)
+                        .setImageUrl(url);
                 mPresenter.actionJoinMember(member);
                 MemberSingleton.getInstance().setMember(member);
                 break;
 
             case R.id.btn_activity_modify_submit:
-                Member m = MemberSingleton.getInstance().getMember();
-                m.setNickName(mNickName.getText().toString().trim())
-                        .setPwd(mPassword.getText().toString().trim());
-                mPresenter.actionUpdateMember(MemberSingleton.getInstance().getMember().getId(), m);
-                showToast("수정 완료");
+                if (validateNickName() && validatePassword() && validatePasswordCheck()) {
+                    awsUpload();
+                } else {
+                    showToast("모든 정보를 입력해주세요");
+                }
                 break;
+
+            case R.id.iv_activity_sign_up_profile:
+                final CharSequence[] choice = {"앨범에서 선택", "직접 촬영"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("프로필 지정");
+                builder.setItems(choice, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            pickImage();
+                        } else {
+                            takePicture();
+                        }
+                    }
+                });
+                builder.show();
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        BitmapFactory.Options options;
+        try {
+            if (requestCode == PICK_FROM_ALBUM) {
+                Uri uri = data.getData();
+                String realPath = RealPathUtil.getRealPath(this, uri);
+                f = new File(realPath);
+                mProfile.setImageURI(uri);
+            } else if (requestCode == TAKE_PICTURE) {
+                Uri uri = data.getData();
+                String realPath = RealPathUtil.getRealPath(this, uri);
+                f = new File(realPath);
+                mProfile.setImageURI(uri);
+            }
+        } catch (OutOfMemoryError e) {
+            try {
+                options = new BitmapFactory.Options();
+                options.inSampleSize = 10;
+                Bitmap bitmap = BitmapFactory.decodeFile(url, options);
+                mProfile.setImageBitmap(bitmap);
+            } catch (Exception e1) {
+                Toast.makeText(this, e1.toString(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -104,8 +188,82 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PERMISSIONS_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    new android.support.v7.app.AlertDialog.Builder(this)
+                            .setTitle("알림")
+                            .setMessage("저장소 권한이 필요합니다. 환경 설정에서 저장소 권한을 허가해주세요.")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent();
+                                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package",
+                                            BuildConfig.APPLICATION_ID, null);
+                                    intent.setData(uri);
+                                    intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                }
+                            })
+                            .create()
+                            .show();
+                }
+        }
+    }
+
+    @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, PICK_FROM_ALBUM);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+    }
+
+    private void takePicture() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, TAKE_PICTURE);
+    }
+
+    public void awsUpload() {
+        observer = transferUtility.upload(
+                "ridecrew",
+                "profile/" + f.getName(), f);
+        observer.setTransferListener(new TransferListener() {
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (state.name().startsWith("COMPLETE")) {
+                    String finalUrl = "https://s3.ap-northeast-2.amazonaws.com/"
+                            + observer.getBucket()
+                            + "/" + observer.getKey();
+                    MemberSingleton.getInstance().getMember()
+                            .setNickName(mNickName.getText().toString().trim())
+                            .setPwd(mPassword.getText().toString().trim())
+                            .setImageUrl(finalUrl);
+                    mPresenter.actionUpdateMember(MemberSingleton.getInstance().getMember().getId(),MemberSingleton.getInstance().getMember());
+                    finish();
+                    showToast("수정 완료");
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+
+            }
+        });
     }
 
     private void layoutInit() {
@@ -120,20 +278,47 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
         mInputLayoutEmail = (TextInputLayout) findViewById(R.id.til_activity_sign_up_email_layout);
         mInputLayoutPassword = (TextInputLayout) findViewById(R.id.til_activity_sign_up_password_layout);
         mInputLayoutPasswordCheck = (TextInputLayout) findViewById(R.id.til_activity_sign_up_password_check_layout);
+        mProfile = (ImageView) findViewById(R.id.iv_activity_sign_up_profile);
 
         mSubmit.setOnClickListener(this);
         mModify.setOnClickListener(this);
         mSex.setOnItemSelectedListener(this);
+        mProfile.setOnClickListener(this);
 
         mNickName.addTextChangedListener(new SignUpTextWatcher(mNickName));
         mEmail.addTextChangedListener(new SignUpTextWatcher(mEmail));
         mPassword.addTextChangedListener(new SignUpTextWatcher(mPassword));
         mPasswordCheck.addTextChangedListener(new SignUpTextWatcher(mPasswordCheck));
+
+        if(SharedUtils.getStringValue(this, DefineValue.PROFILE_URL)!=null) {
+            String url = SharedUtils.getStringValue(this,DefineValue.PROFILE_URL);
+
+            RequestOptions requestOptions = new RequestOptions()
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+            Glide.with(this)
+                    .load(url)
+                    .apply(requestOptions)
+                    .into(mProfile);
+        }
     }
 
     private void setDefaultSetting() {
+        // Amazon Cognito 인증 공급자를 초기화합니다
+        credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "ap-northeast-2:7ea4f3e2-4c1e-4875-adaa-f9b128e73e37", // 자격 증명 풀 ID
+                Regions.AP_NORTHEAST_2 // 리전
+        );
+
+        s3 = new AmazonS3Client(credentialsProvider);
+        // S3 버킷의 Region 이 서울일 경우 아래와 같습니다.
+        s3.setRegion(Region.getRegion(Regions.AP_NORTHEAST_2));
+        s3.setEndpoint("s3.ap-northeast-2.amazonaws.com");
         sexType = 0;
         mPasswordCheck.setEnabled(false);
+        transferUtility = new TransferUtility(s3, getApplicationContext());
         //개인정보 수정
         Intent intent = new Intent(this.getIntent());
         modify = intent.getBooleanExtra("modify", false);

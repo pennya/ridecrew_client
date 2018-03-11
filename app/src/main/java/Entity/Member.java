@@ -2,6 +2,8 @@ package Entity;
 
 import java.io.Serializable;
 
+import retrofit2.http.Url;
+
 /**
  * Created by kim on 2017. 12. 25..
  */
@@ -17,6 +19,14 @@ public class Member implements Serializable {
     private String nickName;
     private String deviceId;
     private int memberType;
+    private String profileUrl;
+
+    public String getImageUrl() { return profileUrl; }
+
+    public Member setImageUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+        return this;
+    }
 
     public static Member builder() {
         return new Member();

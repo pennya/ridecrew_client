@@ -16,6 +16,7 @@ import retrofit2.Response;
 import static Define.DefineValue.FACEBOOK_LOGIN_COMPLETE;
 import static Define.DefineValue.NORMAL_LOGIN_COMPLETE;
 import static Define.DefineValue.SIGNUP_COMPLETE;
+import static Define.DefineValue.SIGNUP_MODIFY;
 
 /**
  * Created by KJH on 2017-12-30.
@@ -114,7 +115,7 @@ public class LoginModel {
             public void onResponse(Call<ApiResult<Member>> call, Response<ApiResult<Member>> response) {
                 ApiResult<Member> result = response.body();
                 if(result.isSuccess()) {
-                    mLoginCallback.getNetworkResponse(result,200);
+                    mLoginCallback.getNetworkResponse(result,SIGNUP_MODIFY);
                 } else {
                     mLoginCallback.getNetworkResponse(result.getError().getMessage(),result.getError().getCode());
                 }

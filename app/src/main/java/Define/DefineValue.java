@@ -19,7 +19,6 @@ public class DefineValue {
     public static final int NOTICE_FRAGMENT_MODIFY_CODE = 3003;
     public static final int LOCATION_SELECTION_REQUEST_CODE = 4001;
 
-
     // 자동 로그인 용
     public static final String LOGIN_ID = "LOGIN_ID";
     public static final String LOGIN_PASSWORD = "LOGIN_PASSWORD";
@@ -31,6 +30,7 @@ public class DefineValue {
     public static final String DEVICE_ID = "DEVICE_ID";
     public static final String IS_LOGIN = "IS_LOGIN";
     public static final String MEMBER_TYPE = "MEMBER_TYPE";
+    public static final String PROFILE_URL = "PROFILE_URL";
 
     // SNS TYPE
     public static final int NORMAL_LOGIN = 1;
@@ -43,4 +43,5 @@ public class DefineValue {
     public static final int NORMAL_LOGIN_COMPLETE = 200;
     public static final int FACEBOOK_LOGIN_COMPLETE = 201;
     public static final int SIGNUP_COMPLETE = 202;
+    public static final int SIGNUP_MODIFY = 203;
 }
