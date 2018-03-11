@@ -2,6 +2,7 @@ package com.ridecrew.ridecrew.adapter;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.callback.ScheduleRecyclerViewCallback;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Entity.Schedule;
 
@@ -49,9 +52,27 @@ public class ScheduleRecyclerViewApdater extends RecyclerView.Adapter<RecyclerVi
                 }
             });
 
-            viewHolder.mTitle.setText(mItemLists.get(itemPosition).getTitle());
-            viewHolder.mDestination.setText(mItemLists.get(itemPosition).getDescriptions());
-            viewHolder.mAuthor.setText(mItemLists.get(itemPosition).getMember().getNickName());
+            String title = mItemLists.get(itemPosition).getTitle();
+            String startSpot = mItemLists.get(itemPosition).getStartSpot();
+            String endSpot = mItemLists.get(itemPosition).getEndSpot();
+            String nickName = mItemLists.get(itemPosition).getMember().getNickName();
+            String startTime = mItemLists.get(itemPosition).getStartTime();
+
+            if(title == null || startSpot == null ||
+                    endSpot == null || startTime == null)
+                return;
+
+            viewHolder.mTitle.setText(title);
+            viewHolder.mDestination.setText(startSpot + " ~ " + endSpot);
+            viewHolder.mAuthor.setText(nickName);
+
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                Date dt = sdf.parse(startTime);
+                viewHolder.mTime.setText(new SimpleDateFormat("hh:mm aa").format(dt));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -74,6 +95,7 @@ public class ScheduleRecyclerViewApdater extends RecyclerView.Adapter<RecyclerVi
         protected TextView mTitle;
         protected TextView mDestination;
         protected TextView mAuthor;
+        protected TextView mTime;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -81,6 +103,7 @@ public class ScheduleRecyclerViewApdater extends RecyclerView.Adapter<RecyclerVi
             mTitle = (TextView)itemView.findViewById(R.id.tv_fragment_schedule_recycler_view_title);
             mDestination = (TextView)itemView.findViewById(R.id.tv_fragment_schedule_recycler_view_destination);
             mAuthor = (TextView)itemView.findViewById(R.id.tv_fragment_schedule_recycler_view_author);
+            mTime = (TextView)itemView.findViewById(R.id.tv_fragment_schedule_recycler_view_start_time);
         }
     }
 }

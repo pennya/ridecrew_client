@@ -34,6 +34,10 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.LoginActivity"
@@ -51,7 +55,7 @@
         <activity android:name=".ui.FileUploadActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.TMapLocationSelectActivity"
+        <activity android:name=".ui.SignInAgreeActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.NoticeAddActivity"
             android:screenOrientation="portrait" />

@@ -22,18 +22,42 @@
             android:layout_margin="4dp">
 
             <TextView
-                android:id="@+id/tv_fragment_schedule_recycler_view_title"
+                android:id="@+id/tv_fragment_schedule_recycler_view_start_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/tv_fragment_schedule_recycler_view_destination"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginLeft="20dp"
-                android:fontFamily="sans-serif-thin"
-                android:singleLine="true"
-                android:textSize="25sp"
+                app:layout_constraintRight_toLeftOf="@+id/tv_fragment_schedule_recycler_view_title"
+                app:layout_constraintHorizontal_weight="0.2"
+                android:layout_marginLeft="4dp"
                 android:textColor="@android:color/black"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/tv_fragment_schedule_recycler_view_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/tv_fragment_schedule_recycler_view_destination"
+                app:layout_constraintLeft_toRightOf="@+id/tv_fragment_schedule_recycler_view_start_time"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_weight="0.8"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                />
+
+            <ImageView
+                android:id="@+id/iv_fragment_schedule_recycler_view_ic_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv_fragment_schedule_recycler_view_start_time"
+                app:layout_constraintBottom_toTopOf="@+id/tv_fragment_schedule_recycler_view_author"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tv_fragment_schedule_recycler_view_destination"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/ic_placeholder"
                 />
 
             <TextView
@@ -42,12 +66,10 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fragment_schedule_recycler_view_title"
                 app:layout_constraintBottom_toTopOf="@+id/tv_fragment_schedule_recycler_view_author"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/iv_fragment_schedule_recycler_view_ic_location"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="20dp"
-                android:fontFamily="sans-serif-thin"
                 android:textColor="@android:color/black"
+                android:textSize="20sp"
                 />
 
             <TextView
@@ -58,8 +80,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginLeft="20dp"
-                android:fontFamily="sans-serif-thin"
+                android:layout_marginLeft="4dp"
                 android:textColor="@android:color/black"
                 />
 

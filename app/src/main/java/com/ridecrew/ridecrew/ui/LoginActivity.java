@@ -2,6 +2,7 @@ package com.ridecrew.ridecrew.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,10 +19,22 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.LoginPresenter;
 import com.ridecrew.ridecrew.presenter.LoginPresenterImpl;
@@ -32,10 +45,11 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.Random;
 
-import Define.DefineValue;
 import Entity.Member;
 import util.DeviceUuidFactory;
 
+import static Define.DefineValue.GOOGLE_SIGN_IN_REQUEST_CODE;
+import static Define.DefineValue.SIGN_IN_AGREEMENT_REQUEST_CODE;
 import static util.UtilsApp.requestFocus;
 
 public class LoginActivity extends BaseToolbarActivity implements LoginPresenter.View, View.OnClickListener{
@@ -51,6 +65,13 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
      */
     private Button btnFbLogin;
     private CallbackManager callbackManager;
+
+    /**
+     * Google login
+     */
+    private Button btnGgLogin;
+    private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +95,42 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if(result != null) {
+                if(result.isSuccess()) {
+                    GoogleSignInAccount account = result.getSignInAccount();
+                    firebaseAuthWithGoogle(account);
+                } else {
+                    Toast.makeText(this, result.getStatus() + "", Toast.LENGTH_SHORT).show();
+                    Log.e("PACKRIDING", result.getStatus() + "");
+                }
+            }
+        }
+
+        if(requestCode == SIGN_IN_AGREEMENT_REQUEST_CODE && resultCode == RESULT_OK) {
+            int type = data.getIntExtra("type", -1);
+            switch (type) {
+                case R.id.tv_activity_login_enroll:
+                    Intent intent = new Intent(this, SignUpActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+                    break;
+
+                case R.id.facebook_login_button:
+                    loginFacebook();
+                    break;
+
+                case R.id.google_login_button:
+                    loginGoogle();
+                    break;
+
+                default:
+                    Toast.makeText(this, "비허가 진입", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 
     @Override
@@ -96,13 +153,15 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                 break;
 
             case R.id.tv_activity_login_enroll:
-                Intent intent = new Intent(this, SignUpActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+                signInAgree(R.id.tv_activity_login_enroll);
                 break;
 
             case R.id.facebook_login_button:
-                loginFacebook();
+                signInAgree(R.id.facebook_login_button);
+                break;
+
+            case R.id.google_login_button:
+                signInAgree(R.id.google_login_button);
                 break;
         }
     }
@@ -115,10 +174,12 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
         mInputLayoutEmail = (TextInputLayout) findViewById(R.id.til_activity_login_email_layout);
         mInputlayoutPassword = (TextInputLayout) findViewById(R.id.til_activity_login_pwd_layout);
         btnFbLogin = (Button) findViewById(R.id.facebook_login_button);
+        btnGgLogin = (Button) findViewById(R.id.google_login_button);
 
         mSubmit.setOnClickListener(this);
         mEnroll.setOnClickListener(this);
         btnFbLogin.setOnClickListener(this);
+        btnGgLogin.setOnClickListener(this);
 
         mEmail.addTextChangedListener(new LoginTextWatcher(mEmail));
         mPassword.addTextChangedListener(new LoginTextWatcher(mPassword));
@@ -127,6 +188,16 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
     private void setDefaultSettings() {
         mPresenter = new LoginPresenterImpl(this, this);
         callbackManager = CallbackManager.Factory.create();
+
+        setGoogleLogin();
+    }
+
+    private void signInAgree(int type) {
+        Intent signInAgreeIntent = new Intent(this, SignInAgreeActivity.class);
+        signInAgreeIntent.putExtra("type", type);
+
+        startActivityForResult(signInAgreeIntent, SIGN_IN_AGREEMENT_REQUEST_CODE);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
     }
 
     private void loginFacebook() {
@@ -180,6 +251,66 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                 Log.d("ridecrew_KJH","onError");
             }
         });
+    }
+
+    private void setGoogleLogin() {
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder
+                (GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.google_request_token_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    private void loginGoogle() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST_CODE);
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            String uid, email, name;
+                            uid = user.getUid();
+                            email = user.getEmail();
+                            name = user.getDisplayName();
+
+                            DeviceUuidFactory duf = new DeviceUuidFactory(getApplicationContext());
+                            Member member = Member.builder()
+                                    .setNickName(name)
+                                    .setEmail(uid + "_" + email)
+                                    .setPwd(mPassword.getText().toString().trim())
+                                    .setSex(0)
+                                    .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
+                                    .setMemberType(3) ;
+
+                            mPresenter.actionSnsLogin(member);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            Log.e("PACKRIDING", task.toString());
+                            Log.e("PACKRIDING", task.getException().getMessage());
+                        }
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                });
     }
 
 
