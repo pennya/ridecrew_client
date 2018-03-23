@@ -20,7 +20,6 @@ public abstract class BaseToolbarActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
-
         configureToolbar();
     }
 
@@ -45,6 +44,7 @@ public abstract class BaseToolbarActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle(getTitleToolBar());
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setBackgroundResource(R.drawable.pack_toolbar);
         }
     }
 }

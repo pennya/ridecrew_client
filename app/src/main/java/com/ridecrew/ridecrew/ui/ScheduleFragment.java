@@ -87,7 +87,6 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
         mSelectedDate = date;
         itemClickDecorator.setDate(mSelectedDate.getDate());
         widget.invalidateDecorators();
-
         mSpecificDayScheduleLists = new ArrayList<>();
         for(Schedule schedule : mScheduleLists) {
             String strDate = calendarDayToString(date);
