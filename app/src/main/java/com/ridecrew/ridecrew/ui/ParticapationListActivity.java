@@ -47,7 +47,7 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
 
     @Override
     protected int getTitleToolBar() {
-        return R.string.app_name;
+        return R.string.app_no_title;
     }
 
     @Override

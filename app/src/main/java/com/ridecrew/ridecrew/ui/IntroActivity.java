@@ -23,7 +23,6 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public class IntroActivity extends Activity {
-
     /** 로딩 화면이 떠있는 시간(밀리초단위)  **/
     private final int SPLASH_DISPLAY_LENGTH = 2500;
 
