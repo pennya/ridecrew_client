@@ -11,8 +11,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.ridecrew.ridecrew.R;
-import com.ridecrew.ridecrew.adapter.NoticeRecyclerViewAdapter;
-import com.ridecrew.ridecrew.callback.NoticeRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.NoticePresenter;
 import com.ridecrew.ridecrew.presenter.NoticePresenterImpl;
 import java.util.ArrayList;
