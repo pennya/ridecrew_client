@@ -74,7 +74,7 @@ public class FileUploadActivity extends BaseToolbarActivity  implements View.OnC
 
     @Override
     protected int getTitleToolBar() {
-        return R.string.app_name;
+        return R.string.app_no_title;
     }
 
     @Override

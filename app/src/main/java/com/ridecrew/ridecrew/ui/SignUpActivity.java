@@ -5,11 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -19,7 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -69,9 +65,10 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
     private Spinner mSex;
     private int sexType; /* man is 0, woman is 1*/
     private ImageView mProfile;
-    private String url;
     private boolean modify;
     private File f;
+    private String url;
+    private boolean mButtonFlag;
     // AWS S3
     private CognitoCachingCredentialsProvider credentialsProvider;
     private AmazonS3 s3;
@@ -81,7 +78,6 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         layoutInit();
         setDefaultSetting();
         mPresenter = new LoginPresenterImpl(this, this);
@@ -94,7 +90,7 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
 
     @Override
     protected int getTitleToolBar() {
-        return R.string.app_name;
+        return R.string.app_no_title;
     }
 
     @Override
@@ -112,21 +108,14 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_activity_sign_up_submit:
+                mButtonFlag = true;
                 DeviceUuidFactory duf = new DeviceUuidFactory(this);
-                Member member = Member.builder()
-                        .setNickName(mNickName.getText().toString().trim())
-                        .setEmail(mEmail.getText().toString().trim())
-                        .setPwd(mPassword.getText().toString().trim())
-                        .setSex(sexType)
-                        .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
-                        .setMemberType(1)
-                        .setImageUrl(url);
-                mPresenter.actionJoinMember(member);
-                MemberSingleton.getInstance().setMember(member);
+                awsUpload();
                 break;
 
             case R.id.btn_activity_modify_submit:
                 if (validateNickName() && validatePassword() && validatePasswordCheck()) {
+                    mButtonFlag = false;
                     awsUpload();
                 } else {
                     showToast("모든 정보를 입력해주세요");
@@ -134,16 +123,25 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
                 break;
 
             case R.id.iv_activity_sign_up_profile:
-                final CharSequence[] choice = {"앨범에서 선택", "직접 촬영"};
+                final CharSequence[] choice = {"앨범에서 선택", "직접 촬영", "프로필 삭제"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("프로필 지정");
                 builder.setItems(choice, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0) {
-                            pickImage();
-                        } else {
+                            if (!checkPermissions() && Build.VERSION.SDK_INT >= 23) {
+                                requestPermissions();
+                            } else {
+                                pickImage();
+                            }
+                        } else if (i == 1) {
                             takePicture();
+                        }
+                        else if(i==2) {
+                            url = null;
+                            mProfile.setImageResource(R.drawable.user);
+                            showToast("프로필삭제 완료");
                         }
                     }
                 });
@@ -154,28 +152,29 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        BitmapFactory.Options options;
+        super.onActivityResult(requestCode, resultCode, data);
         try {
             if (requestCode == PICK_FROM_ALBUM) {
+                //이미지 선택 안하고 뒤로가기 누를 시
+                if (data == null) {
+                    return;
+                }
                 Uri uri = data.getData();
                 String realPath = RealPathUtil.getRealPath(this, uri);
                 f = new File(realPath);
                 mProfile.setImageURI(uri);
             } else if (requestCode == TAKE_PICTURE) {
+                if (data == null) {
+                    return;
+                }
                 Uri uri = data.getData();
                 String realPath = RealPathUtil.getRealPath(this, uri);
                 f = new File(realPath);
                 mProfile.setImageURI(uri);
             }
-        } catch (OutOfMemoryError e) {
-            try {
-                options = new BitmapFactory.Options();
-                options.inSampleSize = 10;
-                Bitmap bitmap = BitmapFactory.decodeFile(url, options);
-                mProfile.setImageBitmap(bitmap);
-            } catch (Exception e1) {
-                Toast.makeText(this, e1.toString(), Toast.LENGTH_SHORT).show();
-            }
+        } catch (NullPointerException e) {
+            //선택된 이미지가 숨김파일이거나 해당 기기 로컬에 존재하지 않을 때
+            showToast("해당파일이 앨범에 존재하지 않거나 숨김파일을 해제하십시오.");
         }
     }
 
@@ -225,7 +224,7 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     private void takePicture() {
@@ -234,9 +233,35 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
     }
 
     public void awsUpload() {
-        observer = transferUtility.upload(
-                "ridecrew",
-                "profile/" + f.getName(), f);
+        try {
+            observer = transferUtility.upload(
+                    "ridecrew",
+                    "profile/" + f.getName(), f);
+        } catch(NullPointerException e) {   //이미지를 변경하지 않고 수정 혹은 가입을 할 때
+            if(!mButtonFlag) {
+                MemberSingleton.getInstance().getMember()
+                        .setNickName(mNickName.getText().toString().trim())
+                        .setPwd(mPassword.getText().toString().trim())
+                        .setImageUrl(url);
+                mPresenter.actionUpdateMember(MemberSingleton.getInstance().getMember().getId(), MemberSingleton.getInstance().getMember());
+                finish();
+                showToast("수정 완료");
+                return;
+            } else if(mButtonFlag) {
+                Member member = Member.builder()
+                        .setNickName(mNickName.getText().toString().trim())
+                        .setEmail(mEmail.getText().toString().trim())
+                        .setPwd(mPassword.getText().toString().trim())
+                        .setSex(sexType)
+                        .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
+                        .setMemberType(1)
+                        .setImageUrl(url);
+                mPresenter.actionJoinMember(member);
+                MemberSingleton.getInstance().setMember(member);
+                showToast("가입 완료");
+                return;
+            }
+        }
         observer.setTransferListener(new TransferListener() {
             @Override
             public void onStateChanged(int id, TransferState state) {
@@ -244,13 +269,30 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
                     String finalUrl = "https://s3.ap-northeast-2.amazonaws.com/"
                             + observer.getBucket()
                             + "/" + observer.getKey();
-                    MemberSingleton.getInstance().getMember()
-                            .setNickName(mNickName.getText().toString().trim())
-                            .setPwd(mPassword.getText().toString().trim())
-                            .setImageUrl(finalUrl);
-                    mPresenter.actionUpdateMember(MemberSingleton.getInstance().getMember().getId(),MemberSingleton.getInstance().getMember());
-                    finish();
-                    showToast("수정 완료");
+                    //수정버튼이 클릭됐을 때
+                    if (!mButtonFlag) {
+                        MemberSingleton.getInstance().getMember()
+                                .setNickName(mNickName.getText().toString().trim())
+                                .setPwd(mPassword.getText().toString().trim())
+                                .setImageUrl(finalUrl);
+                        mPresenter.actionUpdateMember(MemberSingleton.getInstance().getMember().getId(), MemberSingleton.getInstance().getMember());
+                        finish();
+                        showToast("수정 완료");
+                    }
+                    //등록버튼이 클릭됐을 때
+                    else if (mButtonFlag) {
+                        Member member = Member.builder()
+                                .setNickName(mNickName.getText().toString().trim())
+                                .setEmail(mEmail.getText().toString().trim())
+                                .setPwd(mPassword.getText().toString().trim())
+                                .setSex(sexType)
+                                .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
+                                .setMemberType(1)
+                                .setImageUrl(finalUrl);
+                        mPresenter.actionJoinMember(member);
+                        MemberSingleton.getInstance().setMember(member);
+                        showToast("가입 완료");
+                    }
                 }
             }
 
@@ -290,8 +332,8 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
         mPassword.addTextChangedListener(new SignUpTextWatcher(mPassword));
         mPasswordCheck.addTextChangedListener(new SignUpTextWatcher(mPasswordCheck));
 
-        if(SharedUtils.getStringValue(this, DefineValue.PROFILE_URL)!=null) {
-            String url = SharedUtils.getStringValue(this,DefineValue.PROFILE_URL);
+        if (SharedUtils.getStringValue(this, DefineValue.PROFILE_URL) != null) {
+            url = SharedUtils.getStringValue(this, DefineValue.PROFILE_URL);
 
             RequestOptions requestOptions = new RequestOptions()
                     .dontAnimate()
@@ -327,6 +369,7 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
             mInputLayoutEmail.setVisibility(View.GONE);
             mModify.setVisibility(View.VISIBLE);
             mSubmit.setVisibility(View.GONE);
+            mSex.setVisibility(View.GONE);
         }
     }
 
@@ -426,6 +469,38 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
                     validatePasswordCheck();
                     break;
             }
+        }
+    }
+
+    private boolean checkPermissions() {
+        int permissionState = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void startPermissionRequest() {
+        ActivityCompat.requestPermissions(this,
+                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , REQUEST_PERMISSIONS_REQUEST_CODE);
+    }
+
+    private void requestPermissions() {
+        boolean shouldProviceRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if( shouldProviceRationale ) {
+            new android.support.v7.app.AlertDialog.Builder(this)
+                    .setTitle("알림")
+                    .setMessage("저장소 권한이 필요합니다.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startPermissionRequest();
+                        }
+                    })
+                    .create()
+                    .show();
+        } else {
+            startPermissionRequest();
         }
     }
 }

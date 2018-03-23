@@ -131,6 +131,8 @@ dependencies {
     compile 'com.github.clans:fab:1.6.2'
     //facebook
     implementation 'com.facebook.android:facebook-login:[4,5)'
+    //hdodenhof.circleimageview
+    compile 'de.hdodenhof:circleimageview:1.2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

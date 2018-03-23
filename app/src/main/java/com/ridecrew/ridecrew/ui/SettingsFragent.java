@@ -108,7 +108,11 @@ public class SettingsFragent extends PreferenceFragmentCompat {
             int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
 
             prefLogon.setTitle("로그아웃");
-            prefPersonalInfo.setVisible(true);
+            if(MemberSingleton.getInstance().getMember().getMemberType() ==2 ||MemberSingleton.getInstance().getMember().getMemberType()==3){
+                prefPersonalInfo.setVisible(false);
+            } else {
+                prefPersonalInfo.setVisible(true);
+            }
             prefLogon.setSummary(currentLoginId + " / " + nickName);
             MemberSingleton ms = MemberSingleton.getInstance();
             Member member = Member.builder()
@@ -130,8 +134,11 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         if(SharedUtils.getBooleanValue(getActivity(), DefineValue.IS_LOGIN)) {
             prefLogon.setTitle("로그아웃");
             prefLogon.setSummary(currentLoginId + " / " + nickName);
-            prefPersonalInfo.setVisible(true);
-
+            if(MemberSingleton.getInstance().getMember().getMemberType() ==2 ||MemberSingleton.getInstance().getMember().getMemberType()==3){
+                prefPersonalInfo.setVisible(false);
+            } else {
+                prefPersonalInfo.setVisible(true);
+            }
             MemberSingleton ms = MemberSingleton.getInstance();
             Member member = Member.builder()
                     .setEmail(currentLoginId)
