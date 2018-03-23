@@ -23,7 +23,7 @@ public class ItemClickDecorator implements DayViewDecorator {
     private CalendarDay date;
 
     public ItemClickDecorator(Activity context) {
-        drawable = context.getResources().getDrawable(R.drawable.shape_circle);
+        drawable = context.getResources().getDrawable(R.drawable.shape_circle_inset);
     }
 
     @Override

@@ -1,9 +1,7 @@
 package com.ridecrew.ridecrew.ui.custom;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.text.style.ForegroundColorSpan;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -23,7 +21,7 @@ public class ItemDecorator implements DayViewDecorator {
     private final HashSet<CalendarDay> dates;
 
     public ItemDecorator(Activity context, Collection<CalendarDay> dates) {
-        drawable = context.getResources().getDrawable(R.drawable.shape_circle_border);
+        drawable = context.getResources().getDrawable(R.drawable.shape_circle_border_inset);
         this.dates = new HashSet<>(dates);
     }
 

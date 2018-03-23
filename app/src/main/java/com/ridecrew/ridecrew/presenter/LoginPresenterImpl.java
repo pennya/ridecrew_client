@@ -1,7 +1,6 @@
 package com.ridecrew.ridecrew.presenter;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.ridecrew.ridecrew.callback.LoginCallback;
 import com.ridecrew.ridecrew.model.LoginModel;
@@ -12,11 +11,11 @@ import Entity.ApiResult;
 import Entity.Member;
 import util.SharedUtils;
 
-import static Define.DefineValue.FACEBOOK_LOGIN_COMPLETE;
 import static Define.DefineValue.NORMAL_LOGIN;
 import static Define.DefineValue.NORMAL_LOGIN_COMPLETE;
 import static Define.DefineValue.SIGNUP_COMPLETE;
 import static Define.DefineValue.SIGNUP_MODIFY;
+import static Define.DefineValue.SNS_LOGIN_COMPLETE;
 
 /**
  * Created by KJH on 2017-12-30.
@@ -64,7 +63,7 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
                 view.moveActivity();
                 break;
 
-            case FACEBOOK_LOGIN_COMPLETE:
+            case SNS_LOGIN_COMPLETE:
                 setMemberProperties(member.getData());
                 view.moveActivity();
                 break;
