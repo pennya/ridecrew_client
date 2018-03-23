@@ -43,7 +43,7 @@ public class DefineValue {
 
     // Return Code
     public static final int NORMAL_LOGIN_COMPLETE = 200;
-    public static final int FACEBOOK_LOGIN_COMPLETE = 201;
+    public static final int SNS_LOGIN_COMPLETE = 201;
     public static final int SIGNUP_COMPLETE = 202;
     public static final int SIGNUP_MODIFY = 203;
 }
