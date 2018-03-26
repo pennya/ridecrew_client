@@ -19,5 +19,6 @@ public interface ScheduleMemberPresenter {
         void moveActivity();
         void showToast(String text);
         void getScheduleMemberList(ApiResult<List<ScheduleMember>> result);
+        void deleteComplete();
     }
 }

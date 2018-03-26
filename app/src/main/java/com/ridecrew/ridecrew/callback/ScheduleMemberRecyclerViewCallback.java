@@ -6,6 +6,6 @@ package com.ridecrew.ridecrew.callback;
 
 public interface ScheduleMemberRecyclerViewCallback {
     void showItem(int position);
-
-    void cancelSchedule(int itemPosition);
+    void cancelSchedule(int itemPosition, long scheduleId, long memberId);
+    void noScheduleValidate();
 }

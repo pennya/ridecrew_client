@@ -45,7 +45,7 @@ public class ScheduleMemberPresenterImpl implements ScheduleMemberPresenter, Sch
 
     @Override
     public void getDeleteNetworkResponse(ApiResult<Void> member, int status) {
-        view.showToast("일정 참가 취소");
+        view.deleteComplete();
     }
 
     @Override

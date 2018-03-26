@@ -64,6 +64,11 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
         //nothing
     }
 
+    @Override
+    public void deleteComplete() {
+        //nothing
+    }
+
     public void setSchedule(Schedule schedule) {
         mCurrentSchedule = schedule;
     }
