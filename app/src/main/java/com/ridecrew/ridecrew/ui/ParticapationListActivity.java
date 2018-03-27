@@ -1,10 +1,10 @@
 package com.ridecrew.ridecrew.ui;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ridecrew.ridecrew.R;
@@ -12,12 +12,12 @@ import com.ridecrew.ridecrew.adapter.ScheduleMemberAdapter;
 import com.ridecrew.ridecrew.callback.ScheduleMemberRecyclerViewCallback;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenter;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenterImpl;
-import com.ridecrew.ridecrew.ui.custom.FixAppBarLayoutBehavior;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Entity.ApiResult;
+import Entity.Member;
 import Entity.MemberSingleton;
 import Entity.ScheduleMember;
 
@@ -27,17 +27,14 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     private ScheduleMemberPresenter presenter;
     private RecyclerView recyclerView;
     private ScheduleMemberAdapter adapter;
+    private TextView noScheduleText;
+    private int currentItemPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        AppBarLayout abl = findViewById(R.id.appBarLayout);
-        ((CoordinatorLayout.LayoutParams) abl.getLayoutParams()).setBehavior(new FixAppBarLayoutBehavior());
-
         initLayout();
         setDefaultSetting();
-
     }
 
     @Override
@@ -56,8 +53,32 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     }
 
     @Override
-    public void cancelSchedule(int itemPosition) {
+    public void cancelSchedule(int itemPosition, long scheduleId, long memberId) {
+        // 선택된 스케줄 삭제
+        presenter.delete(scheduleId, memberId);
+        adapter.addDeletePosition(itemPosition);
+    }
 
+    @Override
+    public void deleteComplete() {
+        adapter.deletePositionValidate();
+    }
+
+    @Override
+    public void noScheduleValidate() {
+        noScheduleText.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showMembers(int itemPosition, long scheduleId) {
+        currentItemPosition = itemPosition;
+        presenter.getScheduleMemberListByScheduleId(scheduleId);
+    }
+
+    @Override
+    public void showMembers(ArrayList<Member> members) {
+        adapter.setMemberLists(currentItemPosition, members);
     }
 
     @Override
@@ -74,17 +95,23 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     public void getScheduleMemberList(ApiResult<List<ScheduleMember>> result) {
         ArrayList<ScheduleMember> scheduleMembers = new ArrayList<>();
         scheduleMembers.addAll(result.getData());
+
+        if(scheduleMembers.size() == 0) {
+            noScheduleText.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
+
         adapter.setmItemLists(scheduleMembers);
         adapter.notifyDataSetChanged();
     }
 
     private void initLayout() {
-        recyclerView = (RecyclerView) findViewById(R.id.appList);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_activity_particapation_list);
+        noScheduleText = (TextView) findViewById(R.id.tv_activity_partication_no_schedule);
     }
 
     private void setDefaultSetting() {
         adapter = new ScheduleMemberAdapter(this, this);
-        //adapter.setHasStableIds(true);
 
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

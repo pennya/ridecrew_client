@@ -93,5 +93,27 @@ public class ScheduleMemberModel {
         });
     }
 
+    public void getScheduleMemberListByScheduleId(Long scheduleId) {
+        ScheduleService service = NetworkManager.getInstance().getRetrofit(ScheduleService.class);
+        Call<ApiResult<List<ScheduleMember>>> findCall = service.getAllScheduleMemberByScheduleId(scheduleId);
+        findCall.enqueue(new Callback<ApiResult<List<ScheduleMember>>>() {
+            @Override
+            public void onResponse(Call<ApiResult<List<ScheduleMember>>> call, Response<ApiResult<List<ScheduleMember>>> response) {
+                if( response.isSuccessful() && response.code() == 200) {
+                    ApiResult<List<ScheduleMember>> result = response.body();
+                    if( result.isSuccess()) {
+                        callback.getNetworkResponseEx(result, 201);
+                    } else {
+                        callback.getNetworkResponse(result.getError().getMessage(), result.getError().getCode());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResult<List<ScheduleMember>>> call, Throwable t) {
+                callback.getNetworkResponse(t.getMessage(), ApiErrorCode.UNKNOWN_SERVER_ERROR);
+            }
+        });
+    }
 
 }
