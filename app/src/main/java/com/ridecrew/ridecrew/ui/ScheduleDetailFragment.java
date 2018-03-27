@@ -14,10 +14,12 @@ import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenter;
 import com.ridecrew.ridecrew.presenter.ScheduleMemberPresenterImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Define.DefineValue;
 import Entity.ApiResult;
+import Entity.Member;
 import Entity.MemberSingleton;
 import Entity.Schedule;
 import Entity.ScheduleMember;
@@ -50,11 +52,6 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
     }
 
     @Override
-    public void moveActivity() {
-        //nothing
-    }
-
-    @Override
     public void showToast(String text) {
         UtilsApp.ShowDialog(getActivity(), text);
     }
@@ -66,6 +63,16 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
 
     @Override
     public void deleteComplete() {
+        //nothing
+    }
+
+    @Override
+    public void moveActivity() {
+        //nothing
+    }
+
+    @Override
+    public void showMembers(ArrayList<Member> members) {
         //nothing
     }
 

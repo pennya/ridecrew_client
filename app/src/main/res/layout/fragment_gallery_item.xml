@@ -35,12 +35,7 @@
                     android:layout_height="60dp"
                     android:layout_alignParentLeft="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/user"
-                    app:civ_border_color="@color/colorPrimaryDark"
-                    app:civ_border_width="4dp"
-                    app:civ_shadow="true"
-                    app:civ_shadow_radius="10"
-                    app:civ_shadow_color="#331a4c"
+                    android:src="@drawable/ic_default_user_128_128"
                     />
 
                 <TextView
@@ -50,8 +45,6 @@
                     android:layout_toRightOf="@+id/iv_fragment_gallery_item_user_icon"
                     android:layout_marginLeft="4dp"
                     android:gravity="center_vertical"
-                    android:textSize="20sp"
-                    android:fontFamily="sans-serif-thin"
                     android:text="user_id"/>
 
                 <ImageView
@@ -62,7 +55,7 @@
                     android:layout_toLeftOf="@+id/tv_fragment_gallery_item_like_count"
                     android:layout_marginRight="8dp"
                     android:foregroundGravity="center_vertical"
-                    android:background="@drawable/ic_thumb_up_black_18dp"
+                    android:background="@drawable/ic_heart_64_64"
                     />
 
                 <TextView
@@ -72,9 +65,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="8dp"
                     android:gravity="center_vertical"
-                    android:textSize="20sp"
-                    android:fontFamily="sans-serif-thin"
-                    android:text="6개"/>
+                    android:text="6"/>
 
 
             </RelativeLayout>

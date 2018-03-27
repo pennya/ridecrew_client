@@ -8,4 +8,5 @@ public interface ScheduleMemberRecyclerViewCallback {
     void showItem(int position);
     void cancelSchedule(int itemPosition, long scheduleId, long memberId);
     void noScheduleValidate();
+    void showMembers(int itemPosition, long scheduleId);
 }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entity.ApiResult;
+import Entity.Member;
 import Entity.MemberSingleton;
 import Entity.ScheduleMember;
 
@@ -27,6 +28,7 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     private RecyclerView recyclerView;
     private ScheduleMemberAdapter adapter;
     private TextView noScheduleText;
+    private int currentItemPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,17 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     public void noScheduleValidate() {
         noScheduleText.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showMembers(int itemPosition, long scheduleId) {
+        currentItemPosition = itemPosition;
+        presenter.getScheduleMemberListByScheduleId(scheduleId);
+    }
+
+    @Override
+    public void showMembers(ArrayList<Member> members) {
+        adapter.setMemberLists(currentItemPosition, members);
     }
 
     @Override

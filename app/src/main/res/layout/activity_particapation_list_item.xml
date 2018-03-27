@@ -77,21 +77,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/tv_activity_paricaption_author"
-                app:layout_constraintBottom_toTopOf="@+id/tv_activity_particapation_list"
+                app:layout_constraintBottom_toTopOf="@+id/ll_activity_particapation_list"
                 app:layout_constraintRight_toLeftOf="@+id/btn_activity_particapation_cancel"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:text="참가자목록"
                 />
 
-            <TextView
-                android:id="@+id/tv_activity_particapation_list"
+            <LinearLayout
+                android:id="@+id/ll_activity_particapation_list"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/btn_activity_particapation_cancel"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:visibility="gone"
-                />
+                android:layout_marginLeft="20dp"
+                android:visibility="gone">
+
+            </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
 

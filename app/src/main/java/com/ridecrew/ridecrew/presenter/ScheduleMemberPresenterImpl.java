@@ -3,10 +3,12 @@ package com.ridecrew.ridecrew.presenter;
 import com.ridecrew.ridecrew.callback.ScheduleMemberModelCallback;
 import com.ridecrew.ridecrew.model.ScheduleMemberModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Entity.ApiErrorCode;
 import Entity.ApiResult;
+import Entity.Member;
 import Entity.ScheduleMember;
 
 /**
@@ -39,6 +41,11 @@ public class ScheduleMemberPresenterImpl implements ScheduleMemberPresenter, Sch
     }
 
     @Override
+    public void getScheduleMemberListByScheduleId(Long scheduleId) {
+        model.getScheduleMemberListByScheduleId(scheduleId);
+    }
+
+    @Override
     public void getAddNetworkResponse(ApiResult<ScheduleMember> member, int status) {
         view.showToast("참가하기 완료");
     }
@@ -50,7 +57,19 @@ public class ScheduleMemberPresenterImpl implements ScheduleMemberPresenter, Sch
 
     @Override
     public void getNetworkResponseEx(ApiResult<List<ScheduleMember>> member, int status) {
-        view.getScheduleMemberList(member);
+        switch (status) {
+            case 200:
+                view.getScheduleMemberList(member);
+                break;
+
+            case 201:
+                ArrayList<Member> members = new ArrayList<>();
+                for(ScheduleMember scheduleMember: member.getData()) {
+                    members.add(scheduleMember.getMember());
+                }
+                view.showMembers(members);
+                break;
+        }
     }
 
     @Override
