@@ -31,4 +31,7 @@ public interface ScheduleService {
 
     @GET("rest/v1/schedule_members_by_member_id")
     Call<ApiResult<List<ScheduleMember>>> getAllScheduleMemberByMemberId(@Query("memberId") Long memberId);
+
+    @GET("rest/v1/schedule_members_by_schedule_id")
+    Call<ApiResult<List<ScheduleMember>>> getAllScheduleMemberByScheduleId(@Query("scheduleId") Long scheduleId);
 }

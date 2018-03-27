@@ -27,6 +27,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
@@ -34,10 +37,6 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.LoginActivity"
@@ -50,7 +49,7 @@
             android:name=".ui.ScheduleEnrollActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.ParticapationListActivity"
-            android:screenOrientation="portrait">
+        android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ui.FileUploadActivity"
             android:screenOrientation="portrait">

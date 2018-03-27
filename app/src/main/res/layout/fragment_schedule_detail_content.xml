@@ -27,12 +27,151 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp"/>
 
+        <RelativeLayout
+            android:id="@+id/rl_fragment_schedule_calender_card_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
+            app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            >
+
+            <TextView
+                android:id="@+id/tv_fragment_schedule_detail_static_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="4dp"
+                android:text="Date"
+                android:textColor="@android:color/darker_gray"
+                />
+
+            <TextView
+                android:id="@+id/tv_fragment_schedule_detail_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_fragment_schedule_detail_static_date"
+                android:layout_marginTop="4dp"
+                android:textSize="24sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_fragment_schedule_detail_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_fragment_schedule_detail_date"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="4dp"
+                android:textSize="24sp"
+                />
+
+            <TextView
+                android:id="@+id/iv_wave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_fragment_schedule_detail_date"
+                android:layout_toRightOf="@+id/tv_fragment_schedule_detail_start_time"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:text="~"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/tv_fragment_schedule_detail_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_fragment_schedule_detail_date"
+                android:layout_toRightOf="@+id/iv_wave"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:textSize="24sp"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_fragment_schedule_calender_card_spot"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/rl_fragment_schedule_calender_card_date"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
+            app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            >
+
+            <TextView
+                android:id="@+id/tv_fragment_schedule_detail_static_spot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="16dp"
+                android:text="Place"
+                android:textColor="@android:color/darker_gray"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll_start_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/tv_fragment_schedule_detail_static_spot"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_start_location_128_128"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_fragment_schedule_detail_start_spot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/ll_start_location"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_finish_location_128_128"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_fragment_schedule_detail_end_spot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/ll_fragment_schedule_calender_card_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_fragment_schedule_calender_card_spot"
             app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
             app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
             android:orientation="vertical"
@@ -61,117 +200,11 @@
                 />
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_fragment_schedule_calender_card_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/ll_fragment_schedule_calender_card_description"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
-            app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            >
-
-            <TextView
-                android:id="@+id/tv_fragment_schedule_detail_static_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="4dp"
-                android:text="Date"
-                android:textColor="@android:color/darker_gray"
-                />
-
-            <TextView
-                android:id="@+id/tv_fragment_schedule_detail_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_fragment_schedule_detail_static_date"
-                android:layout_marginTop="4dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="24sp"
-                />
-
-            <TextView
-                android:id="@+id/tv_fragment_schedule_detail_start_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_fragment_schedule_detail_date"
-                android:layout_marginTop="4dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="24sp"
-                />
-
-            <TextView
-                android:id="@+id/tv_fragment_schedule_detail_end_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_fragment_schedule_detail_date"
-                android:layout_toRightOf="@+id/tv_fragment_schedule_detail_start_time"
-                android:layout_marginTop="4dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="24sp"
-                />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_fragment_schedule_calender_card_spot"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/rl_fragment_schedule_calender_card_date"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
-            app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            >
-
-
-            <TextView
-                android:id="@+id/tv_fragment_schedule_detail_static_spot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="16dp"
-                android:text="Place"
-                android:textColor="@android:color/darker_gray"
-                />
-
-            <TextView
-                android:id="@+id/tv_fragment_schedule_detail_start_spot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_fragment_schedule_detail_static_spot"
-                android:layout_marginTop="4dp"
-                android:padding="4dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="24sp"
-                />
-
-            <ImageView
-                android:id="@+id/iv_double_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_fragment_schedule_detail_start_spot"
-                />
-
-            <TextView
-                android:id="@+id/tv_fragment_schedule_detail_end_spot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/iv_double_arrow"
-                android:layout_marginTop="4dp"
-                android:padding="4dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="24sp"
-                />
-
-        </RelativeLayout>
-
         <Button
             android:id="@+id/btn_fragment_schedule_detail_join"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/rl_fragment_schedule_calender_card_spot"
+            app:layout_constraintTop_toBottomOf="@+id/ll_fragment_schedule_calender_card_description"
             app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
             app:layout_constraintRight_toLeftOf="@+id/btn_fragment_schedule_detail_cancel"
             android:layout_marginTop="16dp"
@@ -182,7 +215,7 @@
             android:id="@+id/btn_fragment_schedule_detail_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/rl_fragment_schedule_calender_card_spot"
+            app:layout_constraintTop_toBottomOf="@+id/ll_fragment_schedule_calender_card_description"
             app:layout_constraintLeft_toRightOf="@+id/btn_fragment_schedule_detail_join"
             app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
             android:layout_marginTop="16dp"
