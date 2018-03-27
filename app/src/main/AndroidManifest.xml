@@ -49,7 +49,7 @@
             android:name=".ui.ScheduleEnrollActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.ParticapationListActivity"
-            android:screenOrientation="portrait">
+        android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ui.FileUploadActivity"
             android:screenOrientation="portrait">
