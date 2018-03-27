@@ -30,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="email address"
+            android:background="@drawable/edt_underline"
             />
 
     </android.support.design.widget.TextInputLayout>
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content"
             android:hint="password"
             android:inputType="textPassword"
+            android:background="@drawable/edt_underline"
             />
 
     </android.support.design.widget.TextInputLayout>
@@ -67,6 +69,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         style="@style/Widget.AppCompat.Button.Colored"
+        android:background="#2d2d2d"
         android:text="로그인"
         />
 
