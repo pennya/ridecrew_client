@@ -23,5 +23,6 @@
 
     <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">11sp</item>
+        <item name="android:color">#00e2c7</item>
     </style>
 </resources>

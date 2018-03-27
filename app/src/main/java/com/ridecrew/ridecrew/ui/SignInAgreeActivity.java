@@ -38,7 +38,7 @@ public class SignInAgreeActivity extends BaseToolbarActivity {
 
     @Override
     protected int getTitleToolBar() {
-        return R.string.app_name;
+        return R.string.app_no_title;
     }
 
     private void layoutInit() {

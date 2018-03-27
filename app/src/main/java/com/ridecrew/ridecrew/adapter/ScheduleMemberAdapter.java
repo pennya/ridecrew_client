@@ -89,7 +89,7 @@ public class ScheduleMemberAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     mCallback.cancelSchedule(holder.getAdapterPosition());
                 }
             });
-            
+
 
 
             //

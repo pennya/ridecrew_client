@@ -32,14 +32,15 @@
         app:layout_constraintBottom_toTopOf="@+id/til_activity_sign_up_email_layout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
 
         <EditText
             android:id="@+id/edt_activity_sign_up_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nickname"
+            android:hint="닉네임"
+            android:background="@drawable/edt_underline"
             >
             <requestFocus/>
         </EditText>
@@ -56,14 +57,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
 
         <EditText
             android:id="@+id/edt_activity_sign_up_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
+            android:background="@drawable/edt_underline"
             />
 
     </android.support.design.widget.TextInputLayout>
@@ -78,14 +80,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
         <EditText
             android:id="@+id/edt_activity_sign_up_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="비밀번호"
             android:inputType="textPassword"
+            android:background="@drawable/edt_underline"
             />
     </android.support.design.widget.TextInputLayout>
 
@@ -99,14 +102,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
         <EditText
             android:id="@+id/edt_activity_sign_up_password_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password check"
+            android:hint="비밀번호 확인"
             android:inputType="textPassword"
+            android:background="@drawable/edt_underline"
             />
     </android.support.design.widget.TextInputLayout>
 
@@ -120,8 +124,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:entries="@array/sex"
         />
 
@@ -135,9 +139,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:background="#9900ecc7"
+        android:textColor="#ffffff"
+        android:visibility="visible"
+        android:textSize="14dp"
+        android:textStyle="bold"
         android:text="등   록"/>
 
     <Button
@@ -150,10 +159,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:background="#9900ecc7"
+        android:textColor="#ffffff"
         android:visibility="gone"
+        android:textSize="14dp"
+        android:textStyle="bold"
         android:text="수   정" />
 
 </android.support.constraint.ConstraintLayout>
