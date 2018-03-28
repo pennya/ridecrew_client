@@ -64,8 +64,8 @@
             <Button
                 android:id="@+id/btn_activity_particapation_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00ecc7"
+                android:layout_height="30dp"
+                android:background="#2d2d2d"
                 android:textColor="#ffffff"
                 app:layout_constraintTop_toTopOf="@+id/btn_activity_particapation_list"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_activity_particapation_list"
@@ -77,9 +77,9 @@
             <Button
                 android:id="@+id/btn_activity_particapation_list"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginRight="5dp"
-                android:background="#00ecc7"
+                android:background="#2d2d2d"
                 android:textColor="#ffffff"
                 app:layout_constraintTop_toBottomOf="@+id/tv_activity_paricaption_author"
                 app:layout_constraintBottom_toTopOf="@+id/ll_activity_particapation_list"

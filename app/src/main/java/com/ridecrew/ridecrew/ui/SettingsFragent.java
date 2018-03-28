@@ -78,9 +78,16 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         prefPaticipation.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), ParticapationListActivity.class));
-                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
-                return false;
+                if (SharedUtils.getBooleanValue(getActivity(), DefineValue.IS_LOGIN)) {
+                    startActivity(new Intent(getActivity(), ParticapationListActivity.class));
+                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+                    return false;
+                }
+                else {
+                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+                    return false;
+                }
             }
         });
 
