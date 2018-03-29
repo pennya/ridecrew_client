@@ -2,15 +2,11 @@ package com.ridecrew.ridecrew.ui;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -25,16 +21,15 @@ import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.presenter.ScheduleEnrollPresenter;
 import com.ridecrew.ridecrew.presenter.ScheduleEnrollPresenterImpl;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import Define.DefineValue;
-import Entity.LocationInfo;
+import Entity.ApiResult;
+import Entity.MemberSingleton;
 import Entity.Schedule;
 import Entity.ScheduleDefaultEntitiy;
+import Entity.ScheduleMember;
 import util.UtilsApp;
 
 import static util.UtilsApp.requestFocus;
@@ -113,6 +108,14 @@ public class ScheduleEnrollActivity extends BaseToolbarActivity implements View.
         CalendarDay caldenDay = CalendarDay.from(year, monthOfYear, dayOfMonth);
         strSelectedDate = dateFormat.format(caldenDay.getDate());
         mDateText.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth + " " + dayOfWeek);
+    }
+
+    @Override
+    public void addScheduleMember(ApiResult<Schedule> schedule) {
+        ScheduleMember scheduleMember = new ScheduleMember();
+        scheduleMember.setMember(MemberSingleton.getInstance().getMember());
+        scheduleMember.setSchedule(schedule.getData());
+        mPresenter.addScheduleMember(scheduleMember);
     }
 
     @Override

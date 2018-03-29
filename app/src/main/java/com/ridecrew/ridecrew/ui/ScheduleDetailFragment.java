@@ -93,19 +93,9 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
         mBtnJoin = (Button)view.findViewById(R.id.btn_fragment_schedule_detail_join);
         mBtnCancel = (Button)view.findViewById(R.id.btn_fragment_schedule_detail_cancel);
 
-        /*mMap = (RelativeLayout) view.findViewById(R.id.rl_fragment_schedule_detail_map_view);
-        mMapFake = (View) view.findViewById(R.id.v_fragment_schedule_detail_map_view_fake);*/
         mBtnJoin.setOnClickListener(this);
         mBtnCancel.setOnClickListener(this);
 
-        /*mMapFake.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // in order to not touch TMapView
-                // return true is required
-                return false;
-            }
-        });*/
     }
 
     private void setDefaultSetting() {
@@ -120,57 +110,6 @@ public class ScheduleDetailFragment extends DialogFragment implements View.OnCli
 
         presenter = new ScheduleMemberPresenterImpl(this);
     }
-
-    /*private void TMapInit() {
-        mTMapView = new TMapView(getActivity());
-        mTMapView.setSKPMapApiKey(TMAP_API_KEY);
-        mTMapView.setMapType(TMapView.MAPTYPE_STANDARD);
-        mTMapView.setLanguage(TMapView.LANGUAGE_KOREAN);
-        mTMapView.setTileType(TMapView.TILETYPE_HDTILE);
-
-        mMap.addView(mTMapView);
-
-        if(mCurrentSchedule.getStartPoint() == null || mCurrentSchedule.getEndPoint() == null
-                || mCurrentSchedule.getStartPoint().equals("") || mCurrentSchedule.getEndPoint().equals(""))
-            return;
-
-        StringTokenizer token = null;
-        token = new StringTokenizer(mCurrentSchedule.getStartPoint(), "|");
-        double startLat = Double.parseDouble(token.nextToken());
-        double startLong = Double.parseDouble(token.nextToken());
-
-        token = new StringTokenizer(mCurrentSchedule.getEndPoint(), "|");
-        double endLat = Double.parseDouble(token.nextToken());
-        double endLong = Double.parseDouble(token.nextToken());
-
-        startPoint = new TMapPoint(startLat, startLong);
-        endPoint = new TMapPoint(endLat, endLong);
-
-        // 출발,도착 마커 최적화해서 보이기
-        ArrayList<TMapPoint> point = new ArrayList<>();
-        point.add(startPoint);
-        point.add(endPoint);
-
-        TMapInfo info = null;
-        info = mTMapView.getDisplayTMapInfo(point);
-
-        startMarker = new TMapMarkerItem();
-        startMarker.setIcon(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_start_location));
-        startMarker.setTMapPoint(startPoint);
-        startMarker.setVisible(startMarker.VISIBLE);
-        mTMapView.addMarkerItem("startMarker", startMarker);
-
-        endMarker = new TMapMarkerItem();
-        endMarker.setIcon(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_end_location));
-        endMarker.setTMapPoint(endPoint);
-        endMarker.setVisible(endMarker.VISIBLE);
-        mTMapView.addMarkerItem("endMarker", endMarker);
-
-        Log.d("KJH", "current : " + mTMapView.getZoomLevel() + " want to set : " + info.getTMapZoomLevel());
-        mTMapView.setZoomLevel(6);
-        mTMapView.setLocationPoint(info.getTMapPoint().getLongitude(), info.getTMapPoint().getLatitude());
-        mTMapView.setCenterPoint(info.getTMapPoint().getLongitude(), info.getTMapPoint().getLatitude());
-    }*/
 
     //다이어로그창에서 참가하기, 수정하기, 취소 터치했을 때 이벤트
     public void onClick(View view) {

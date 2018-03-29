@@ -149,7 +149,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
     public void showToast(String text) {
         if(mDialog.isShowing())
             mDialog.dismiss();
-        
+
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 

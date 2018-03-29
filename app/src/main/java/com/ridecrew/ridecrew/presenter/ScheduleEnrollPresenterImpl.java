@@ -6,6 +6,7 @@ import com.ridecrew.ridecrew.model.ScheduleEnrollModel;
 import Entity.ApiErrorCode;
 import Entity.ApiResult;
 import Entity.Schedule;
+import Entity.ScheduleMember;
 
 /**
  * Created by KJH on 2018-01-02.
@@ -27,7 +28,18 @@ public class ScheduleEnrollPresenterImpl implements ScheduleEnrollPresenter, Sch
     }
 
     @Override
+    public void addScheduleMember(ScheduleMember scheduleMember) {
+        mModel.addSchedumeMember(scheduleMember);
+    }
+
+    @Override
     public void getNetworkResponse(ApiResult<Schedule> schedule, int status) {
+        // 자신이 만든 스케줄에 자동 참가
+        mView.addScheduleMember(schedule);
+    }
+
+    @Override
+    public void getNetworkResponseEx(ApiResult<ScheduleMember> result, int status) {
         mView.moveActivity();
     }
 

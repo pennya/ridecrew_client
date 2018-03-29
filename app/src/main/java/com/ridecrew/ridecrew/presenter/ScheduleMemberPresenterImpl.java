@@ -75,6 +75,9 @@ public class ScheduleMemberPresenterImpl implements ScheduleMemberPresenter, Sch
     @Override
     public void getNetworkResponse(String msg, ApiErrorCode code) {
         switch(code) {
+            case DUPLICATE_ID:
+                view.showToast("중복참가");
+                break;
             default:
                 view.showToast(msg);
                 break;
