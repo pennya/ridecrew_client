@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -60,6 +61,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
     private EditText mEmail, mPassword;
     private TextInputLayout mInputLayoutEmail, mInputlayoutPassword;
     private TextView mEnroll;
+    private ProgressDialog mDialog;
 
     /**
      * Facebook login
@@ -136,6 +138,8 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
 
     @Override
     public void moveActivity() {
+        mDialog.dismiss();
+
         setResult(RESULT_OK, null);
         overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
         finish();
@@ -143,6 +147,9 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
 
     @Override
     public void showToast(String text) {
+        if(mDialog.isShowing())
+            mDialog.dismiss();
+        
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
@@ -150,6 +157,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_activitiy_login_submit:
+                mDialog.show();
                 mPresenter.actionLogin(mEmail.getText().toString().trim(), mPassword.getText().toString().trim());
                 break;
 
@@ -190,6 +198,10 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
         mPresenter = new LoginPresenterImpl(this, this);
         callbackManager = CallbackManager.Factory.create();
 
+        mDialog = new ProgressDialog(this);
+        mDialog.setMessage("로딩중..");
+        mDialog.setCancelable(false);
+
         setGoogleLogin();
     }
 
@@ -213,6 +225,8 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
+                                mDialog.show();
+
                                 String fb_id, name, picture;
                                 int gender;
                                 try {
@@ -279,6 +293,8 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            mDialog.show();
+
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
 
