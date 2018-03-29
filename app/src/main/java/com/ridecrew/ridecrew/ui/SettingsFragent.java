@@ -69,6 +69,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                         FirebaseAuth.getInstance().signOut();
                     }
 
+                    MemberSingleton.getInstance().setMember(null);
                     SharedUtils.prefClear(getActivity());
                 }
                 return false;
@@ -108,7 +109,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
             int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
 
             prefLogon.setTitle("로그아웃");
-            if(MemberSingleton.getInstance().getMember().getMemberType() ==2 ||MemberSingleton.getInstance().getMember().getMemberType()==3){
+            if(memberType == 2 || memberType == 3 ){
                 prefPersonalInfo.setVisible(false);
             } else {
                 prefPersonalInfo.setVisible(true);
@@ -122,6 +123,12 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                     .setMemberType(memberType);
             ms.setMember(member);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setInitialConfiguration();
     }
 
     private void setInitialConfiguration() {

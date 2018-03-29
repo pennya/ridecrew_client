@@ -9,6 +9,7 @@ import Define.DefineValue;
 import Entity.ApiErrorCode;
 import Entity.ApiResult;
 import Entity.Member;
+import Entity.MemberSingleton;
 import util.SharedUtils;
 
 import static Define.DefineValue.NORMAL_LOGIN;
@@ -114,5 +115,7 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
         SharedUtils.setBooleanValue(context, DefineValue.IS_LOGIN, true);
         SharedUtils.setIntValue(context, DefineValue.MEMBER_TYPE, memberInfo.getMemberType());
         SharedUtils.setStringValue(context,DefineValue.PROFILE_URL,memberInfo.getImageUrl());
+
+        MemberSingleton.getInstance().setMember(memberInfo);
     }
 }
