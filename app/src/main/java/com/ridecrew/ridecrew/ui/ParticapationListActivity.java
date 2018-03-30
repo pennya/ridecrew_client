@@ -20,6 +20,7 @@ import java.util.List;
 import Entity.ApiResult;
 import Entity.Member;
 import Entity.MemberSingleton;
+import Entity.Schedule;
 import Entity.ScheduleMember;
 
 import static Define.DefineValue.PARTICAPATION_LIST_REQUEST_CODE;
@@ -69,6 +70,13 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     @Override
     public void showItem(int position) {
         Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showItem(Schedule schedule) {
+        ScheduleDetailFragment scheduleDetailFragment = new ScheduleDetailFragment();
+        scheduleDetailFragment.setSchedule(schedule);
+        scheduleDetailFragment.show( getSupportFragmentManager().beginTransaction(), "dialog_schedule_detail");
     }
 
     @Override
