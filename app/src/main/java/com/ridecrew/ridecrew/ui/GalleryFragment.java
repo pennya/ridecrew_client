@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.ridecrew.ridecrew.R;
 import com.ridecrew.ridecrew.adapter.GalleryAdapter;
+import com.ridecrew.ridecrew.callback.GalleryCallback;
 import com.ridecrew.ridecrew.presenter.GalleryPresenter;
 import com.ridecrew.ridecrew.presenter.GalleryPresenterImpl;
 
@@ -26,7 +27,7 @@ import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScrol
 
 import static android.app.Activity.RESULT_OK;
 
-public class GalleryFragment extends Fragment implements View.OnClickListener, GalleryPresenter.View {
+public class GalleryFragment extends Fragment implements View.OnClickListener, GalleryPresenter.View, GalleryCallback {
 
     private GalleryPresenter presenter;
     private RecyclerView recyclerView;
@@ -60,8 +61,8 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
         if(requestCode == DefineValue.GALLERY_FRAGMENT_REQUEST_CODE && resultCode == RESULT_OK) {
             Gallery gallery = Gallery.builder()
                                             .setMember(MemberSingleton.getInstance().getMember())
-                                            .setTitle("TEST TITLE")
-                                            .setContent("TEST CONTENT")
+                                            .setTitle("NO_TITLE")
+                                            .setContent("NO_CONTENT")
                                             .setImageUrl(data.getStringExtra("imageUrl"));
             presenter.addGallery(gallery);
         }
@@ -78,12 +79,22 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
         adapter.items.add(0, result.getData());
         adapter.notifyDataSetChanged();
 
-        Toast.makeText(getActivity(), result.getData().getImageUrl() + " 등록완료", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), result.getData().getImageUrl() + " 등록완료", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void like(Gallery gallery) {
+        Toast.makeText(getContext(), "" + gallery.getId(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void share(Gallery gallery) {
+        Toast.makeText(getContext(), "" + gallery.getId(), Toast.LENGTH_SHORT).show();
     }
 
     private void initLayout(View view) {
@@ -92,7 +103,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
     }
 
     private void setDefaultSettings() {
-        adapter = new GalleryAdapter(getActivity());
+        adapter = new GalleryAdapter(getActivity(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
