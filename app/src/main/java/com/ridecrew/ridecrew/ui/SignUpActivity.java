@@ -173,8 +173,8 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
                 mProfile.setImageURI(uri);
             }
         } catch (NullPointerException e) {
-            //선택된 이미지가 숨김파일이거나 해당 기기 로컬에 존재하지 않을 때
-            showToast("해당파일이 앨범에 존재하지 않거나 숨김파일을 해제하십시오.");
+            //선택된 이미지가 로컬에 존재하지 않을 때 ex) google photo가 연동되어 있을 때
+            showToast("해당 파일이 사진첩에 저장되어 있지 않습니다.");
         }
     }
 
