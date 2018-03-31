@@ -38,7 +38,7 @@ public class MainActivity extends BaseToolbarActivity implements TabLayout.OnTab
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
-    //옵션 터치
+    //옵션 터치(상단 사람모양)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection

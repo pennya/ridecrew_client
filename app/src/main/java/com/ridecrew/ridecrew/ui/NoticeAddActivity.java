@@ -118,7 +118,7 @@ public class NoticeAddActivity extends BaseToolbarActivity implements NoticePres
     private void addData(TextView title, TextView content, int type) {
         Notice notice = Notice.builder()
                 .setTitle(title.getText().toString())
-                .setContent(content.getText().toString())
+                .setContent(content.getText().toString()+"\n")
                 .setType(type);
         mPresenter.addNoticeData(notice);
     }
@@ -127,7 +127,7 @@ public class NoticeAddActivity extends BaseToolbarActivity implements NoticePres
     private void modifyData(TextView title, TextView content, int type) {
         Notice notice = Notice.builder()
                 .setTitle(title.getText().toString())
-                .setContent(content.getText().toString())
+                .setContent(content.getText().toString()+"\n")
                 .setType(type);
         mPresenter.modifyNoticeData(id,notice);
     }
