@@ -1,18 +1,13 @@
 package com.ridecrew.ridecrew.adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Point;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,9 +29,6 @@ import java.util.Queue;
 import Entity.Member;
 import Entity.ScheduleMember;
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static util.UtilsApp.dpToPx;
-import static util.UtilsApp.pxToDp;
 
 /**
  * Created by kim on 2018. 1. 11..
@@ -72,6 +64,13 @@ public class ScheduleMemberAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         if ( holder instanceof ViewHolder) {
             final ViewHolder viewHolder = (ViewHolder) holder;
+
+            viewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallback.showItem(mItemLists.get(itemPosition).getSchedule());
+                }
+            });
 
             viewHolder.btnShowList.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -124,17 +123,19 @@ public class ScheduleMemberAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             .apply(requestOptions)
                             .into(circleImageView);
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.e("PACKRIDING", "circleImageView : " + circleImageView.getWidth() + "," + circleImageView.getHeight());
-                            Log.e("PACKRIDING", "imageView : " + imageView.getWidth() + "," + imageView.getHeight());
-                        }
-                    }, 2000);
-
                     TextView nickName = new TextView(context);
                     nickName.setText(member.getNickName());
 
+                    LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    llParams.setMargins(0, 16, 16, 0);
+                    circleImageView.setLayoutParams(llParams);
+
+                    LinearLayout.LayoutParams tvParams = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    tvParams.gravity = Gravity.CENTER;
+                    tvParams.setMargins(8,0,0,0);
+                    nickName.setLayoutParams(tvParams);
                     linearLayout.addView(circleImageView);
                     linearLayout.addView(nickName);
 

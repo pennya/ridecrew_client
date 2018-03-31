@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ridecrew.ridecrew.R;
+import com.ridecrew.ridecrew.callback.GalleryCallback;
 import com.ridecrew.ridecrew.ui.GalleryFragment;
 
 import java.util.ArrayList;
@@ -29,9 +30,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public ArrayList<Gallery> items;
     public Activity context;
+    private GalleryCallback callback;
 
-    public GalleryAdapter(Activity context) {
+    public GalleryAdapter(Activity context, GalleryCallback callback) {
         this.context = context;
+        this.callback = callback;
         items = new ArrayList<>();
     }
 
@@ -44,7 +47,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if( holder instanceof ViewHolder) {
-            ViewHolder viewHolder = (ViewHolder) holder;
+            final ViewHolder viewHolder = (ViewHolder) holder;
 
             viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -56,21 +59,14 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             viewHolder.btnLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    callback.like(items.get(viewHolder.getAdapterPosition()));
                 }
             });
 
             viewHolder.btnShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                }
-            });
-
-            viewHolder.btnMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
+                    callback.share(items.get(viewHolder.getAdapterPosition()));
                 }
             });
 
@@ -103,7 +99,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         protected ImageView mainImage;
         protected Button btnLike;
         protected Button btnShare;
-        protected Button btnMore;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -115,7 +110,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             mainImage = (ImageView) itemView.findViewById(R.id.iv_fragment_gallery_item_main_image);
             btnLike = (Button) itemView.findViewById(R.id.btn_fragment_gallery_item_like);
             btnShare = (Button) itemView.findViewById(R.id.btn_fragment_gallery_item_share);
-            btnMore = (Button) itemView.findViewById(R.id.btn_fragment_gallery_item_more);
         }
     }
 }

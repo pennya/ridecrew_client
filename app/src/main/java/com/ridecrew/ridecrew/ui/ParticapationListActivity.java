@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,10 @@ import java.util.List;
 import Entity.ApiResult;
 import Entity.Member;
 import Entity.MemberSingleton;
+import Entity.Schedule;
 import Entity.ScheduleMember;
+
+import static Define.DefineValue.PARTICAPATION_LIST_REQUEST_CODE;
 
 public class ParticapationListActivity extends BaseToolbarActivity implements ScheduleMemberRecyclerViewCallback,
         ScheduleMemberPresenter.View{
@@ -33,6 +37,14 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Member member = MemberSingleton.getInstance().getMember();
+        if(member == null || member.getId() == null) {
+            startActivityForResult(new Intent(this, LoginActivity.class), PARTICAPATION_LIST_REQUEST_CODE);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+            return;
+        }
+
         initLayout();
         setDefaultSetting();
     }
@@ -48,8 +60,23 @@ public class ParticapationListActivity extends BaseToolbarActivity implements Sc
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if( requestCode == PARTICAPATION_LIST_REQUEST_CODE && resultCode == RESULT_OK) {
+            initLayout();
+            setDefaultSetting();
+        }
+    }
+
+    @Override
     public void showItem(int position) {
         Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showItem(Schedule schedule) {
+        ScheduleDetailFragment scheduleDetailFragment = new ScheduleDetailFragment();
+        scheduleDetailFragment.setSchedule(schedule);
+        scheduleDetailFragment.show( getSupportFragmentManager().beginTransaction(), "dialog_schedule_detail");
     }
 
     @Override
