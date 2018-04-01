@@ -172,6 +172,10 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
             }
         });
 
+        if(MemberSingleton.getInstance().getMember() == null ||
+                MemberSingleton.getInstance().getMember().getId() == null  )
+            return;
+
         //관리자 계정일 때 버튼 visible
         if (MemberSingleton.getInstance().getMember().getId() != 19) {
             mFabButton.setVisibility(View.GONE);

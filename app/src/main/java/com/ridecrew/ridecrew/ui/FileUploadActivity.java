@@ -34,6 +34,10 @@ import com.ridecrew.ridecrew.R;
 import java.io.File;
 
 import Define.DefineValue;
+import Entity.Member;
+import Entity.MemberSingleton;
+
+import static Define.DefineValue.PARTICAPATION_LIST_REQUEST_CODE;
 
 public class FileUploadActivity extends BaseToolbarActivity  implements View.OnClickListener {
 
@@ -60,6 +64,13 @@ public class FileUploadActivity extends BaseToolbarActivity  implements View.OnC
 
         if (!checkPermissions() && Build.VERSION.SDK_INT >= 23) {
             requestPermissions();
+        }
+
+        Member member = MemberSingleton.getInstance().getMember();
+        if(member == null || member.getId() == null) {
+            startActivityForResult(new Intent(this, LoginActivity.class), PARTICAPATION_LIST_REQUEST_CODE);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+            return;
         }
 
         initLayout();
@@ -133,6 +144,11 @@ public class FileUploadActivity extends BaseToolbarActivity  implements View.OnC
             return;
 
         switch (requestCode) {
+            case PARTICAPATION_LIST_REQUEST_CODE:
+                initLayout();
+                setDefaultSettings();
+                break;
+
             case PICK_FROM_ALBUM:
                 mImageUri = data.getData();
 
