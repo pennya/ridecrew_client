@@ -27,7 +27,6 @@ public class MainActivity extends BaseToolbarActivity implements TabLayout.OnTab
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         layoutInit();
         setDefaultSettings();
     }
