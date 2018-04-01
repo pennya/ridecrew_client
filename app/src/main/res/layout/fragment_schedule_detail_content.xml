@@ -204,10 +204,13 @@
             android:id="@+id/btn_fragment_schedule_detail_join"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/view_edge"
+            android:backgroundTint="#2d2d2d"
             app:layout_constraintTop_toBottomOf="@+id/ll_fragment_schedule_calender_card_description"
             app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
             app:layout_constraintRight_toLeftOf="@+id/btn_fragment_schedule_detail_cancel"
             android:layout_marginTop="16dp"
+            android:layout_marginRight="5dp"
             style="@style/Widget.AppCompat.Button.Colored"
             android:text="참가하기"/>
 
@@ -215,6 +218,8 @@
             android:id="@+id/btn_fragment_schedule_detail_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/view_edge"
+            android:backgroundTint="#2d2d2d"
             app:layout_constraintTop_toBottomOf="@+id/ll_fragment_schedule_calender_card_description"
             app:layout_constraintLeft_toRightOf="@+id/btn_fragment_schedule_detail_join"
             app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"

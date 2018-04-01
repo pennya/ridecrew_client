@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -79,8 +80,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .load(imagePath)
                     .apply(requestOptions)
                     .into(viewHolder.mainImage);
-
-            viewHolder.userId.setText(items.get(position).getMember().getNickName());
+            try {
+                viewHolder.userId.setText(items.get(position).getMember().getNickName());
+            }catch(NullPointerException e) {
+                Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

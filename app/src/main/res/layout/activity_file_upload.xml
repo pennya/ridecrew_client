@@ -33,6 +33,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:background="#2d2d2d"
         style="@style/Widget.AppCompat.Button.Colored"
         android:text="이미지 선택"
         />
@@ -46,6 +47,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:background="#2d2d2d"
         style="@style/Widget.AppCompat.Button.Colored"
         android:text="서버로 업로드"
         />
