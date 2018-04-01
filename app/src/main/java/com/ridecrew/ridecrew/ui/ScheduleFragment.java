@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,9 +78,15 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
 
         layoutInit(view);
         setDefaultSetting(view);
-        loadData();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Fragment 재 진입 시 onCreateView 3번 호출되므로 데이터 로드는 onResume에서
+        loadData();
     }
 
     @Override
@@ -223,6 +230,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewCa
     }
 
     private void loadData() {
+        Log.d("PACK", "loadData");
         mDialog.show();
 
         CalendarDay calendarDay = mCalendarView.getCurrentDate();
