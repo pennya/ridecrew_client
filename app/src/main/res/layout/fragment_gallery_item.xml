@@ -98,7 +98,6 @@
                 android:textColor="#ffffff"
                 style="?android:attr/borderlessButtonStyle"
                 android:text="좋아요"
-                android:visibility="invisible"
                 />
 
             <Button
@@ -115,7 +114,6 @@
                 android:textColor="#ffffff"
                 style="?android:attr/borderlessButtonStyle"
                 android:text="공유하기"
-                android:visibility="invisible"
                 />
 
         </android.support.constraint.ConstraintLayout>

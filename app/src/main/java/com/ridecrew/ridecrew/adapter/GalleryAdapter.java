@@ -84,6 +84,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 viewHolder.userId.setText("이름없음");
             else
                 viewHolder.userId.setText(items.get(position).getMember().getNickName());
+
+            viewHolder.likeCount.setText("" + items.get(position).getLikeCount());
         }
     }
 

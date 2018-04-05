@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import Define.DefineValue;
 import Entity.ApiResult;
 import Entity.Gallery;
+import Entity.GalleryLike;
 import Entity.MemberSingleton;
 import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
@@ -89,12 +90,25 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
 
     @Override
     public void like(Gallery gallery) {
-        Toast.makeText(getContext(), "" + gallery.getId(), Toast.LENGTH_SHORT).show();
+        presenter.like(GalleryLike.builder()
+                                .setGallery(gallery)
+                                .setMember(MemberSingleton.getInstance().getMember())
+        );
     }
 
     @Override
     public void share(Gallery gallery) {
-        Toast.makeText(getContext(), "" + gallery.getId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "준비중입니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getGalleryLike(ApiResult<GalleryLike> result) {
+        Toast.makeText(getActivity(), "좋아요 성공", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getGalleryDisLike(ApiResult<Void> result) {
+
     }
 
     private void initLayout(View view) {

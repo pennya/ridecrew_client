@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew.model;
 
+import com.ridecrew.ridecrew.callback.GalleryLikeCallback;
 import com.ridecrew.ridecrew.callback.ModelCallback;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import Entity.ApiErrorCode;
 import Entity.ApiResult;
 import Entity.Gallery;
+import Entity.GalleryLike;
 import network.GalleryService;
 import network.NetworkManager;
 import retrofit2.Call;
@@ -19,9 +21,11 @@ import retrofit2.Response;
 
 public class GalleryModel {
     private ModelCallback callback;
+    private GalleryLikeCallback likeCallback;
 
-    public GalleryModel(ModelCallback callback) {
+    public GalleryModel(ModelCallback callback, GalleryLikeCallback likeCallback) {
         this.callback = callback;
+        this.likeCallback = likeCallback;
     }
 
     public void loadGalleries() {
@@ -68,5 +72,41 @@ public class GalleryModel {
 
     public void deleteGallery(Long id) {
 
+    }
+
+    public void like(GalleryLike galleryLike) {
+        GalleryService service = NetworkManager.getInstance().getRetrofit(GalleryService.class);
+        Call<ApiResult<GalleryLike>> like = service.like(galleryLike);
+        like.enqueue(new Callback<ApiResult<GalleryLike>>() {
+            @Override
+            public void onResponse(Call<ApiResult<GalleryLike>> call, Response<ApiResult<GalleryLike>> response) {
+                if(response.body().isSuccess()) {
+                    likeCallback.likeResult(response.body(), 200);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResult<GalleryLike>> call, Throwable t) {
+                callback.getErrorNetworkResponse(t.getMessage(), ApiErrorCode.UNKNOWN_SERVER_ERROR);
+            }
+        });
+    }
+
+    public void disLike(Long galleryId, Long memberId) {
+        GalleryService service = NetworkManager.getInstance().getRetrofit(GalleryService.class);
+        Call<ApiResult<Void>> disLike = service.disLike(galleryId, memberId);
+        disLike.enqueue(new Callback<ApiResult<Void>>() {
+            @Override
+            public void onResponse(Call<ApiResult<Void>> call, Response<ApiResult<Void>> response) {
+                if(response.body().isSuccess()) {
+                    likeCallback.disLikeResult(response.body(), 202);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResult<Void>> call, Throwable t) {
+                callback.getErrorNetworkResponse(t.getMessage(), ApiErrorCode.UNKNOWN_SERVER_ERROR);
+            }
+        });
     }
 }
