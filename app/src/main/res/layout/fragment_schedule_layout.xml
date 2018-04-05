@@ -56,7 +56,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:src="@drawable/create_btn"
+        android:src="@drawable/ic_btn_create"
         android:background="@color/transparent"
         />
 

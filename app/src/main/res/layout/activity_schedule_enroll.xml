@@ -187,7 +187,10 @@
                 app:layout_constraintLeft_toLeftOf="@+id/guide_line_activity_schedule_enroll_left_vertical"
                 app:layout_constraintRight_toRightOf="@+id/guide_line_activity_schedule_enroll_right_vertical"
                 android:layout_marginTop="24dp"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@drawable/view_edge"
+                android:backgroundTint="#2d2d2d"
+                android:textColor="#ffffff"
+                style="?android:attr/borderlessButtonStyle"
                 android:text="등 록"
                 />
 

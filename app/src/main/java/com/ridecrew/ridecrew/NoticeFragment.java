@@ -177,9 +177,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
             return;
 
         //관리자 계정일 때 버튼 visible
-        if (MemberSingleton.getInstance().getMember().getId() != 19) {
-            mFabButton.setVisibility(View.GONE);
-        } else if (MemberSingleton.getInstance().getMember().getId() == 19) {
+         if (MemberSingleton.getInstance().getMember().getEmail().equals("pack@riding.com")) {
             //Floating Action Button OnClick
             mFabButton.setVisibility(View.VISIBLE);
             mAddButton.setOnClickListener(new OnClickListener() {
@@ -223,6 +221,8 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
                     return false;
                 }
             });
+        } else {
+            mFabButton.setVisibility(View.GONE);
         }
     }
 

@@ -204,22 +204,28 @@
             android:id="@+id/btn_fragment_schedule_detail_join"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/ll_fragment_schedule_calender_card_description"
+            android:background="@drawable/view_edge"
+            android:backgroundTint="#2d2d2d"
+            android:textColor="#ffffff"
+            style="?android:attr/borderlessButtonStyle"            app:layout_constraintTop_toBottomOf="@+id/ll_fragment_schedule_calender_card_description"
             app:layout_constraintLeft_toLeftOf="@+id/guideline_fragment_schedule_detail_vertical_left"
             app:layout_constraintRight_toLeftOf="@+id/btn_fragment_schedule_detail_cancel"
             android:layout_marginTop="16dp"
-            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_marginRight="5dp"
             android:text="참가하기"/>
 
         <Button
             android:id="@+id/btn_fragment_schedule_detail_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/view_edge"
+            android:backgroundTint="#2d2d2d"
+            android:textColor="#ffffff"
+            style="?android:attr/borderlessButtonStyle"
             app:layout_constraintTop_toBottomOf="@+id/ll_fragment_schedule_calender_card_description"
             app:layout_constraintLeft_toRightOf="@+id/btn_fragment_schedule_detail_join"
             app:layout_constraintRight_toRightOf="@+id/guideline_fragment_schedule_detail_vertical_right"
             android:layout_marginTop="16dp"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:text="취소하기"/>
 
     </android.support.constraint.ConstraintLayout>
