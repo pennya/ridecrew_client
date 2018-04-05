@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -80,7 +79,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .load(imagePath)
                     .apply(requestOptions)
                     .into(viewHolder.mainImage);
-            
+
             if( items.get(position).getMember() == null)
                 viewHolder.userId.setText("이름없음");
             else

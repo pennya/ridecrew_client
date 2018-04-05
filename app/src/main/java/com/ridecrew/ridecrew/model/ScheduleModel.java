@@ -36,6 +36,8 @@ public class ScheduleModel {
                 if( response.isSuccessful() && response.code() == 200) {
                     ApiResult<List<Schedule>> result = response.body();
                     mCallback.getAllScheduleData(result);
+                } else {
+                    mCallback.getAllScheduleData(null);
                 }
             }
 
