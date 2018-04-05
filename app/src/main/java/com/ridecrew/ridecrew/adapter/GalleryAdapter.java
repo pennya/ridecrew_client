@@ -80,11 +80,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .load(imagePath)
                     .apply(requestOptions)
                     .into(viewHolder.mainImage);
-            try {
                 viewHolder.userId.setText(items.get(position).getMember().getNickName());
-            }catch(NullPointerException e) {
-                Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
