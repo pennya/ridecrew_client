@@ -91,14 +91,15 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/btn_fragment_gallery_item_share"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="5dp"
                 android:drawableLeft="@drawable/ic_thumb_up_white_24dp"
-                android:background="#2d2d2d"
+                android:background="@drawable/view_edge"
+                android:backgroundTint="#2d2d2d"
                 android:textColor="#ffffff"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
                 style="?android:attr/borderlessButtonStyle"
                 android:text="좋아요"
-                android:visibility="invisible"
                 />
 
             <Button
@@ -109,13 +110,15 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/btn_fragment_gallery_item_like"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="5dp"
+                android:layout_margin="5dp"
                 android:drawableLeft="@drawable/ic_share_white_24dp"
-                android:background="#2d2d2d"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:background="@drawable/view_edge"
+                android:backgroundTint="#2d2d2d"
                 android:textColor="#ffffff"
                 style="?android:attr/borderlessButtonStyle"
                 android:text="공유하기"
-                android:visibility="invisible"
                 />
 
         </android.support.constraint.ConstraintLayout>
