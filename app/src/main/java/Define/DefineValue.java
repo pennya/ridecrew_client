@@ -7,7 +7,7 @@ package Define;
 public class DefineValue {
     public static final String TAG = "RideCrewLog";
     public static final String END_POINT = "http://ridecrew.ap-northeast-2.elasticbeanstalk.com/";
-    //public static final String END_POINT = "http://42c5cf41.ngrok.io/";
+    //public static final String END_POINT = "http://5e22e159.ngrok.io/";
 
     // activity return
     public static final int MY_PAGE_FRAGMENT_REQEUST_CODE = 1001;

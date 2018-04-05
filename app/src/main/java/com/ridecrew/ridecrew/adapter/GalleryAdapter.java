@@ -80,7 +80,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .apply(requestOptions)
                     .into(viewHolder.mainImage);
 
-            viewHolder.userId.setText(items.get(position).getMember().getNickName());
+            if( items.get(position).getMember() == null)
+                viewHolder.userId.setText("이름없음");
+            else
+                viewHolder.userId.setText(items.get(position).getMember().getNickName());
         }
     }
 
