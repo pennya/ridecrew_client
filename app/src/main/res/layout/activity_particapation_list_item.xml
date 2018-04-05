@@ -69,10 +69,10 @@
                 android:background="@drawable/view_edge"
                 android:backgroundTint="#2d2d2d"
                 android:textColor="#ffffff"
+                style="?android:attr/borderlessButtonStyle"
                 app:layout_constraintTop_toTopOf="@+id/btn_activity_particapation_list"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_activity_particapation_list"
                 app:layout_constraintRight_toRightOf="parent"
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:text="취소"
                 />
 
@@ -85,10 +85,10 @@
                 android:background="@drawable/view_edge"
                 android:backgroundTint="#2d2d2d"
                 android:textColor="#ffffff"
+                style="?android:attr/borderlessButtonStyle"
                 app:layout_constraintTop_toBottomOf="@+id/tv_activity_paricaption_author"
                 app:layout_constraintBottom_toTopOf="@+id/ll_activity_particapation_list"
                 app:layout_constraintRight_toLeftOf="@+id/btn_activity_particapation_cancel"
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:text="참가자목록"
                 />
 
