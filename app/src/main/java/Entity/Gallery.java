@@ -10,6 +10,7 @@ public class Gallery {
     private String title;
     private String content;
     private String imageUrl;
+    private int likeCount;
     private String createdDateTime;
     private String lastModifiedDateTime;
 
@@ -63,5 +64,9 @@ public class Gallery {
 
     public String getLastModifiedDateTime() {
         return lastModifiedDateTime;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
     }
 }

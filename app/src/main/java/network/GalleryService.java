@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Entity.ApiResult;
 import Entity.Gallery;
+import Entity.GalleryLike;
 import Entity.GalleryPicture;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -32,4 +33,10 @@ public interface GalleryService {
 
     @POST("/rest/v1/gallery_picture")
     Call<ApiResult<GalleryPicture>> addPicture(@Body GalleryPicture picture);
+
+    @POST("/rest/v1/galleryLike")
+    Call<ApiResult<GalleryLike>> like(@Body GalleryLike gl);
+
+    @DELETE("/rest/v1/galleryLike")
+    Call<ApiResult<Void>> disLike(@Path("galleryId") Long galleryId, @Path("memberId") Long memberId);
 }

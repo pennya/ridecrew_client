@@ -122,13 +122,6 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                 prefPersonalInfo.setVisible(true);
             }
             prefLogon.setSummary(currentLoginId + " / " + nickName);
-            MemberSingleton ms = MemberSingleton.getInstance();
-            Member member = Member.builder()
-                    .setEmail(currentLoginId)
-                    .setId(loginIdPk)
-                    .setDeviceId(deviceId)
-                    .setMemberType(memberType);
-            ms.setMember(member);
         }
     }
 
@@ -144,6 +137,7 @@ public class SettingsFragent extends PreferenceFragmentCompat {
         String currentLoginId = SharedUtils.getStringValue(getActivity(), DefineValue.CURRENT_LOGIN_ID);
         String deviceId = SharedUtils.getStringValue(getActivity(), DefineValue.DEVICE_ID);
         int memberType = SharedUtils.getIntValue(getActivity(), DefineValue.MEMBER_TYPE);
+        String profileUrl = SharedUtils.getStringValue(getActivity(),DefineValue.PROFILE_URL);
 
         if(SharedUtils.getBooleanValue(getActivity(), DefineValue.IS_LOGIN)) {
             prefLogon.setTitle("로그아웃");
@@ -158,7 +152,9 @@ public class SettingsFragent extends PreferenceFragmentCompat {
                     .setEmail(currentLoginId)
                     .setId(loginIdPk)
                     .setDeviceId(deviceId)
-                    .setMemberType(memberType);
+                    .setMemberType(memberType)
+                    .setNickName(nickName)
+                    .setImageUrl(profileUrl);
             ms.setMember(member);
         } else {
             prefLogon.setTitle("로그인");
