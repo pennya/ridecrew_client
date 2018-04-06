@@ -9,8 +9,8 @@ import java.io.Serializable;
 public class GalleryLike implements Serializable {
     private static final long serialVersionUID = -5191530079321831079L;
     private Long id;
-    private Gallery gallery;
     private Member member;
+    private Gallery gallery;
 
     public static GalleryLike builder() {
         return new GalleryLike();

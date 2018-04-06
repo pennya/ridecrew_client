@@ -24,6 +24,7 @@ import Entity.ApiResult;
 import Entity.Gallery;
 import Entity.GalleryLike;
 import Entity.MemberSingleton;
+import util.SharedUtils;
 import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
 import static android.app.Activity.RESULT_OK;
@@ -45,6 +46,13 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
         loadData();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setDefaultSettings();
+        loadData();
     }
 
     @Override
@@ -114,6 +122,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
     private void initLayout(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_fragment_gallery);
         btnAdd = (ImageButton) view.findViewById(R.id.btn_fragment_gallery_add);
+        btnAdd.setOnClickListener(this);
     }
 
     private void setDefaultSettings() {
@@ -122,9 +131,13 @@ public class GalleryFragment extends Fragment implements View.OnClickListener, G
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        btnAdd.setOnClickListener(this);
-
         presenter = new GalleryPresenterImpl(this);
+
+        if(SharedUtils.getBooleanValue(getActivity(), DefineValue.IS_LOGIN)) {
+            btnAdd.setVisibility(View.VISIBLE);
+        } else {
+            btnAdd.setVisibility(View.GONE);
+        }
     }
 
     private void loadData() {

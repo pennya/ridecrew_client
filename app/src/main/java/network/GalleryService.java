@@ -35,7 +35,7 @@ public interface GalleryService {
     Call<ApiResult<GalleryPicture>> addPicture(@Body GalleryPicture picture);
 
     @POST("/rest/v1/galleryLike")
-    Call<ApiResult<GalleryLike>> like(@Body GalleryLike galleryLike);
+    Call<ApiResult<GalleryLike>> like(@Body GalleryLike gl);
 
     @DELETE("/rest/v1/galleryLike")
     Call<ApiResult<Void>> disLike(@Path("galleryId") Long galleryId, @Path("memberId") Long memberId);

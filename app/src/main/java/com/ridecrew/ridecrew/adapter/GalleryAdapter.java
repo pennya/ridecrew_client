@@ -1,6 +1,7 @@
 package com.ridecrew.ridecrew.adapter;
 
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +21,9 @@ import com.ridecrew.ridecrew.ui.GalleryFragment;
 
 import java.util.ArrayList;
 
+import Define.DefineValue;
 import Entity.Gallery;
+import util.SharedUtils;
 
 /**
  * Created by KJH on 2018-01-16.
@@ -56,25 +59,41 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
 
-            viewHolder.btnLike.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    callback.like(items.get(viewHolder.getAdapterPosition()));
-                }
-            });
+            if(SharedUtils.getBooleanValue(context, DefineValue.IS_LOGIN)) {
+                viewHolder.btnLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        callback.like(items.get(viewHolder.getAdapterPosition()));
+                    }
+                });
 
-            viewHolder.btnShare.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    callback.share(items.get(viewHolder.getAdapterPosition()));
-                }
-            });
+                viewHolder.btnShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        callback.share(items.get(viewHolder.getAdapterPosition()));
+                    }
+                });
+            }
 
             RequestOptions requestOptions = new RequestOptions()
                     .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.ic_default_user_128_128)
+                    .circleCrop();
+
+            String imagePath = items.get(position).getMember().getImageUrl();
+            Glide.with(context)
+                    .load(imagePath)
+                    .apply(requestOptions)
+                    .into(viewHolder.userIcon);
+
+
+            // main image
+            requestOptions = new RequestOptions()
+                    .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-            String imagePath = items.get(position).getImageUrl();
+            imagePath = items.get(position).getImageUrl();
             Glide.with(context)
                     .load(imagePath)
                     .apply(requestOptions)

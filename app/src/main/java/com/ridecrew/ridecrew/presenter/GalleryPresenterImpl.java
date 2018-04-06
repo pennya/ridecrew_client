@@ -1,5 +1,7 @@
 package com.ridecrew.ridecrew.presenter;
 
+import android.util.Log;
+
 import com.ridecrew.ridecrew.callback.GalleryLikeCallback;
 import com.ridecrew.ridecrew.callback.ModelCallback;
 import com.ridecrew.ridecrew.model.GalleryModel;
@@ -71,6 +73,7 @@ public class GalleryPresenterImpl implements GalleryPresenter, ModelCallback<Gal
     @Override
     public void getErrorNetworkResponse(String msg, ApiErrorCode code) {
         view.showToast(msg + " [" + code + "]");
+        Log.e("PACKRIDING", msg + " [" + code + "]");
     }
 
     @Override

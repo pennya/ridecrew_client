@@ -1,5 +1,7 @@
 package com.ridecrew.ridecrew.model;
 
+import android.util.Log;
+
 import com.ridecrew.ridecrew.callback.GalleryLikeCallback;
 import com.ridecrew.ridecrew.callback.ModelCallback;
 
@@ -56,7 +58,7 @@ public class GalleryModel {
         addCall.enqueue(new Callback<ApiResult<Gallery>>() {
             @Override
             public void onResponse(Call<ApiResult<Gallery>> call, Response<ApiResult<Gallery>> response) {
-                if(response.body().isSuccess()) {
+                if(response.isSuccessful() && response.code() == 200) {
                     callback.getSingleNetworkResponse(response.body(), 200);
                 } else {
                     callback.getErrorNetworkResponse(response.body().getError().getMessage(), response.body().getError().getCode());
@@ -74,14 +76,20 @@ public class GalleryModel {
 
     }
 
-    public void like(GalleryLike galleryLike) {
+    public void like(GalleryLike gl) {
         GalleryService service = NetworkManager.getInstance().getRetrofit(GalleryService.class);
-        Call<ApiResult<GalleryLike>> like = service.like(galleryLike);
+        Call<ApiResult<GalleryLike>> like = service.like(gl);
         like.enqueue(new Callback<ApiResult<GalleryLike>>() {
             @Override
             public void onResponse(Call<ApiResult<GalleryLike>> call, Response<ApiResult<GalleryLike>> response) {
-                if(response.body().isSuccess()) {
+                if(response.isSuccessful() && response.code() == 200) {
                     likeCallback.likeResult(response.body(), 200);
+                } else {
+                    if( response.body() == null) {
+                       Log.e("PACKRIDING", response.message());
+                    } else {
+                        callback.getErrorNetworkResponse(response.body().getError().getMessage(), response.body().getError().getCode());
+                    }
                 }
             }
 
@@ -98,8 +106,10 @@ public class GalleryModel {
         disLike.enqueue(new Callback<ApiResult<Void>>() {
             @Override
             public void onResponse(Call<ApiResult<Void>> call, Response<ApiResult<Void>> response) {
-                if(response.body().isSuccess()) {
+                if(response.isSuccessful() && response.code() == 200) {
                     likeCallback.disLikeResult(response.body(), 202);
+                } else {
+                    callback.getErrorNetworkResponse(response.body().getError().getMessage(), response.body().getError().getCode());
                 }
             }
 

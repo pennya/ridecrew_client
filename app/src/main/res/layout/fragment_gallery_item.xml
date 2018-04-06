@@ -34,11 +34,11 @@
 
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/iv_fragment_gallery_item_user_icon"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentLeft="true"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="2dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_default_user_128_128"
                     />
 
                 <TextView

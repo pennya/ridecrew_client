@@ -114,7 +114,8 @@ public class MainActivity extends BaseToolbarActivity implements TabLayout.OnTab
                     .setEmail(SharedUtils.getStringValue(this, DefineValue.CURRENT_LOGIN_ID))
                     .setId(SharedUtils.getLongValue(this, DefineValue.LOGIN_ID_PK))
                     .setDeviceId(SharedUtils.getStringValue(this, DefineValue.DEVICE_ID))
-                    .setNickName(SharedUtils.getStringValue(this, DefineValue.NICKNAME));
+                    .setNickName(SharedUtils.getStringValue(this, DefineValue.NICKNAME))
+                    .setImageUrl(SharedUtils.getStringValue(this, DefineValue.PROFILE_URL));
             MemberSingleton.getInstance().setMember(member);
         }
     }
