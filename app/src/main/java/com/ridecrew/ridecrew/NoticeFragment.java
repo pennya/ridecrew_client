@@ -177,7 +177,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
             return;
 
         //관리자 계정일 때 버튼 visible
-         if (MemberSingleton.getInstance().getMember().getEmail().equals("pack@riding.com")) {
+         if (MemberSingleton.getInstance().getMember().getEmail().equals("Pack@r.com")) {
             //Floating Action Button OnClick
             mFabButton.setVisibility(View.VISIBLE);
             mAddButton.setOnClickListener(new OnClickListener() {

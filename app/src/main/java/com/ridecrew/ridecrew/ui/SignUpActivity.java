@@ -258,7 +258,6 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
                         .setImageUrl(url);
                 mPresenter.actionJoinMember(member);
                 MemberSingleton.getInstance().setMember(member);
-                showToast("가입 완료");
                 return;
             }
         }
@@ -291,7 +290,6 @@ public class SignUpActivity extends BaseToolbarActivity implements LoginPresente
                                 .setImageUrl(finalUrl);
                         mPresenter.actionJoinMember(member);
                         MemberSingleton.getInstance().setMember(member);
-                        showToast("가입 완료");
                     }
                 }
             }
