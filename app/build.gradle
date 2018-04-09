@@ -28,7 +28,7 @@ android {
         }
 
         def versionMajor = 1
-        def versionMinor = 1
+        def versionMinor = 0
         def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
 
         //Build 정보는 Debug, Release 상관없이 빌드하면 무조건 Count up
@@ -133,6 +133,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:[4,5)'
     //hdodenhof.circleimageview
     compile 'de.hdodenhof:circleimageview:1.2.1'
+    compile 'org.jsoup:jsoup:1.10.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
