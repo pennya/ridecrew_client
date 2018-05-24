@@ -9,7 +9,7 @@ apply plugin: 'com.android.application'
 // Build->Generate Signed Apk로 Google Play Store에 올릴 apk 생성  (ex. RELEASES-1.0.2-app-release.apk )
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.1'
+    buildToolsVersion '27.0.2'
 
     //File 불러오기
     def versionPropsFile = file('version.properties')
@@ -85,7 +85,7 @@ repositories {
 
 dependencies {
     ext {
-        support_library_version = '27.0.1'
+        support_library_version = '27.0.2'
         google_play_services_version = '11.8.0'
     }
 
