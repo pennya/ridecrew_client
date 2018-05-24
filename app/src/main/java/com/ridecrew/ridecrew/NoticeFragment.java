@@ -37,17 +37,16 @@ import static android.support.v7.widget.RecyclerView.*;
 
 public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallback, NoticePresenter.View, View.OnClickListener {
 
-    private NoticeRecyclerViewCallback mCallback;
     private RecyclerView mRecyclerView;
-    private NoticeRecyclerViewAdapter mRecyclerViewAdapter;
-    private NoticePresenter mPresenter;
-    private ArrayList<Notice> mNoticeList;
     private FloatingActionMenu mFabButton;
     private FloatingActionButton mAddButton;
     private FloatingActionButton mDeleteButton;
     private FloatingActionButton mModifyButton;
+    private NoticeRecyclerViewCallback mCallback;
+    private NoticeRecyclerViewAdapter mRecyclerViewAdapter;
+    private NoticePresenter mPresenter;
+    private ArrayList<Notice> mNoticeList;
     private boolean mDeleteFlag;
-    private boolean mModifyFlag;
 
     @Nullable
     @Override
@@ -100,19 +99,10 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
     }
 
     @Override
-    public void modifyFlag(boolean flag) {
-        if(flag) {
-            mModifyFlag = true;
-        } else {
-            mModifyFlag = false;
-        }
-    }
-
-    @Override
     public void modifyFunction(Activity context,long id) {
         Intent intent = new Intent(getContext(),NoticeAddActivity.class);
         intent.putExtra("id",id);
-        intent.putExtra("flag",mModifyFlag);
+        intent.putExtra("flag",mRecyclerViewAdapter.getterModifyFlag());
         startActivityForResult(intent,DefineValue.NOTICE_FRAGMENT_MODIFY_CODE);
         getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
@@ -132,7 +122,7 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
             mRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
-
+    //다른 fragment로 이동 후 다시 공지 fragment로 왔을 때 초기화면으로 로드
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -181,13 +171,12 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
             //Floating Action Button OnClick
             mFabButton.setVisibility(View.VISIBLE);
             mAddButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mModifyFlag = false;
-                    startActivityForResult(new Intent(getActivity(), NoticeAddActivity.class), DefineValue.NOTICE_FRAGMENT_REQUEST_CODE);
-                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                }
-            });
+                 @Override
+                 public void onClick(View view) {
+                     startActivityForResult(new Intent(getActivity(), NoticeAddActivity.class), DefineValue.NOTICE_FRAGMENT_REQUEST_CODE);
+                     getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                 }
+             });
             mDeleteButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -197,17 +186,16 @@ public class NoticeFragment extends Fragment implements NoticeRecyclerViewCallba
                         mDeleteFlag = true;
                     }
                     mRecyclerViewAdapter.notifyDataSetChanged();
+                    mRecyclerViewAdapter.setterExpand();
                 }
             });
             mModifyButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mModifyFlag) {
-                        mModifyFlag = false;
+                    if (mRecyclerViewAdapter.getterModifyFlag()) {
                         mRecyclerViewAdapter.setterModifyFlag(false);
                         Toast.makeText(getContext(), "수정기능 비활성화", Toast.LENGTH_SHORT).show();
-                    } else {
-                        mModifyFlag = true;
+                    } else{
                         Toast.makeText(getContext(), "수정기능 활성화, 수정할 리스트 선택", Toast.LENGTH_SHORT).show();
                         mRecyclerViewAdapter.setterModifyFlag(true);
                     }
