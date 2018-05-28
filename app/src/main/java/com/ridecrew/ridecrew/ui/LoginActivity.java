@@ -48,7 +48,12 @@ import java.util.Arrays;
 import java.util.Random;
 
 import Entity.Member;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
 import util.DeviceUuidFactory;
+import util.RxEditTextObser;
+import util.UtilsApp;
 
 import static Define.DefineValue.GOOGLE_SIGN_IN_REQUEST_CODE;
 import static Define.DefineValue.SIGN_IN_AGREEMENT_REQUEST_CODE;
@@ -62,7 +67,8 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
     private TextInputLayout mInputLayoutEmail, mInputlayoutPassword;
     private TextView mEnroll;
     private ProgressDialog mDialog;
-
+    private PublishSubject<String> emailSource;
+    private PublishSubject<String> pwSource;
     /**
      * Facebook login
      */
@@ -190,8 +196,34 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
         btnFbLogin.setOnClickListener(this);
         btnGgLogin.setOnClickListener(this);
 
-        mEmail.addTextChangedListener(new LoginTextWatcher(mEmail));
-        mPassword.addTextChangedListener(new LoginTextWatcher(mPassword));
+        emailSource = RxEditTextObser.create(mEmail);
+        pwSource = RxEditTextObser.create(mPassword);
+
+        Observable<Boolean> emailValidSignal = emailSource.map(email -> {
+            email = email.trim();
+            return UtilsApp.isValidEmail(email);
+        });
+        emailValidSignal.subscribe(sig -> {
+            if(sig) {
+                mInputLayoutEmail.setErrorEnabled(false);
+            } else {
+                mInputLayoutEmail.setError("이메일 형식에 일치하지 않습니다.");
+                requestFocus(this, mEmail);
+            }
+        });
+
+        Observable<Boolean> pwValidSignal = pwSource.map(pw -> {
+            pw = pw.trim();
+            return UtilsApp.isValidPassword(pw);
+        });
+        pwValidSignal.subscribe(sig -> {
+            if(sig) {
+                mInputlayoutPassword.setErrorEnabled(false);
+            } else {
+                mInputlayoutPassword.setError("영문(대소문자 구분), 숫자, 특수문자 조합 6~20자리를 입력해주세요.");
+                requestFocus(this, mPassword);
+            }
+        });
     }
 
     private void setDefaultSettings() {
@@ -232,7 +264,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                                 try {
                                     fb_id = object.getString("id");
                                     name = object.getString("name");
-                                    gender = object.getString("gender").equals("male") ? 0 : 1;
+                                    //gender = object.getString("gender").equals("male") ? 0 : 1;
                                     picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
 
                                     DeviceUuidFactory duf = new DeviceUuidFactory(getApplicationContext());
@@ -240,7 +272,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                                             .setNickName(name)
                                             .setEmail("fb_" + fb_id)
                                             .setPwd(mPassword.getText().toString().trim())
-                                            .setSex(gender)
+                                            .setSex(1)
                                             .setDeviceId(String.valueOf(new Random().nextInt()))//.setDeviceId(duf.getDeviceUuid().toString())
                                             .setMemberType(2)
                                             .setImageUrl(picture);
@@ -331,68 +363,5 @@ public class LoginActivity extends BaseToolbarActivity implements LoginPresenter
                         e.printStackTrace();
                     }
                 });
-    }
-
-
-    private boolean validateEmail() {
-        String email = mEmail.getText().toString().trim();
-
-        if (email.isEmpty() || !isValidEmail(email)) {
-            mInputLayoutEmail.setError("이메일 형식에 일치하지 않습니다.");
-            requestFocus(this, mEmail);
-            return false;
-        } else {
-            mInputLayoutEmail.setErrorEnabled(false);
-        }
-
-        return true;
-    }
-
-    private boolean validatePassword() {
-        if (mPassword.getText().toString().trim().isEmpty()) {
-            mInputlayoutPassword.setError("비밀번호를 입력해주세요.");
-            requestFocus(this, mPassword);
-            return false;
-        } else {
-            mInputlayoutPassword.setErrorEnabled(false);
-        }
-
-        return true;
-    }
-
-    private boolean isValidEmail(String email) {
-        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    private class LoginTextWatcher implements TextWatcher {
-
-        private View view;
-
-        public LoginTextWatcher(View view) {
-            this.view = view;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            switch (view.getId()) {
-                case R.id.edt_activity_login_email:
-                    validateEmail();
-                    break;
-
-                case R.id.edt_activity_login_pwd:
-                    validatePassword();
-                    break;
-            }
-        }
     }
 }

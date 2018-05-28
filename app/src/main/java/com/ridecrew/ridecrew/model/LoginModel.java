@@ -83,9 +83,7 @@ public class LoginModel {
 
     public void requestSignUp(Member member)
     {
-        final int memberType = member.getMemberType();
         MemberService memberService = NetworkManager.getInstance().getRetrofit(MemberService.class);
-
         Call<ApiResult<Member>> signUpCall = memberService.signUpMember(member);
         signUpCall.enqueue(new Callback<ApiResult<Member>>() {
             @Override

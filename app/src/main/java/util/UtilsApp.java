@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -66,5 +67,16 @@ public class UtilsApp {
     public static int pxToDp(int px)
     {
         return (int) (px / Resources.getSystem().getDisplayMetrics().density);
+    }
+
+    public static boolean isValidPassword(String pw) {
+        // 영문(대소문자 구분), 숫자, 특수문자 조합
+        // 6~20자리
+        return !TextUtils.isEmpty(pw)
+                && pw.matches("^(?=.*\\d)(?=.*[~`!@#$%\\^&*()-])(?=.*[a-z])(?=.*[A-Z]).{6,20}$");
+    }
+
+    public static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

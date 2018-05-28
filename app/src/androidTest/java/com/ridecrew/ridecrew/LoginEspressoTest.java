@@ -1,5 +1,6 @@
 package com.ridecrew.ridecrew;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
@@ -25,27 +26,27 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class LoginEspressoTest {
     @Rule
-    public ActivityTestRule<LoginActivity> mLoginRule = new ActivityTestRule(LoginActivity.class);
+    public ActivityTestRule<LoginActivity> activity = new ActivityTestRule(LoginActivity.class);
 
     @Test
     public void viewTest() throws Exception{
         // 로그인 버튼 화면에 보이는지
-        onView(withId(R.id.btn_activitiy_login_submit))
+        Espresso.onView(withId(R.id.btn_activitiy_login_submit))
                 .check(matches(isDisplayed()));
 
         // 로그인 수행
-        onView(withId(R.id.edt_activity_login_email))
+        Espresso.onView(withId(R.id.edt_activity_login_email))
                 .perform(
                         ViewActions.click(),
                         ViewActions.typeText("rlawlgns2@naver.com")
                 ).check(matches(withText("rlawlgns2@naver.com")));
-        onView(withId(R.id.edt_activity_login_pwd))
+        Espresso.onView(withId(R.id.edt_activity_login_pwd))
                 .perform(
                         ViewActions.click(),
                         ViewActions.typeText("1")
                 ).check(matches(withText("1")));
 
-        onView(withId(R.id.btn_activitiy_login_submit))
+        Espresso.onView(withId(R.id.btn_activitiy_login_submit))
                 .perform(ViewActions.click());
     }
 

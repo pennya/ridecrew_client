@@ -70,9 +70,7 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
                 break;
 
             case SIGNUP_COMPLETE:
-                if(member.getData().getMemberType() != NORMAL_LOGIN) {
-                    setMemberProperties(member.getData());
-                }
+                setMemberProperties(member.getData());
                 view.moveActivity();
                 break;
             case SIGNUP_MODIFY:
